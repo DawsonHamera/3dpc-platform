@@ -1,0 +1,17 @@
+# Development Dockerfile - Vite dev server
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Install dependencies first (separate layer for cache)
+COPY package.json package-lock.json ./
+RUN npm install
+
+# Copy the rest of your source code
+COPY . .
+
+# Expose Vite's default dev server port
+EXPOSE 3000
+
+# Vite dev server command
+CMD ["npm", "run", "dev"]

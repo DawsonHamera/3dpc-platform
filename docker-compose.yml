@@ -1,0 +1,129 @@
+services:
+  # Development mode
+
+  client-dev:
+    container_name: 3dpc-client-dev
+    build:
+      context: ./client
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - NODE_ENV=development
+    depends_on:
+      - api-dev
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - 3dpc-network
+    profiles:
+      - dev
+
+  api-dev:
+    container_name: 3dpc-api-dev
+    build:
+      context: ./api
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3001:3000"
+    volumes:
+      - ./api:/usr/src/api
+      - /usr/src/api/node_modules
+    environment:
+      - PORT=3000
+      - NODE_ENV=development
+
+      - CHOKIDAR_USEPOLLING=true
+      - CHOKIDAR_INTERVAL=1000
+    env_file:
+      - ./api/.env
+    depends_on:
+      - db
+    networks:
+      - 3dpc-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    profiles:
+      - dev
+
+# Production mode
+
+  client-prod:
+    container_name: 3dpc-caddy-prod
+    image: caddy:2
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./client/dist:/srv:ro
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - api-prod
+    restart: unless-stopped
+    networks:
+      - 3dpc-network
+    profiles:
+      - prod
+
+  api-prod:
+    container_name: api-prod
+    build:
+      context: ./api
+      dockerfile: Dockerfile.prod
+    ports:
+      - "3001:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+    env_file:
+      - ./api/.env
+    depends_on:
+      - db
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - 3dpc-network
+    profiles:
+      - prod
+
+  db:
+    container_name: 3dpc-db
+    image: mariadb:10.5
+    restart: always
+    ports: 
+      - "3306:3306"
+    env_file:
+      - ./database/.env
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - ./database/my.cnf:/etc/mysql/conf.d/custom.cnf:ro
+    networks:
+      - 3dpc-network
+    profiles:
+      - dev
+      - prod
+volumes:
+  caddy_data:
+  caddy_config:
+  db_data:
+
+networks:
+  3dpc-network:
+    driver: bridge
