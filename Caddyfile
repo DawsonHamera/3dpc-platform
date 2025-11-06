@@ -1,0 +1,21 @@
+{
+    email dawsonhamera@gmail.com  # for Let's Encrypt notifications
+}
+
+localhost {
+    root * /srv
+    encode gzip
+    file_server
+
+    # Reverse proxy API
+    reverse_proxy /api/* http://api-prod:3000
+
+    # Serve uploads directly
+    handle_path /uploads/* {
+        root * /uploads
+        file_server
+    }
+
+    # Rewrite SPA routes
+    try_files {path} {path}/ /index.html
+}

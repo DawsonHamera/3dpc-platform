@@ -1,0 +1,101 @@
+.process-overview {
+    margin: 16px;
+    border-radius: 12px;
+}
+
+.process-section {
+    margin: 16px;
+}
+
+.process-section h2 {
+    color: var(--ion-color-primary);
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    padding: 0 8px;
+}
+
+.process-step {
+    margin-bottom: 16px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.process-step.current {
+    border: 2px solid var(--ion-color-primary);
+    box-shadow: 0 4px 12px rgba(var(--ion-color-primary-rgb), 0.2);
+}
+
+.process-step.completed {
+    border: 1px solid var(--ion-color-success);
+    background: rgba(var(--ion-color-success-rgb), 0.05);
+}
+
+.process-step.upcoming {
+    border: 1px solid var(--ion-color-medium);
+    opacity: 0.7;
+}
+
+.step-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.step-title ion-icon {
+    font-size: 1.2rem;
+}
+
+.step-title ion-badge {
+    font-size: 0.7rem;
+    padding: 2px 6px;
+}
+
+.step-description {
+    color: var(--ion-color-medium);
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+    line-height: 1.4;
+}
+
+.step-execution-info {
+    background: var(--ion-color-light);
+    padding: 8px 12px;
+    border-radius: 8px;
+    margin: 12px 0;
+}
+
+.step-execution-info ion-note {
+    display: block;
+    margin-bottom: 4px;
+}
+
+.step-content {
+    margin: 16px 0;
+}
+
+.step-content-item {
+    margin-bottom: 8px;
+}
+
+.step-content-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 8px 0;
+}
+
+.step-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--ion-color-light);
+}
+
+.step-actions ion-button {
+    --border-radius: 8px;
+    font-weight: 500;
+}
