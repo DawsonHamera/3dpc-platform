@@ -57,7 +57,7 @@ services:
     profiles:
       - dev
 
-# Production mode
+  # Production mode
 
   client-prod:
     container_name: 3dpc-caddy-prod
@@ -106,7 +106,7 @@ services:
     container_name: 3dpc-db
     image: mariadb:10.5
     restart: always
-    ports: 
+    ports:
       - "3306:3306"
     env_file:
       - ./database/.env
