@@ -15,7 +15,7 @@ const config_1 = require("@nestjs/config");
 const serve_static_1 = require("@nestjs/serve-static");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
-const users_module_1 = require("./users/users.module");
+const users_module_1 = require("./modules/users/users.module");
 const prisma_module_1 = require("./prisma/prisma.module");
 const app_config_1 = __importDefault(require("./config/app.config"));
 const database_config_1 = __importDefault(require("./config/database.config"));
@@ -24,6 +24,7 @@ const path_1 = require("path");
 const core_1 = require("@nestjs/core");
 const jwt_auth_guard_1 = require("./modules/auth/guards/jwt-auth.guard");
 const roles_guards_1 = require("./common/guards/roles.guards");
+const auth_module_1 = require("./modules/auth/auth.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -40,6 +41,7 @@ exports.AppModule = AppModule = __decorate([
             }),
             prisma_module_1.PrismaModule,
             users_module_1.UsersModule,
+            auth_module_1.AuthModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [

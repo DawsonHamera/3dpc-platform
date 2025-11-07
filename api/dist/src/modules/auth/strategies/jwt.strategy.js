@@ -34,9 +34,10 @@ let JwtStrategy = class JwtStrategy extends (0, passport_1.PassportStrategy)(pas
         this.jwtConfiguration = jwtConfiguration;
     }
     async validate(payload) {
-        console.log('Validating JWT Payload:', payload);
         const user = await this.authService.validateUser(payload);
-        console.log('User found:', user);
+        const safeUser = { ...user };
+        delete safeUser.password_hash;
+        console.log("SAFE", safeUser);
         return user;
     }
 };

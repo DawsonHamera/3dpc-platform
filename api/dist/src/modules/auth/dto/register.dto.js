@@ -16,7 +16,6 @@ class RegisterDto {
     email;
     password;
     grade_id;
-    role_id;
 }
 exports.RegisterDto = RegisterDto;
 __decorate([
@@ -36,9 +35,4 @@ __decorate([
     (0, class_validator_1.IsNumber)(),
     __metadata("design:type", Number)
 ], RegisterDto.prototype, "grade_id", void 0);
-__decorate([
-    (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsNumber)(),
-    __metadata("design:type", Number)
-], RegisterDto.prototype, "role_id", void 0);
 //# sourceMappingURL=register.dto.js.map

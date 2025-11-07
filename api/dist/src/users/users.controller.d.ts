@@ -15,6 +15,7 @@ export declare class UsersController {
         updated_at: Date | null;
         deleted_at: Date | null;
     }[]>;
+    findProfile(user: any): any;
     findOne(id: string): import("@prisma/client").Prisma.Prisma__usersClient<{
         id: number;
         name: string;
@@ -67,4 +68,12 @@ export declare class UsersController {
         updated_at: Date | null;
         deleted_at: Date | null;
     }, never, import("@prisma/client/runtime/library").DefaultArgs, import("@prisma/client").Prisma.PrismaClientOptions>;
+    attendEvent(id: string, user: any): Promise<{
+        id: number;
+        created_at: Date | null;
+        updated_at: Date | null;
+        user_id: number;
+        event_id: number;
+        arrival_time: Date | null;
+    }>;
 }

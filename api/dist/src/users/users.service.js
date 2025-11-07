@@ -32,6 +32,24 @@ let UsersService = class UsersService {
     remove(id) {
         return this.prisma.users.delete({ where: { id } });
     }
+    async attendEvent(eventId, userId) {
+        const existingAttendance = await this.prisma.attendances.findUnique({
+            where: {
+                event_id_user_id: {
+                    event_id: eventId,
+                    user_id: userId,
+                },
+            },
+        });
+        if (existingAttendance) {
+            throw new common_1.ConflictException('User is already attending this event');
+        }
+        const data = {
+            user: { connect: { id: userId } },
+            event: { connect: { id: eventId } },
+        };
+        return this.prisma.attendances.create({ data });
+    }
 };
 exports.UsersService = UsersService;
 exports.UsersService = UsersService = __decorate([

@@ -27,16 +27,17 @@ let RolesGuard = class RolesGuard {
         if (isPublic) {
             return true;
         }
-        const requiredRole = this.reflector.getAllAndOverride(roles_decorator_1.ROLE_KEY, [
+        const requiredRoles = this.reflector.getAllAndOverride(roles_decorator_1.ROLES_KEY, [
             context.getHandler(),
             context.getClass(),
         ]);
         const request = context.switchToHttp().getRequest();
         const user = request.user;
-        if (!requiredRole) {
-            return true;
+        console.log("Request User: ", user);
+        if (!requiredRoles) {
+            return user.role.name === 'admin';
         }
-        return user?.role?.name === requiredRole;
+        return requiredRoles.includes(user.role.name);
     }
 };
 exports.RolesGuard = RolesGuard;

@@ -67,4 +67,12 @@ export declare class UsersService {
         updated_at: Date | null;
         deleted_at: Date | null;
     }, never, import("@prisma/client/runtime/library").DefaultArgs, import("@prisma/client").Prisma.PrismaClientOptions>;
+    attendEvent(eventId: number, userId: number): Promise<{
+        id: number;
+        created_at: Date | null;
+        updated_at: Date | null;
+        user_id: number;
+        event_id: number;
+        arrival_time: Date | null;
+    }>;
 }

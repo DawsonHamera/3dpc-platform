@@ -20,9 +20,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: any) {
-    console.log('Validating JWT Payload:', payload);
     const user = await this.authService.validateUser(payload);
-    console.log('User found:', user);
+    const safeUser = { ...user }
+    delete safeUser.password_hash
+    console.log("SAFE",safeUser)
     return user;
   }
 }
