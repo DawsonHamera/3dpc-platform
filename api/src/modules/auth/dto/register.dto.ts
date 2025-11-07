@@ -13,8 +13,4 @@ export class RegisterDto {
   @IsOptional()
   @IsNumber()
   grade_id?: number;
-
-  @IsOptional()
-  @IsNumber()
-  role_id?: number;
 }

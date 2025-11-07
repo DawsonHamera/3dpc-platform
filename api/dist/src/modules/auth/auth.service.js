@@ -53,7 +53,6 @@ const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
 const bcrypt = __importStar(require("bcryptjs"));
 const app_config_1 = __importDefault(require("../../config/app.config"));
-const stream_chat_1 = require("stream-chat");
 const prisma_service_1 = require("../../prisma/prisma.service");
 let AuthService = class AuthService {
     prisma;
@@ -64,10 +63,9 @@ let AuthService = class AuthService {
         this.prisma = prisma;
         this.jwtService = jwtService;
         this.appConfiguration = appConfiguration;
-        this.streamClient = stream_chat_1.StreamChat.getInstance(process.env.STREAM_API_KEY, process.env.STREAM_API_SECRET);
     }
     async register(registerDto) {
-        const { name, email, password, grade_id, role_id } = registerDto;
+        const { name, email, password, grade_id } = registerDto;
         const existingUser = await this.prisma.users.findUnique({
             where: { email },
         });
@@ -80,13 +78,8 @@ let AuthService = class AuthService {
             email,
             password_hash: hashedPassword,
             grade: { connect: { id: grade_id ?? 1 } },
-            role: { connect: { id: role_id ?? 1 } },
         };
         const newUser = await this.prisma.users.create({ data: userData });
-        await this.streamClient.upsertUser({
-            id: newUser.id.toString(),
-            name: newUser.name,
-        });
         return {
             status: 201,
             error: null,
@@ -112,14 +105,13 @@ let AuthService = class AuthService {
         });
         const payload = { sub: user.id, email: user.email, roleId: user.role_id };
         const accessToken = this.jwtService.sign(payload);
-        const streamToken = this.createStreamToken(user.id.toString());
         return {
             status: 200,
             error: null,
             messages: { success: 'Login successful' },
             data: {
                 access_token: accessToken,
-                stream_token: streamToken,
+                stream_token: null,
                 user: {
                     id: user.id,
                     name: user.name,
@@ -134,12 +126,10 @@ let AuthService = class AuthService {
         return this.streamClient.createToken(userId);
     }
     async validateUser(payload) {
-        console.log('Validating user:', payload);
         const user = await this.prisma.users.findUnique({
             where: { id: payload.sub },
             include: { role: true },
         });
-        console.log('User found:', user);
         if (user) {
             delete user.password_hash;
             const result = user;

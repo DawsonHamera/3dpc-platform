@@ -19,7 +19,7 @@ export declare class AuthController {
         };
         data: {
             access_token: string;
-            stream_token: string;
+            stream_token: null;
             user: {
                 id: number;
                 name: string;

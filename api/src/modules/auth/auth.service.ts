@@ -25,14 +25,14 @@ export class AuthService {
     private appConfiguration: ConfigType<typeof appConfig>,
   ) {
     // Initialize StreamChat client with API key and secret from env
-    this.streamClient = StreamChat.getInstance(
-      process.env.STREAM_API_KEY!,
-      process.env.STREAM_API_SECRET!,
-    );
+    // this.streamClient = StreamChat.getInstance(
+    //   process.env.STREAM_API_KEY!,
+    //   process.env.STREAM_API_SECRET!,
+    // );
   }
 
   async register(registerDto: RegisterDto) {
-    const { name, email, password, grade_id, role_id } = registerDto;
+    const { name, email, password, grade_id } = registerDto;
 
     // Check if user already exists
     const existingUser = await this.prisma.users.findUnique({
@@ -56,16 +56,15 @@ export class AuthService {
       email,
       password_hash: hashedPassword,
       grade: { connect: { id: grade_id ?? 1 } },
-      role: { connect: { id: role_id ?? 1 } },
     };
 
     // Create new user
     const newUser = await this.prisma.users.create({ data: userData });
     // Create Stream user (new case)
-    await this.streamClient.upsertUser({
-      id: newUser.id.toString(),
-      name: newUser.name,
-    });
+    // await this.streamClient.upsertUser({
+    //   id: newUser.id.toString(),
+    //   name: newUser.name,
+    // });
 
     return {
       status: 201,
@@ -101,7 +100,7 @@ export class AuthService {
     // Generate tokens
     const payload = { sub: user.id, email: user.email, roleId: user.role_id };
     const accessToken = this.jwtService.sign(payload);
-    const streamToken = this.createStreamToken(user.id.toString());
+    // const streamToken = this.createStreamToken(user.id.toString());
 
     return {
       status: 200,
@@ -109,7 +108,7 @@ export class AuthService {
       messages: { success: 'Login successful' },
       data: {
         access_token: accessToken,
-        stream_token: streamToken,
+        stream_token: null,
         user: {
           id: user.id,
           name: user.name,
@@ -127,12 +126,10 @@ export class AuthService {
   }
 
   async validateUser(payload: any): Promise<any> {
-    console.log('Validating user:', payload);
     const user = await this.prisma.users.findUnique({
       where: { id: payload.sub },
       include: { role: true },
     });
-    console.log('User found:', user);
     if (user) {
       // Remove sensitive field by mutating the user object
       delete (user as any).password_hash;

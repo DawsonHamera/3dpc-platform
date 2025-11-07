@@ -25,14 +25,13 @@ model attendances {
   id           Int       @id @default(autoincrement())
   user_id      Int
   event_id     Int
-  created_at   DateTime? @db.DateTime(0)
-  updated_at   DateTime? @db.DateTime(0)
-  arrival_time DateTime? @db.DateTime(0)
-  events       events    @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_attendances_events")
-  users        users     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_attendances_users")
+  created_at   DateTime? @default(now())
+  updated_at   DateTime? @updatedAt
+  arrival_time DateTime? @default(now())
+  event       events    @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user        users     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
-  @@index([event_id], map: "fk_attendances_events")
-  @@index([user_id], map: "fk_attendances_users")
+  @@unique([event_id, user_id])
 }
 
 model customers {
@@ -82,11 +81,10 @@ model events {
   deleted_at        DateTime?          @db.DateTime(0)
   verification_code String             @db.VarChar(255)
   attendances       attendances[]
-  files             files?             @relation(fields: [image_file_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_events_files")
-  users             users              @relation(fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_events_users")
-
-  @@index([image_file_id], map: "fk_events_files")
-  @@index([created_by], map: "fk_events_users")
+  files             files?             @relation(fields: [image_file_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users             users              @relation(fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  
+  @@unique([start_time, end_time])
 }
 
 model files {
@@ -509,8 +507,8 @@ model steps {
   title                  String                   @db.VarChar(255)
   description            String?                  @db.Text
   is_critical            Boolean?                 @default(false)
-  created_at             DateTime?                @db.DateTime(0)
-  updated_at             DateTime?                @db.DateTime(0)
+  created_at             DateTime?                @default(now())
+  updated_at             DateTime?                @updatedAt
   step_type              steps_step_type?         @default(manual)
   is_required            Boolean?                 @default(true)
   deleted_at             DateTime?                @db.Timestamp(0)

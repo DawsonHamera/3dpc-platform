@@ -15,6 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsersController = void 0;
 const common_1 = require("@nestjs/common");
 const users_service_1 = require("./users.service");
+const roles_decorator_1 = require("../common/decorators/roles.decorator");
+const current_user_decorator_1 = require("../common/decorators/current-user.decorator");
 let UsersController = class UsersController {
     usersService;
     constructor(usersService) {
@@ -22,6 +24,9 @@ let UsersController = class UsersController {
     }
     findAll() {
         return this.usersService.findAll();
+    }
+    findProfile(user) {
+        return user;
     }
     findOne(id) {
         return this.usersService.findOne(+id);
@@ -35,16 +40,29 @@ let UsersController = class UsersController {
     remove(id) {
         return this.usersService.remove(+id);
     }
+    attendEvent(id, user) {
+        return this.usersService.attendEvent(+id, user.id);
+    }
 };
 exports.UsersController = UsersController;
 __decorate([
     (0, common_1.Get)(),
+    (0, roles_decorator_1.Roles)(['admin']),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "findAll", null);
 __decorate([
+    (0, common_1.Get)('profile'),
+    (0, roles_decorator_1.Roles)(['admin', 'member', 'viewer']),
+    __param(0, (0, current_user_decorator_1.CurrentUser)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], UsersController.prototype, "findProfile", null);
+__decorate([
     (0, common_1.Get)(':id'),
+    (0, roles_decorator_1.Roles)(['admin']),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -52,6 +70,7 @@ __decorate([
 ], UsersController.prototype, "findOne", null);
 __decorate([
     (0, common_1.Post)(),
+    (0, roles_decorator_1.Roles)(['admin']),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -59,6 +78,7 @@ __decorate([
 ], UsersController.prototype, "create", null);
 __decorate([
     (0, common_1.Patch)(':id'),
+    (0, roles_decorator_1.Roles)(['admin']),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -67,11 +87,21 @@ __decorate([
 ], UsersController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)(':id'),
+    (0, roles_decorator_1.Roles)(['admin']),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "remove", null);
+__decorate([
+    (0, common_1.Post)('attendances'),
+    (0, roles_decorator_1.Roles)(['admin', 'member']),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, current_user_decorator_1.CurrentUser)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", void 0)
+], UsersController.prototype, "attendEvent", null);
 exports.UsersController = UsersController = __decorate([
     (0, common_1.Controller)('users'),
     __metadata("design:paramtypes", [users_service_1.UsersService])

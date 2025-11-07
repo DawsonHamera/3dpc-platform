@@ -25,7 +25,7 @@ export declare class AuthService {
         };
         data: {
             access_token: string;
-            stream_token: string;
+            stream_token: null;
             user: {
                 id: number;
                 name: string;
