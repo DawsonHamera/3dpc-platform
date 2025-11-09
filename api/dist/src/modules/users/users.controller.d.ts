@@ -1,7 +1,7 @@
-import { PrismaService } from 'src/prisma/prisma.service';
-export declare class UsersService {
-    private readonly prisma;
-    constructor(prisma: PrismaService);
+import { UsersService } from './users.service';
+export declare class UsersController {
+    private readonly usersService;
+    constructor(usersService: UsersService);
     findAll(): import("@prisma/client").Prisma.PrismaPromise<{
         id: number;
         name: string;
@@ -15,7 +15,8 @@ export declare class UsersService {
         updated_at: Date | null;
         deleted_at: Date | null;
     }[]>;
-    findOne(id: number): import("@prisma/client").Prisma.Prisma__usersClient<{
+    findProfile(user: any): any;
+    findOne(id: string): import("@prisma/client").Prisma.Prisma__usersClient<{
         id: number;
         name: string;
         email: string;
@@ -28,7 +29,7 @@ export declare class UsersService {
         updated_at: Date | null;
         deleted_at: Date | null;
     } | null, null, import("@prisma/client/runtime/library").DefaultArgs, import("@prisma/client").Prisma.PrismaClientOptions>;
-    create(data: any): import("@prisma/client").Prisma.Prisma__usersClient<{
+    create(createUserDto: any): import("@prisma/client").Prisma.Prisma__usersClient<{
         id: number;
         name: string;
         email: string;
@@ -41,7 +42,7 @@ export declare class UsersService {
         updated_at: Date | null;
         deleted_at: Date | null;
     }, never, import("@prisma/client/runtime/library").DefaultArgs, import("@prisma/client").Prisma.PrismaClientOptions>;
-    update(id: number, data: any): import("@prisma/client").Prisma.Prisma__usersClient<{
+    update(id: string, updateUserDto: any): import("@prisma/client").Prisma.Prisma__usersClient<{
         id: number;
         name: string;
         email: string;
@@ -54,7 +55,7 @@ export declare class UsersService {
         updated_at: Date | null;
         deleted_at: Date | null;
     }, never, import("@prisma/client/runtime/library").DefaultArgs, import("@prisma/client").Prisma.PrismaClientOptions>;
-    remove(id: number): import("@prisma/client").Prisma.Prisma__usersClient<{
+    remove(id: string): import("@prisma/client").Prisma.Prisma__usersClient<{
         id: number;
         name: string;
         email: string;
@@ -67,12 +68,4 @@ export declare class UsersService {
         updated_at: Date | null;
         deleted_at: Date | null;
     }, never, import("@prisma/client/runtime/library").DefaultArgs, import("@prisma/client").Prisma.PrismaClientOptions>;
-    attendEvent(eventId: number, userId: number): Promise<{
-        id: number;
-        created_at: Date | null;
-        updated_at: Date | null;
-        user_id: number;
-        event_id: number;
-        arrival_time: Date | null;
-    }>;
 }

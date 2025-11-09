@@ -10,7 +10,6 @@ import {
 import { UsersService } from './users.service';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
-import { Public } from 'src/common/decorators/public.decorator'
 
 @Controller('users')
 export class UsersController {
@@ -25,7 +24,7 @@ export class UsersController {
   @Get('profile')
   @Roles(['admin', 'member', 'viewer'])
   findProfile(@CurrentUser() user) {
-    return user
+    return user;
   }
 
   @Get(':id')
@@ -50,11 +49,5 @@ export class UsersController {
   @Roles(['admin'])
   remove(@Param('id') id: string) {
     return this.usersService.remove(+id);
-  }
-
-  @Post('attendances')
-  @Roles(['admin', 'member'])
-  attendEvent(@Param('id') id: string, @CurrentUser() user) {
-    return this.usersService.attendEvent(+id, user.id)
   }
 }
