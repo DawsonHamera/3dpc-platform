@@ -85,6 +85,7 @@ model events {
   users             users              @relation(fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
   
   @@unique([start_time, end_time])
+  @@unique(verification_code)
 }
 
 model files {

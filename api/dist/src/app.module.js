@@ -25,6 +25,7 @@ const core_1 = require("@nestjs/core");
 const jwt_auth_guard_1 = require("./modules/auth/guards/jwt-auth.guard");
 const roles_guards_1 = require("./common/guards/roles.guards");
 const auth_module_1 = require("./modules/auth/auth.module");
+const events_module_1 = require("./modules/events/events.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -41,6 +42,7 @@ exports.AppModule = AppModule = __decorate([
             }),
             prisma_module_1.PrismaModule,
             users_module_1.UsersModule,
+            events_module_1.EventsModule,
             auth_module_1.AuthModule,
         ],
         controllers: [app_controller_1.AppController],

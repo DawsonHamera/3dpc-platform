@@ -38,7 +38,7 @@ export class EventsService {
     return this.prisma.events.delete({ where: { id } });
   }
 
-  async attendEvent(eventId: number, userId: number) {
+  async attendEvent(eventId: number, userId: number, code: string) {
     const existingAttendance = await this.prisma.attendances.findUnique({
       where: {
         event_id_user_id: {
@@ -49,6 +49,25 @@ export class EventsService {
     });
     if (existingAttendance) {
       throw new ConflictException('User is already attending this event');
+    }
+
+    const event = await this.prisma.events.findUnique({
+      where: { id: eventId },
+    });
+    if (!event) {
+      throw new ConflictException('Event does not exist');
+    }
+
+    if (event.verification_code !== code) {
+      throw new ConflictException('Invalid event code');
+    }
+
+    if (event.end_time < new Date()) {
+      throw new ConflictException('Event has already ended');
+    }
+
+    if (event.start_time > new Date()) {
+      throw new ConflictException('Event has not started yet');
     }
 
     const data = {

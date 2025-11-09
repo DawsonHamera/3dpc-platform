@@ -12,54 +12,54 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UsersController = void 0;
+exports.EventsController = void 0;
 const common_1 = require("@nestjs/common");
-const users_service_1 = require("./users.service");
-const roles_decorator_1 = require("../common/decorators/roles.decorator");
-const current_user_decorator_1 = require("../common/decorators/current-user.decorator");
-let UsersController = class UsersController {
-    usersService;
-    constructor(usersService) {
-        this.usersService = usersService;
+const public_decorator_1 = require("../../common/decorators/public.decorator");
+const roles_decorator_1 = require("../../common/decorators/roles.decorator");
+const events_service_1 = require("./events.service");
+const current_user_decorator_1 = require("../../common/decorators/current-user.decorator");
+let EventsController = class EventsController {
+    eventsService;
+    constructor(eventsService) {
+        this.eventsService = eventsService;
     }
     findAll() {
-        return this.usersService.findAll();
+        return this.eventsService.findAll();
     }
-    findProfile(user) {
-        return user;
+    findCurrent() {
+        return this.eventsService.findCurrent();
     }
     findOne(id) {
-        return this.usersService.findOne(+id);
+        return this.eventsService.findOne(+id);
     }
-    create(createUserDto) {
-        return this.usersService.create(createUserDto);
+    create(createEventDto) {
+        return this.eventsService.create(createEventDto);
     }
-    update(id, updateUserDto) {
-        return this.usersService.update(+id, updateUserDto);
+    update(id, updateEventDto) {
+        return this.eventsService.update(+id, updateEventDto);
     }
     remove(id) {
-        return this.usersService.remove(+id);
+        return this.eventsService.remove(+id);
     }
-    attendEvent(id, user) {
-        return this.usersService.attendEvent(+id, user.id);
+    attendEvent(id, code, user) {
+        return this.eventsService.attendEvent(+id, user.id, code);
     }
 };
-exports.UsersController = UsersController;
+exports.EventsController = EventsController;
 __decorate([
     (0, common_1.Get)(),
-    (0, roles_decorator_1.Roles)(['admin']),
+    (0, public_decorator_1.Public)(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
-], UsersController.prototype, "findAll", null);
+], EventsController.prototype, "findAll", null);
 __decorate([
-    (0, common_1.Get)('profile'),
-    (0, roles_decorator_1.Roles)(['admin', 'member', 'viewer']),
-    __param(0, (0, current_user_decorator_1.CurrentUser)()),
+    (0, common_1.Get)('current'),
+    (0, public_decorator_1.Public)(),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
-], UsersController.prototype, "findProfile", null);
+], EventsController.prototype, "findCurrent", null);
 __decorate([
     (0, common_1.Get)(':id'),
     (0, roles_decorator_1.Roles)(['admin']),
@@ -67,7 +67,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
-], UsersController.prototype, "findOne", null);
+], EventsController.prototype, "findOne", null);
 __decorate([
     (0, common_1.Post)(),
     (0, roles_decorator_1.Roles)(['admin']),
@@ -75,7 +75,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
-], UsersController.prototype, "create", null);
+], EventsController.prototype, "create", null);
 __decorate([
     (0, common_1.Patch)(':id'),
     (0, roles_decorator_1.Roles)(['admin']),
@@ -84,7 +84,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", void 0)
-], UsersController.prototype, "update", null);
+], EventsController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)(':id'),
     (0, roles_decorator_1.Roles)(['admin']),
@@ -92,18 +92,19 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
-], UsersController.prototype, "remove", null);
+], EventsController.prototype, "remove", null);
 __decorate([
-    (0, common_1.Post)('attendances'),
+    (0, common_1.Post)(':id/attendance/:code'),
     (0, roles_decorator_1.Roles)(['admin', 'member']),
     __param(0, (0, common_1.Param)('id')),
-    __param(1, (0, current_user_decorator_1.CurrentUser)()),
+    __param(1, (0, common_1.Param)('code')),
+    __param(2, (0, current_user_decorator_1.CurrentUser)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:paramtypes", [String, String, Object]),
     __metadata("design:returntype", void 0)
-], UsersController.prototype, "attendEvent", null);
-exports.UsersController = UsersController = __decorate([
-    (0, common_1.Controller)('users'),
-    __metadata("design:paramtypes", [users_service_1.UsersService])
-], UsersController);
-//# sourceMappingURL=users.controller.js.map
+], EventsController.prototype, "attendEvent", null);
+exports.EventsController = EventsController = __decorate([
+    (0, common_1.Controller)('events'),
+    __metadata("design:paramtypes", [events_service_1.EventsService])
+], EventsController);
+//# sourceMappingURL=events.controller.js.map
