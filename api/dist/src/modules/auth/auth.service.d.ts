@@ -11,35 +11,22 @@ export declare class AuthService {
     private streamClient;
     constructor(prisma: PrismaService, jwtService: JwtService, appConfiguration: ConfigType<typeof appConfig>);
     register(registerDto: RegisterDto): Promise<{
-        status: number;
-        error: null;
-        messages: {
-            success: string;
-        };
+        id: number;
+        name: string;
+        email: string;
+        password_hash: string;
+        role_id: number;
+        grade_id: number | null;
+        score: number;
+        last_active: Date | null;
+        created_at: Date | null;
+        updated_at: Date | null;
+        deleted_at: Date | null;
     }>;
     login(loginDto: LoginDto): Promise<{
-        status: number;
-        error: null;
-        messages: {
-            success: string;
-        };
-        data: {
-            access_token: string;
-            stream_token: null;
-            user: {
-                id: number;
-                name: string;
-                email: string;
-                grade_id: number | null;
-                role: {
-                    id: number;
-                    name: string;
-                    created_at: Date | null;
-                    updated_at: Date | null;
-                    description: string | null;
-                };
-            };
-        };
+        statusCode: number;
+        message: string;
+        data: any;
     }>;
     private createStreamToken;
     validateUser(payload: any): Promise<any>;

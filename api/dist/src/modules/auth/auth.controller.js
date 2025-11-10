@@ -18,13 +18,17 @@ const auth_service_1 = require("./auth.service");
 const register_dto_1 = require("./dto/register.dto");
 const login_dto_1 = require("./dto/login.dto");
 const public_decorator_1 = require("../../common/decorators/public.decorator");
+const response_1 = require("../../utils/response");
 let AuthController = class AuthController {
     authService;
     constructor(authService) {
         this.authService = authService;
     }
     async register(registerDto) {
-        return this.authService.register(registerDto);
+        const user = await this.authService.register(registerDto);
+        if (!user)
+            throw new Error('Registration failed');
+        return (0, response_1.success)(user, 'User registered successfully');
     }
     async login(loginDto) {
         return this.authService.login(loginDto);

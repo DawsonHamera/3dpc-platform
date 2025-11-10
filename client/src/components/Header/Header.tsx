@@ -108,7 +108,7 @@ const Header: React.FC<HeaderProps> = ({ title, type, onBack }) => {
                 </IonList>
             </IonPopover>
 
-            <IonToolbar className='primary-gradient'>
+            <IonToolbar color='primary'>
                 <IonButtons slot="end">
                     <IonButton onClick={openPopover}>
                         <IonIcon icon={personCircleOutline} />

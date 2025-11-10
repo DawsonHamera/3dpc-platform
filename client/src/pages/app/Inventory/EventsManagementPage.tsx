@@ -18,8 +18,8 @@ const EventsManagementPage: React.FC = () => {
         description: '',
         location: '',
         imageFileId: undefined as number | undefined,
-        startTime: '',
-        endTime: '',
+        start_time: '',
+        end_time: '',
         isFeatured: false,
     };
 
@@ -41,8 +41,8 @@ const EventsManagementPage: React.FC = () => {
             description: event.description,
             location: event.location,
             imageFileId: event.imageFileId,
-            startTime: event.startTime,
-            endTime: event.endTime,
+            start_time: event.start_time,
+            end_time: event.end_time,
             isFeatured: event.isFeatured,
         });
         setShowModal(true);
@@ -57,8 +57,8 @@ const EventsManagementPage: React.FC = () => {
         const sanitizedForm = {
             ...form,
             imageFileId: form.imageFileId === null ? undefined : form.imageFileId,
-            startTime: form.startTime ? new Date(form.startTime) : undefined,
-            endTime: form.endTime ? new Date(form.endTime) : undefined,
+            start_time: form.start_time ? new Date(form.start_time) : undefined,
+            end_time: form.end_time ? new Date(form.end_time) : undefined,
         };
         if (editingEvent) {
             await updateEvent({ id: editingEvent.id, data: sanitizedForm });
@@ -94,8 +94,8 @@ const EventsManagementPage: React.FC = () => {
                                     <div>
                                         <p>{event.description}</p>
                                         <p>Location: {event.location}</p>
-                                        <p>Start Time: {event.startTime?.toString()}</p>
-                                        <p>End Time: {event.endTime?.toString()}</p>
+                                        <p>Start Time: {event.start_time?.toString()}</p>
+                                        <p>End Time: {event.end_time?.toString()}</p>
                                         <p>Created By: {event.creator?.name}</p>
                                         <p>Is Featured: {event.isFeatured ? 'Yes' : 'No'}</p>
                                         <IonButton onClick={() => setOpenQrCode(event.verificationCode)}>Verification Code</IonButton>
@@ -146,15 +146,15 @@ const EventsManagementPage: React.FC = () => {
                         <IonItem>
                             <IonLabel position="stacked">Start Time</IonLabel>
                             <IonDatetime
-                                value={form.startTime}
-                                onIonChange={e => setForm(f => ({ ...f, startTime: Array.isArray(e.detail.value) ? e.detail.value[0] ?? '' : (e.detail.value ?? '') }))}
+                                value={form.start_time}
+                                onIonChange={e => setForm(f => ({ ...f, start_time: Array.isArray(e.detail.value) ? e.detail.value[0] ?? '' : (e.detail.value ?? '') }))}
                             />
                         </IonItem>
                         <IonItem>
                             <IonLabel position="stacked">End Time</IonLabel>
                             <IonDatetime
-                                value={form.endTime}
-                                onIonChange={e => setForm(f => ({ ...f, endTime: Array.isArray(e.detail.value) ? e.detail.value[0] ?? '' : (e.detail.value ?? '') }))}
+                                value={form.end_time}
+                                onIonChange={e => setForm(f => ({ ...f, end_time: Array.isArray(e.detail.value) ? e.detail.value[0] ?? '' : (e.detail.value ?? '') }))}
                             />
                         </IonItem>
                         <IonItem>

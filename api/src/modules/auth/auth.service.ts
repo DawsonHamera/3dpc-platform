@@ -13,6 +13,7 @@ import appConfig from '../../config/app.config';
 import { StreamChat } from 'stream-chat';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Prisma } from '@prisma/client';
+import { success } from 'src/utils/response';
 
 @Injectable()
 export class AuthService {
@@ -59,18 +60,14 @@ export class AuthService {
     };
 
     // Create new user
-    const newUser = await this.prisma.users.create({ data: userData });
+    const user = await this.prisma.users.create({ data: userData });
     // Create Stream user (new case)
     // await this.streamClient.upsertUser({
     //   id: newUser.id.toString(),
     //   name: newUser.name,
     // });
 
-    return {
-      status: 201,
-      error: null,
-      messages: { success: 'User registered successfully' },
-    };
+    return user;
   }
 
   async login(loginDto: LoginDto) {
@@ -101,12 +98,8 @@ export class AuthService {
     const payload = { sub: user.id, email: user.email, roleId: user.role_id };
     const accessToken = this.jwtService.sign(payload);
     // const streamToken = this.createStreamToken(user.id.toString());
-
-    return {
-      status: 200,
-      error: null,
-      messages: { success: 'Login successful' },
-      data: {
+    return success(
+      {
         access_token: accessToken,
         stream_token: null,
         user: {
@@ -117,7 +110,8 @@ export class AuthService {
           role: user.role,
         },
       },
-    };
+      'Login successful',
+    );
   }
 
   private createStreamToken(userId: string): string {
