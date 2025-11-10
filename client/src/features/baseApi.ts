@@ -10,7 +10,6 @@ import type {
 import type { RootState } from '../redux/store';
 import { selectAccessToken } from './auth/authSlice';
 
-//Prod baseUrl: 'https://3dpcapi.hamera.com/public/index.php/'
 
 export const baseQueryWithAuth = fetchBaseQuery({
   baseUrl: '/api',
@@ -22,6 +21,8 @@ export const baseQueryWithAuth = fetchBaseQuery({
     return headers;
   },
 });
+
+
 
 type CrudBaseEndpoints<T> = {
   getAll: QueryDefinition<void, BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError>, any, T[], string>;

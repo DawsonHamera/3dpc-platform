@@ -102,7 +102,7 @@ model files {
   description                                String?     @db.Text
   type                                       files_type  @default(other)
   events                                     events[]
-  users                                      users?      @relation(fields: [uploaded_by], references: [id], onUpdate: Restrict, map: "files_uploaded_by_foreign")
+  uploader                                      users?      @relation(fields: [uploaded_by], references: [id], onUpdate: Restrict, map: "files_uploaded_by_foreign")
   materials_materials_image_file_idTofiles   materials[] @relation("materials_image_file_idTofiles")
   materials_materials_texture_file_idTofiles materials[] @relation("materials_texture_file_idTofiles")
   printers                                   printers[]

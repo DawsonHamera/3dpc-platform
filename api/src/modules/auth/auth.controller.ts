@@ -3,6 +3,7 @@ import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { Public } from 'src/common/decorators/public.decorator';
+import { success } from 'src/utils/response';
 
 @Controller()
 export class AuthController {
@@ -11,7 +12,9 @@ export class AuthController {
   @Public()
   @Post('register')
   async register(@Body() registerDto: RegisterDto) {
-    return this.authService.register(registerDto);
+    const user = await this.authService.register(registerDto);
+    if (!user) throw new Error('Registration failed');
+    return success(user, 'User registered successfully');
   }
 
   @Public()

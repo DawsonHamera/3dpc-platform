@@ -5,34 +5,13 @@ export declare class AuthController {
     private readonly authService;
     constructor(authService: AuthService);
     register(registerDto: RegisterDto): Promise<{
-        status: number;
-        error: null;
-        messages: {
-            success: string;
-        };
+        statusCode: number;
+        message: string;
+        data: any;
     }>;
     login(loginDto: LoginDto): Promise<{
-        status: number;
-        error: null;
-        messages: {
-            success: string;
-        };
-        data: {
-            access_token: string;
-            stream_token: null;
-            user: {
-                id: number;
-                name: string;
-                email: string;
-                grade_id: number | null;
-                role: {
-                    id: number;
-                    name: string;
-                    created_at: Date | null;
-                    updated_at: Date | null;
-                    description: string | null;
-                };
-            };
-        };
+        statusCode: number;
+        message: string;
+        data: any;
     }>;
 }

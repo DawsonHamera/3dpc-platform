@@ -54,6 +54,7 @@ const jwt_1 = require("@nestjs/jwt");
 const bcrypt = __importStar(require("bcryptjs"));
 const app_config_1 = __importDefault(require("../../config/app.config"));
 const prisma_service_1 = require("../../prisma/prisma.service");
+const response_1 = require("../../utils/response");
 let AuthService = class AuthService {
     prisma;
     jwtService;
@@ -79,12 +80,8 @@ let AuthService = class AuthService {
             password_hash: hashedPassword,
             grade: { connect: { id: grade_id ?? 1 } },
         };
-        const newUser = await this.prisma.users.create({ data: userData });
-        return {
-            status: 201,
-            error: null,
-            messages: { success: 'User registered successfully' },
-        };
+        const user = await this.prisma.users.create({ data: userData });
+        return user;
     }
     async login(loginDto) {
         const { email, password } = loginDto;
@@ -105,22 +102,17 @@ let AuthService = class AuthService {
         });
         const payload = { sub: user.id, email: user.email, roleId: user.role_id };
         const accessToken = this.jwtService.sign(payload);
-        return {
-            status: 200,
-            error: null,
-            messages: { success: 'Login successful' },
-            data: {
-                access_token: accessToken,
-                stream_token: null,
-                user: {
-                    id: user.id,
-                    name: user.name,
-                    email: user.email,
-                    grade_id: user.grade_id,
-                    role: user.role,
-                },
+        return (0, response_1.success)({
+            access_token: accessToken,
+            stream_token: null,
+            user: {
+                id: user.id,
+                name: user.name,
+                email: user.email,
+                grade_id: user.grade_id,
+                role: user.role,
             },
-        };
+        }, 'Login successful');
     }
     createStreamToken(userId) {
         return this.streamClient.createToken(userId);
