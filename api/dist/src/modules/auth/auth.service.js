@@ -100,7 +100,12 @@ let AuthService = class AuthService {
             where: { id: user.id },
             data: { last_active: new Date() },
         });
-        const payload = { sub: user.id, email: user.email, roleId: user.role_id };
+        const payload = {
+            sub: user.id,
+            email: user.email,
+            roleId: user.role_id,
+        };
+        console.log(new Date().toISOString());
         const accessToken = this.jwtService.sign(payload);
         const decoded = this.jwtService.decode(accessToken);
         const expires_at = decoded && decoded.exp
