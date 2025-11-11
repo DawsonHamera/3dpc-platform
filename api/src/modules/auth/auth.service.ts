@@ -95,7 +95,12 @@ export class AuthService {
     });
 
     // Generate tokens
-    const payload = { sub: user.id, email: user.email, roleId: user.role_id };
+    const payload = {
+      sub: user.id,
+      email: user.email,
+      roleId: user.role_id,
+    };
+    console.log(new Date().toISOString());
     const accessToken = this.jwtService.sign(payload);
     // const streamToken = this.createStreamToken(user.id.toString());
 
