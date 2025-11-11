@@ -1,0 +1,15 @@
+import type { Prisma } from '@prisma/client';
+import * as z from 'zod';
+import { task_statusesWhereInputObjectSchema as task_statusesWhereInputObjectSchema } from './objects/task_statusesWhereInput.schema';
+import { task_statusesOrderByWithAggregationInputObjectSchema as task_statusesOrderByWithAggregationInputObjectSchema } from './objects/task_statusesOrderByWithAggregationInput.schema';
+import { task_statusesScalarWhereWithAggregatesInputObjectSchema as task_statusesScalarWhereWithAggregatesInputObjectSchema } from './objects/task_statusesScalarWhereWithAggregatesInput.schema';
+import { TaskStatusesScalarFieldEnumSchema } from './enums/TaskStatusesScalarFieldEnum.schema';
+import { Task_statusesCountAggregateInputObjectSchema as Task_statusesCountAggregateInputObjectSchema } from './objects/Task_statusesCountAggregateInput.schema';
+import { Task_statusesMinAggregateInputObjectSchema as Task_statusesMinAggregateInputObjectSchema } from './objects/Task_statusesMinAggregateInput.schema';
+import { Task_statusesMaxAggregateInputObjectSchema as Task_statusesMaxAggregateInputObjectSchema } from './objects/Task_statusesMaxAggregateInput.schema';
+import { Task_statusesAvgAggregateInputObjectSchema as Task_statusesAvgAggregateInputObjectSchema } from './objects/Task_statusesAvgAggregateInput.schema';
+import { Task_statusesSumAggregateInputObjectSchema as Task_statusesSumAggregateInputObjectSchema } from './objects/Task_statusesSumAggregateInput.schema';
+
+export const task_statusesGroupBySchema: z.ZodType<Prisma.task_statusesGroupByArgs> = z.object({ where: task_statusesWhereInputObjectSchema.optional(), orderBy: z.union([task_statusesOrderByWithAggregationInputObjectSchema, task_statusesOrderByWithAggregationInputObjectSchema.array()]).optional(), having: task_statusesScalarWhereWithAggregatesInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), by: z.array(TaskStatusesScalarFieldEnumSchema), _count: z.union([ z.literal(true), Task_statusesCountAggregateInputObjectSchema ]).optional(), _min: Task_statusesMinAggregateInputObjectSchema.optional(), _max: Task_statusesMaxAggregateInputObjectSchema.optional(), _avg: Task_statusesAvgAggregateInputObjectSchema.optional(), _sum: Task_statusesSumAggregateInputObjectSchema.optional() }).strict() as unknown as z.ZodType<Prisma.task_statusesGroupByArgs>;
+
+export const task_statusesGroupByZodSchema = z.object({ where: task_statusesWhereInputObjectSchema.optional(), orderBy: z.union([task_statusesOrderByWithAggregationInputObjectSchema, task_statusesOrderByWithAggregationInputObjectSchema.array()]).optional(), having: task_statusesScalarWhereWithAggregatesInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), by: z.array(TaskStatusesScalarFieldEnumSchema), _count: z.union([ z.literal(true), Task_statusesCountAggregateInputObjectSchema ]).optional(), _min: Task_statusesMinAggregateInputObjectSchema.optional(), _max: Task_statusesMaxAggregateInputObjectSchema.optional(), _avg: Task_statusesAvgAggregateInputObjectSchema.optional(), _sum: Task_statusesSumAggregateInputObjectSchema.optional() }).strict();

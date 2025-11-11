@@ -11,11 +11,18 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FilesService } from './files.service';
-import { File, FileType } from './entities/file.entity';
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 import { diskStorage } from 'multer';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { Public } from 'src/common/decorators/public.decorator';
+
+enum FileType {
+  IMAGE = 'IMAGE',
+  MODEL = 'MODEL',
+  TEXTURE = 'TEXTURE',
+  DOCUMENT = 'DOCUMENT',
+  OTHER = 'OTHER',
+}
 
 @Controller('files')
 export class FilesController {

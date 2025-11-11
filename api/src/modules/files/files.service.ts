@@ -1,6 +1,4 @@
 import { Injectable } from '@nestjs/common';
-
-import { File } from './entities/file.entity';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -24,7 +22,7 @@ export class FilesService {
     return this.prisma.files.create({ data });
   }
 
-  async update(id: number, data: any){
+  async update(id: number, data: any) {
     return this.prisma.files.update({
       where: { id },
       data: data,

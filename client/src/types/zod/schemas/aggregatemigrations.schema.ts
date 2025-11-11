@@ -1,0 +1,14 @@
+import type { Prisma } from '@prisma/client';
+import * as z from 'zod';
+import { migrationsOrderByWithRelationInputObjectSchema as migrationsOrderByWithRelationInputObjectSchema } from './objects/migrationsOrderByWithRelationInput.schema';
+import { migrationsWhereInputObjectSchema as migrationsWhereInputObjectSchema } from './objects/migrationsWhereInput.schema';
+import { migrationsWhereUniqueInputObjectSchema as migrationsWhereUniqueInputObjectSchema } from './objects/migrationsWhereUniqueInput.schema';
+import { MigrationsCountAggregateInputObjectSchema as MigrationsCountAggregateInputObjectSchema } from './objects/MigrationsCountAggregateInput.schema';
+import { MigrationsMinAggregateInputObjectSchema as MigrationsMinAggregateInputObjectSchema } from './objects/MigrationsMinAggregateInput.schema';
+import { MigrationsMaxAggregateInputObjectSchema as MigrationsMaxAggregateInputObjectSchema } from './objects/MigrationsMaxAggregateInput.schema';
+import { MigrationsAvgAggregateInputObjectSchema as MigrationsAvgAggregateInputObjectSchema } from './objects/MigrationsAvgAggregateInput.schema';
+import { MigrationsSumAggregateInputObjectSchema as MigrationsSumAggregateInputObjectSchema } from './objects/MigrationsSumAggregateInput.schema';
+
+export const migrationsAggregateSchema: z.ZodType<Prisma.migrationsAggregateArgs> = z.object({ orderBy: z.union([migrationsOrderByWithRelationInputObjectSchema, migrationsOrderByWithRelationInputObjectSchema.array()]).optional(), where: migrationsWhereInputObjectSchema.optional(), cursor: migrationsWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), _count: z.union([ z.literal(true), MigrationsCountAggregateInputObjectSchema ]).optional(), _min: MigrationsMinAggregateInputObjectSchema.optional(), _max: MigrationsMaxAggregateInputObjectSchema.optional(), _avg: MigrationsAvgAggregateInputObjectSchema.optional(), _sum: MigrationsSumAggregateInputObjectSchema.optional() }).strict() as unknown as z.ZodType<Prisma.migrationsAggregateArgs>;
+
+export const migrationsAggregateZodSchema = z.object({ orderBy: z.union([migrationsOrderByWithRelationInputObjectSchema, migrationsOrderByWithRelationInputObjectSchema.array()]).optional(), where: migrationsWhereInputObjectSchema.optional(), cursor: migrationsWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), _count: z.union([ z.literal(true), MigrationsCountAggregateInputObjectSchema ]).optional(), _min: MigrationsMinAggregateInputObjectSchema.optional(), _max: MigrationsMaxAggregateInputObjectSchema.optional(), _avg: MigrationsAvgAggregateInputObjectSchema.optional(), _sum: MigrationsSumAggregateInputObjectSchema.optional() }).strict();

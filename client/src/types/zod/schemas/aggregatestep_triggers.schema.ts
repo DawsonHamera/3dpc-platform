@@ -1,0 +1,14 @@
+import type { Prisma } from '@prisma/client';
+import * as z from 'zod';
+import { step_triggersOrderByWithRelationInputObjectSchema as step_triggersOrderByWithRelationInputObjectSchema } from './objects/step_triggersOrderByWithRelationInput.schema';
+import { step_triggersWhereInputObjectSchema as step_triggersWhereInputObjectSchema } from './objects/step_triggersWhereInput.schema';
+import { step_triggersWhereUniqueInputObjectSchema as step_triggersWhereUniqueInputObjectSchema } from './objects/step_triggersWhereUniqueInput.schema';
+import { Step_triggersCountAggregateInputObjectSchema as Step_triggersCountAggregateInputObjectSchema } from './objects/Step_triggersCountAggregateInput.schema';
+import { Step_triggersMinAggregateInputObjectSchema as Step_triggersMinAggregateInputObjectSchema } from './objects/Step_triggersMinAggregateInput.schema';
+import { Step_triggersMaxAggregateInputObjectSchema as Step_triggersMaxAggregateInputObjectSchema } from './objects/Step_triggersMaxAggregateInput.schema';
+import { Step_triggersAvgAggregateInputObjectSchema as Step_triggersAvgAggregateInputObjectSchema } from './objects/Step_triggersAvgAggregateInput.schema';
+import { Step_triggersSumAggregateInputObjectSchema as Step_triggersSumAggregateInputObjectSchema } from './objects/Step_triggersSumAggregateInput.schema';
+
+export const step_triggersAggregateSchema: z.ZodType<Prisma.Step_triggersAggregateArgs> = z.object({ orderBy: z.union([step_triggersOrderByWithRelationInputObjectSchema, step_triggersOrderByWithRelationInputObjectSchema.array()]).optional(), where: step_triggersWhereInputObjectSchema.optional(), cursor: step_triggersWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), _count: z.union([ z.literal(true), Step_triggersCountAggregateInputObjectSchema ]).optional(), _min: Step_triggersMinAggregateInputObjectSchema.optional(), _max: Step_triggersMaxAggregateInputObjectSchema.optional(), _avg: Step_triggersAvgAggregateInputObjectSchema.optional(), _sum: Step_triggersSumAggregateInputObjectSchema.optional() }).strict() as unknown as z.ZodType<Prisma.Step_triggersAggregateArgs>;
+
+export const step_triggersAggregateZodSchema = z.object({ orderBy: z.union([step_triggersOrderByWithRelationInputObjectSchema, step_triggersOrderByWithRelationInputObjectSchema.array()]).optional(), where: step_triggersWhereInputObjectSchema.optional(), cursor: step_triggersWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), _count: z.union([ z.literal(true), Step_triggersCountAggregateInputObjectSchema ]).optional(), _min: Step_triggersMinAggregateInputObjectSchema.optional(), _max: Step_triggersMaxAggregateInputObjectSchema.optional(), _avg: Step_triggersAvgAggregateInputObjectSchema.optional(), _sum: Step_triggersSumAggregateInputObjectSchema.optional() }).strict();

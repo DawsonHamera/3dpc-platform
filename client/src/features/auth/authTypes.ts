@@ -1,16 +1,7 @@
-export interface User {
-    id: number
-    name: string
-    email: string
-    role: Role
-    score: number
-    lastActive: string
-}
+import z from "zod"
+import { usersModelSchema } from "../../types/zod/schemas"
 
-export interface Role {
-    id: number
-    name: string
-}
+export type User = z.infer<typeof usersModelSchema>;
 
 export interface LoginResponse {
     user: User
@@ -32,6 +23,7 @@ export interface RegisterRequest {
 
 export type AuthState = {
     user: User | null
+    expires_at: number | null
     access_token: string | null
     stream_token: string | null
 }

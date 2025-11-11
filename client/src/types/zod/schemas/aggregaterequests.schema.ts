@@ -1,0 +1,14 @@
+import type { Prisma } from '@prisma/client';
+import * as z from 'zod';
+import { requestsOrderByWithRelationInputObjectSchema as requestsOrderByWithRelationInputObjectSchema } from './objects/requestsOrderByWithRelationInput.schema';
+import { requestsWhereInputObjectSchema as requestsWhereInputObjectSchema } from './objects/requestsWhereInput.schema';
+import { requestsWhereUniqueInputObjectSchema as requestsWhereUniqueInputObjectSchema } from './objects/requestsWhereUniqueInput.schema';
+import { RequestsCountAggregateInputObjectSchema as RequestsCountAggregateInputObjectSchema } from './objects/RequestsCountAggregateInput.schema';
+import { RequestsMinAggregateInputObjectSchema as RequestsMinAggregateInputObjectSchema } from './objects/RequestsMinAggregateInput.schema';
+import { RequestsMaxAggregateInputObjectSchema as RequestsMaxAggregateInputObjectSchema } from './objects/RequestsMaxAggregateInput.schema';
+import { RequestsAvgAggregateInputObjectSchema as RequestsAvgAggregateInputObjectSchema } from './objects/RequestsAvgAggregateInput.schema';
+import { RequestsSumAggregateInputObjectSchema as RequestsSumAggregateInputObjectSchema } from './objects/RequestsSumAggregateInput.schema';
+
+export const requestsAggregateSchema: z.ZodType<Prisma.requestsAggregateArgs> = z.object({ orderBy: z.union([requestsOrderByWithRelationInputObjectSchema, requestsOrderByWithRelationInputObjectSchema.array()]).optional(), where: requestsWhereInputObjectSchema.optional(), cursor: requestsWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), _count: z.union([ z.literal(true), RequestsCountAggregateInputObjectSchema ]).optional(), _min: RequestsMinAggregateInputObjectSchema.optional(), _max: RequestsMaxAggregateInputObjectSchema.optional(), _avg: RequestsAvgAggregateInputObjectSchema.optional(), _sum: RequestsSumAggregateInputObjectSchema.optional() }).strict() as unknown as z.ZodType<Prisma.requestsAggregateArgs>;
+
+export const requestsAggregateZodSchema = z.object({ orderBy: z.union([requestsOrderByWithRelationInputObjectSchema, requestsOrderByWithRelationInputObjectSchema.array()]).optional(), where: requestsWhereInputObjectSchema.optional(), cursor: requestsWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), _count: z.union([ z.literal(true), RequestsCountAggregateInputObjectSchema ]).optional(), _min: RequestsMinAggregateInputObjectSchema.optional(), _max: RequestsMaxAggregateInputObjectSchema.optional(), _avg: RequestsAvgAggregateInputObjectSchema.optional(), _sum: RequestsSumAggregateInputObjectSchema.optional() }).strict();

@@ -1,0 +1,15 @@
+import type { Prisma } from '@prisma/client';
+import * as z from 'zod';
+import { attendancesWhereInputObjectSchema as attendancesWhereInputObjectSchema } from './objects/attendancesWhereInput.schema';
+import { attendancesOrderByWithAggregationInputObjectSchema as attendancesOrderByWithAggregationInputObjectSchema } from './objects/attendancesOrderByWithAggregationInput.schema';
+import { attendancesScalarWhereWithAggregatesInputObjectSchema as attendancesScalarWhereWithAggregatesInputObjectSchema } from './objects/attendancesScalarWhereWithAggregatesInput.schema';
+import { AttendancesScalarFieldEnumSchema } from './enums/AttendancesScalarFieldEnum.schema';
+import { AttendancesCountAggregateInputObjectSchema as AttendancesCountAggregateInputObjectSchema } from './objects/AttendancesCountAggregateInput.schema';
+import { AttendancesMinAggregateInputObjectSchema as AttendancesMinAggregateInputObjectSchema } from './objects/AttendancesMinAggregateInput.schema';
+import { AttendancesMaxAggregateInputObjectSchema as AttendancesMaxAggregateInputObjectSchema } from './objects/AttendancesMaxAggregateInput.schema';
+import { AttendancesAvgAggregateInputObjectSchema as AttendancesAvgAggregateInputObjectSchema } from './objects/AttendancesAvgAggregateInput.schema';
+import { AttendancesSumAggregateInputObjectSchema as AttendancesSumAggregateInputObjectSchema } from './objects/AttendancesSumAggregateInput.schema';
+
+export const attendancesGroupBySchema: z.ZodType<Prisma.attendancesGroupByArgs> = z.object({ where: attendancesWhereInputObjectSchema.optional(), orderBy: z.union([attendancesOrderByWithAggregationInputObjectSchema, attendancesOrderByWithAggregationInputObjectSchema.array()]).optional(), having: attendancesScalarWhereWithAggregatesInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), by: z.array(AttendancesScalarFieldEnumSchema), _count: z.union([ z.literal(true), AttendancesCountAggregateInputObjectSchema ]).optional(), _min: AttendancesMinAggregateInputObjectSchema.optional(), _max: AttendancesMaxAggregateInputObjectSchema.optional(), _avg: AttendancesAvgAggregateInputObjectSchema.optional(), _sum: AttendancesSumAggregateInputObjectSchema.optional() }).strict() as unknown as z.ZodType<Prisma.attendancesGroupByArgs>;
+
+export const attendancesGroupByZodSchema = z.object({ where: attendancesWhereInputObjectSchema.optional(), orderBy: z.union([attendancesOrderByWithAggregationInputObjectSchema, attendancesOrderByWithAggregationInputObjectSchema.array()]).optional(), having: attendancesScalarWhereWithAggregatesInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), by: z.array(AttendancesScalarFieldEnumSchema), _count: z.union([ z.literal(true), AttendancesCountAggregateInputObjectSchema ]).optional(), _min: AttendancesMinAggregateInputObjectSchema.optional(), _max: AttendancesMaxAggregateInputObjectSchema.optional(), _avg: AttendancesAvgAggregateInputObjectSchema.optional(), _sum: AttendancesSumAggregateInputObjectSchema.optional() }).strict();

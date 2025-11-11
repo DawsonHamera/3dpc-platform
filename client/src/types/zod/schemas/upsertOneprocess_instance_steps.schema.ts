@@ -1,0 +1,13 @@
+import type { Prisma } from '@prisma/client';
+import * as z from 'zod';
+import { process_instance_stepsSelectObjectSchema as process_instance_stepsSelectObjectSchema } from './objects/process_instance_stepsSelect.schema';
+import { process_instance_stepsIncludeObjectSchema as process_instance_stepsIncludeObjectSchema } from './objects/process_instance_stepsInclude.schema';
+import { process_instance_stepsWhereUniqueInputObjectSchema as process_instance_stepsWhereUniqueInputObjectSchema } from './objects/process_instance_stepsWhereUniqueInput.schema';
+import { process_instance_stepsCreateInputObjectSchema as process_instance_stepsCreateInputObjectSchema } from './objects/process_instance_stepsCreateInput.schema';
+import { process_instance_stepsUncheckedCreateInputObjectSchema as process_instance_stepsUncheckedCreateInputObjectSchema } from './objects/process_instance_stepsUncheckedCreateInput.schema';
+import { process_instance_stepsUpdateInputObjectSchema as process_instance_stepsUpdateInputObjectSchema } from './objects/process_instance_stepsUpdateInput.schema';
+import { process_instance_stepsUncheckedUpdateInputObjectSchema as process_instance_stepsUncheckedUpdateInputObjectSchema } from './objects/process_instance_stepsUncheckedUpdateInput.schema';
+
+export const process_instance_stepsUpsertOneSchema: z.ZodType<Prisma.process_instance_stepsUpsertArgs> = z.object({ select: process_instance_stepsSelectObjectSchema.optional(), include: process_instance_stepsIncludeObjectSchema.optional(), where: process_instance_stepsWhereUniqueInputObjectSchema, create: z.union([ process_instance_stepsCreateInputObjectSchema, process_instance_stepsUncheckedCreateInputObjectSchema ]), update: z.union([ process_instance_stepsUpdateInputObjectSchema, process_instance_stepsUncheckedUpdateInputObjectSchema ]) }).strict() as unknown as z.ZodType<Prisma.process_instance_stepsUpsertArgs>;
+
+export const process_instance_stepsUpsertOneZodSchema = z.object({ select: process_instance_stepsSelectObjectSchema.optional(), include: process_instance_stepsIncludeObjectSchema.optional(), where: process_instance_stepsWhereUniqueInputObjectSchema, create: z.union([ process_instance_stepsCreateInputObjectSchema, process_instance_stepsUncheckedCreateInputObjectSchema ]), update: z.union([ process_instance_stepsUpdateInputObjectSchema, process_instance_stepsUncheckedUpdateInputObjectSchema ]) }).strict();

@@ -1,0 +1,40 @@
+import type { Prisma } from '@prisma/client';
+import * as z from 'zod';
+import { step_triggersIncludeObjectSchema as step_triggersIncludeObjectSchema } from './objects/step_triggersInclude.schema';
+import { step_triggersOrderByWithRelationInputObjectSchema as step_triggersOrderByWithRelationInputObjectSchema } from './objects/step_triggersOrderByWithRelationInput.schema';
+import { step_triggersWhereInputObjectSchema as step_triggersWhereInputObjectSchema } from './objects/step_triggersWhereInput.schema';
+import { step_triggersWhereUniqueInputObjectSchema as step_triggersWhereUniqueInputObjectSchema } from './objects/step_triggersWhereUniqueInput.schema';
+import { StepTriggersScalarFieldEnumSchema } from './enums/StepTriggersScalarFieldEnum.schema';
+
+// Select schema needs to be in file to prevent circular imports
+//------------------------------------------------------
+
+export const step_triggersFindManySelectSchema: z.ZodType<Prisma.step_triggersSelect> = z.object({
+    id: z.boolean().optional(),
+    step_action_id: z.boolean().optional(),
+    trigger_order: z.boolean().optional(),
+    trigger_type: z.boolean().optional(),
+    trigger_config: z.boolean().optional(),
+    condition_rules: z.boolean().optional(),
+    is_enabled: z.boolean().optional(),
+    created_at: z.boolean().optional(),
+    updated_at: z.boolean().optional(),
+    step_actions: z.boolean().optional()
+  }).strict() as unknown as z.ZodType<Prisma.step_triggersSelect>;
+
+export const step_triggersFindManySelectZodSchema = z.object({
+    id: z.boolean().optional(),
+    step_action_id: z.boolean().optional(),
+    trigger_order: z.boolean().optional(),
+    trigger_type: z.boolean().optional(),
+    trigger_config: z.boolean().optional(),
+    condition_rules: z.boolean().optional(),
+    is_enabled: z.boolean().optional(),
+    created_at: z.boolean().optional(),
+    updated_at: z.boolean().optional(),
+    step_actions: z.boolean().optional()
+  }).strict();
+
+export const step_triggersFindManySchema: z.ZodType<Prisma.step_triggersFindManyArgs> = z.object({ select: step_triggersFindManySelectSchema.optional(), include: z.lazy(() => step_triggersIncludeObjectSchema.optional()), orderBy: z.union([step_triggersOrderByWithRelationInputObjectSchema, step_triggersOrderByWithRelationInputObjectSchema.array()]).optional(), where: step_triggersWhereInputObjectSchema.optional(), cursor: step_triggersWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), distinct: z.union([StepTriggersScalarFieldEnumSchema, StepTriggersScalarFieldEnumSchema.array()]).optional() }).strict() as unknown as z.ZodType<Prisma.step_triggersFindManyArgs>;
+
+export const step_triggersFindManyZodSchema = z.object({ select: step_triggersFindManySelectSchema.optional(), include: z.lazy(() => step_triggersIncludeObjectSchema.optional()), orderBy: z.union([step_triggersOrderByWithRelationInputObjectSchema, step_triggersOrderByWithRelationInputObjectSchema.array()]).optional(), where: step_triggersWhereInputObjectSchema.optional(), cursor: step_triggersWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), distinct: z.union([StepTriggersScalarFieldEnumSchema, StepTriggersScalarFieldEnumSchema.array()]).optional() }).strict();

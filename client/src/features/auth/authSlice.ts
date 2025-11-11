@@ -4,7 +4,7 @@ import { AuthState, User } from './authTypes';
 import { RootState } from '../../redux/store';
 
 const storedAuth = localStorage.getItem('auth');
-const initialState: AuthState = storedAuth ? JSON.parse(storedAuth) : { user: null, access_token: null, stream_token: null };
+const initialState: AuthState = storedAuth ? JSON.parse(storedAuth) : { user: null, access_token: null, stream_token: null, expires_at: null };
 
 const slice = createSlice({
   name: 'auth',
@@ -13,16 +13,18 @@ const slice = createSlice({
     setCredentials: (
       state,
       {
-        payload: { user, access_token, stream_token },
-      }: PayloadAction<{ user: User; access_token: string, stream_token: string }>,
+        payload: { user, access_token, stream_token, expires_at },
+      }: PayloadAction<{ user: User; access_token: string, stream_token: string, expires_at: number }>,
     ) => {
       state.user = user
+      state.expires_at = expires_at
       state.access_token = access_token
       state.stream_token = stream_token
       localStorage.setItem('auth', JSON.stringify(state)); // Persist to localStorage
     },
     logout: (state) => {
       state.user = null;
+      state.expires_at = null;
       state.access_token = null;
       state.stream_token = null; // Clear stream token if needed
       localStorage.removeItem('auth'); // Clear localStorage on logout

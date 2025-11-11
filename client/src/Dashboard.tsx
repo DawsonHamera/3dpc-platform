@@ -1,0 +1,95 @@
+import {
+    IonTabs,
+    IonTabBar,
+    IonTabButton,
+    IonIcon,
+    IonProgressBar,
+    IonRouterOutlet,
+    IonLabel,
+} from "@ionic/react";
+import {
+    home,
+    chatboxEllipsesOutline,
+    calendarOutline,
+    shieldOutline,
+    cartOutline,
+    leafOutline,
+} from "ionicons/icons";
+import { useSelector } from "react-redux";
+import { Redirect, Route } from "react-router";
+import { selectCurrentUser } from "./features/auth/authSlice";
+import { useLoginMutation } from "./features/auth/authApi";
+import useNetworkStatus from "./services/NetworkService";
+import useHeartbeat from "./services/HeartbeatService";
+import HomePage from "./pages/site/home/HomePage";
+
+const Dashboard: React.FC = () => {
+    const user = useSelector(selectCurrentUser);
+    const authenticated = !!user;
+    const [login, { isLoading }] = useLoginMutation();
+    const networkStatus = useNetworkStatus();
+
+    useHeartbeat(user?.id);
+    const roleName = (user?.role as any)?.name;
+    
+    if (!isLoading && !authenticated) {
+        console.log("Unauthenticated, redirecting to login");
+        return <Redirect to="/login" />;
+    }
+    
+    if (isLoading) {
+        return <IonProgressBar type="indeterminate" />;
+    }
+
+    return (
+        <IonTabs>
+            <IonRouterOutlet>
+                {/* <Route exact path="/dashboard" component={HomePage} /> */}
+               
+            </IonRouterOutlet>
+
+            <IonTabBar slot="bottom" id="ion-tab-bar">
+                <IonTabButton tab="home" href="/dashboard/home">
+                    <IonIcon aria-hidden="true" icon={home} />
+                    <IonLabel>Home</IonLabel>
+                </IonTabButton>
+
+                <IonTabButton tab="events" href="/dashboard/events">
+                    <IonIcon aria-hidden="true" icon={calendarOutline} />
+                    <IonLabel>Events</IonLabel>
+                </IonTabButton>
+                <IonTabButton
+                    tab="shop"
+                    href={
+                        roleName === "admin" ? "/shop/admin" : "/shop"
+                    }
+                >
+                    <IonIcon aria-hidden="true" icon={cartOutline} />
+                    <IonLabel>Shop</IonLabel>
+                </IonTabButton>
+                <IonTabButton tab="recycle" href="/dashboard/recycle">
+                    <IonIcon aria-hidden="true" icon={leafOutline} />
+                    <IonLabel>Recycle</IonLabel>
+                </IonTabButton>
+                {user && roleName === "admin" && (
+                    <IonTabButton tab="admin" href="/dashboard/admin">
+                        <IonIcon aria-hidden="true" icon={shieldOutline} />
+                        <IonLabel>Admin</IonLabel>
+                    </IonTabButton>
+                )}
+                {user &&
+                    ["member", "admin", "viewer"].includes(roleName as string) && (
+                        <IonTabButton tab="chat" href="/dashboard/chat">
+                            <IonIcon
+                                aria-hidden="true"
+                                icon={chatboxEllipsesOutline}
+                            />
+                            <IonLabel>Chat</IonLabel>
+                        </IonTabButton>
+                    )}
+            </IonTabBar>
+        </IonTabs>
+    );
+};
+
+export default Dashboard;
