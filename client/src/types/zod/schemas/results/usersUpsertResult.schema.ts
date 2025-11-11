@@ -1,0 +1,26 @@
+import * as z from 'zod';
+export const usersUpsertResultSchema = z.object({
+  id: z.number().int(),
+  name: z.string(),
+  email: z.string(),
+  password_hash: z.string(),
+  role_id: z.number().int(),
+  grade_id: z.number().int().optional(),
+  score: z.number().int(),
+  last_active: z.date().optional(),
+  created_at: z.date().optional(),
+  updated_at: z.date().optional(),
+  deleted_at: z.date().optional(),
+  attendances: z.array(z.unknown()),
+  error_reports: z.array(z.unknown()),
+  events: z.array(z.unknown()),
+  files: z.array(z.unknown()),
+  point_logs: z.array(z.unknown()),
+  process_instance_steps: z.array(z.unknown()),
+  process_instances: z.array(z.unknown()),
+  process_logs: z.array(z.unknown()),
+  tasks: z.array(z.unknown()),
+  grade: z.unknown().optional(),
+  role: z.unknown(),
+  activity_logs: z.array(z.unknown())
+});

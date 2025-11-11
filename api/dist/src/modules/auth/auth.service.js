@@ -102,9 +102,14 @@ let AuthService = class AuthService {
         });
         const payload = { sub: user.id, email: user.email, roleId: user.role_id };
         const accessToken = this.jwtService.sign(payload);
+        const decoded = this.jwtService.decode(accessToken);
+        const expires_at = decoded && decoded.exp
+            ? new Date(decoded.exp * 1000).toISOString()
+            : null;
         return (0, response_1.success)({
             access_token: accessToken,
             stream_token: null,
+            expires_at: expires_at,
             user: {
                 id: user.id,
                 name: user.name,

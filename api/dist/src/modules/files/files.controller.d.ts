@@ -1,5 +1,4 @@
 import { FilesService } from './files.service';
-import { File } from './entities/file.entity';
 export declare class FilesController {
     private readonly filesService;
     constructor(filesService: FilesService);

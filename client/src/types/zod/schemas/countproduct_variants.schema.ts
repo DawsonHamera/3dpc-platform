@@ -1,0 +1,10 @@
+import type { Prisma } from '@prisma/client';
+import * as z from 'zod';
+import { product_variantsOrderByWithRelationInputObjectSchema as product_variantsOrderByWithRelationInputObjectSchema } from './objects/product_variantsOrderByWithRelationInput.schema';
+import { product_variantsWhereInputObjectSchema as product_variantsWhereInputObjectSchema } from './objects/product_variantsWhereInput.schema';
+import { product_variantsWhereUniqueInputObjectSchema as product_variantsWhereUniqueInputObjectSchema } from './objects/product_variantsWhereUniqueInput.schema';
+import { Product_variantsCountAggregateInputObjectSchema as Product_variantsCountAggregateInputObjectSchema } from './objects/Product_variantsCountAggregateInput.schema';
+
+export const product_variantsCountSchema: z.ZodType<Prisma.product_variantsCountArgs> = z.object({ orderBy: z.union([product_variantsOrderByWithRelationInputObjectSchema, product_variantsOrderByWithRelationInputObjectSchema.array()]).optional(), where: product_variantsWhereInputObjectSchema.optional(), cursor: product_variantsWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), select: z.union([ z.literal(true), Product_variantsCountAggregateInputObjectSchema ]).optional() }).strict() as unknown as z.ZodType<Prisma.product_variantsCountArgs>;
+
+export const product_variantsCountZodSchema = z.object({ orderBy: z.union([product_variantsOrderByWithRelationInputObjectSchema, product_variantsOrderByWithRelationInputObjectSchema.array()]).optional(), where: product_variantsWhereInputObjectSchema.optional(), cursor: product_variantsWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), select: z.union([ z.literal(true), Product_variantsCountAggregateInputObjectSchema ]).optional() }).strict();

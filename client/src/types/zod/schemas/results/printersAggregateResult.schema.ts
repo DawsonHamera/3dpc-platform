@@ -1,0 +1,62 @@
+import * as z from 'zod';
+export const printersAggregateResultSchema = z.object({  _count: z.object({
+    id: z.number(),
+    status_id: z.number(),
+    name: z.number(),
+    location: z.number(),
+    owner: z.number(),
+    details: z.number(),
+    image_id: z.number(),
+    material_id: z.number(),
+    process_template_id: z.number(),
+    created_at: z.number(),
+    updated_at: z.number(),
+    deleted_at: z.number(),
+    process_templates: z.number(),
+    files: z.number(),
+    materials: z.number(),
+    printer_statuses: z.number(),
+    tasks: z.number()
+  }).optional(),
+  _sum: z.object({
+    id: z.number().nullable(),
+    status_id: z.number().nullable(),
+    image_id: z.number().nullable(),
+    material_id: z.number().nullable(),
+    process_template_id: z.number().nullable()
+  }).nullable().optional(),
+  _avg: z.object({
+    id: z.number().nullable(),
+    status_id: z.number().nullable(),
+    image_id: z.number().nullable(),
+    material_id: z.number().nullable(),
+    process_template_id: z.number().nullable()
+  }).nullable().optional(),
+  _min: z.object({
+    id: z.number().int().nullable(),
+    status_id: z.number().int().nullable(),
+    name: z.string().nullable(),
+    location: z.string().nullable(),
+    owner: z.string().nullable(),
+    details: z.string().nullable(),
+    image_id: z.number().int().nullable(),
+    material_id: z.number().int().nullable(),
+    process_template_id: z.number().int().nullable(),
+    created_at: z.date().nullable(),
+    updated_at: z.date().nullable(),
+    deleted_at: z.date().nullable()
+  }).nullable().optional(),
+  _max: z.object({
+    id: z.number().int().nullable(),
+    status_id: z.number().int().nullable(),
+    name: z.string().nullable(),
+    location: z.string().nullable(),
+    owner: z.string().nullable(),
+    details: z.string().nullable(),
+    image_id: z.number().int().nullable(),
+    material_id: z.number().int().nullable(),
+    process_template_id: z.number().int().nullable(),
+    created_at: z.date().nullable(),
+    updated_at: z.date().nullable(),
+    deleted_at: z.date().nullable()
+  }).nullable().optional()});

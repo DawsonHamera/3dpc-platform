@@ -1,0 +1,10 @@
+import type { Prisma } from '@prisma/client';
+import * as z from 'zod';
+import { process_templatesOrderByWithRelationInputObjectSchema as process_templatesOrderByWithRelationInputObjectSchema } from './objects/process_templatesOrderByWithRelationInput.schema';
+import { process_templatesWhereInputObjectSchema as process_templatesWhereInputObjectSchema } from './objects/process_templatesWhereInput.schema';
+import { process_templatesWhereUniqueInputObjectSchema as process_templatesWhereUniqueInputObjectSchema } from './objects/process_templatesWhereUniqueInput.schema';
+import { Process_templatesCountAggregateInputObjectSchema as Process_templatesCountAggregateInputObjectSchema } from './objects/Process_templatesCountAggregateInput.schema';
+
+export const process_templatesCountSchema: z.ZodType<Prisma.process_templatesCountArgs> = z.object({ orderBy: z.union([process_templatesOrderByWithRelationInputObjectSchema, process_templatesOrderByWithRelationInputObjectSchema.array()]).optional(), where: process_templatesWhereInputObjectSchema.optional(), cursor: process_templatesWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), select: z.union([ z.literal(true), Process_templatesCountAggregateInputObjectSchema ]).optional() }).strict() as unknown as z.ZodType<Prisma.process_templatesCountArgs>;
+
+export const process_templatesCountZodSchema = z.object({ orderBy: z.union([process_templatesOrderByWithRelationInputObjectSchema, process_templatesOrderByWithRelationInputObjectSchema.array()]).optional(), where: process_templatesWhereInputObjectSchema.optional(), cursor: process_templatesWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), select: z.union([ z.literal(true), Process_templatesCountAggregateInputObjectSchema ]).optional() }).strict();

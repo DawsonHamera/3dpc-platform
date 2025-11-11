@@ -1,0 +1,15 @@
+import type { Prisma } from '@prisma/client';
+import * as z from 'zod';
+import { materialsWhereInputObjectSchema as materialsWhereInputObjectSchema } from './objects/materialsWhereInput.schema';
+import { materialsOrderByWithAggregationInputObjectSchema as materialsOrderByWithAggregationInputObjectSchema } from './objects/materialsOrderByWithAggregationInput.schema';
+import { materialsScalarWhereWithAggregatesInputObjectSchema as materialsScalarWhereWithAggregatesInputObjectSchema } from './objects/materialsScalarWhereWithAggregatesInput.schema';
+import { MaterialsScalarFieldEnumSchema } from './enums/MaterialsScalarFieldEnum.schema';
+import { MaterialsCountAggregateInputObjectSchema as MaterialsCountAggregateInputObjectSchema } from './objects/MaterialsCountAggregateInput.schema';
+import { MaterialsMinAggregateInputObjectSchema as MaterialsMinAggregateInputObjectSchema } from './objects/MaterialsMinAggregateInput.schema';
+import { MaterialsMaxAggregateInputObjectSchema as MaterialsMaxAggregateInputObjectSchema } from './objects/MaterialsMaxAggregateInput.schema';
+import { MaterialsAvgAggregateInputObjectSchema as MaterialsAvgAggregateInputObjectSchema } from './objects/MaterialsAvgAggregateInput.schema';
+import { MaterialsSumAggregateInputObjectSchema as MaterialsSumAggregateInputObjectSchema } from './objects/MaterialsSumAggregateInput.schema';
+
+export const materialsGroupBySchema: z.ZodType<Prisma.materialsGroupByArgs> = z.object({ where: materialsWhereInputObjectSchema.optional(), orderBy: z.union([materialsOrderByWithAggregationInputObjectSchema, materialsOrderByWithAggregationInputObjectSchema.array()]).optional(), having: materialsScalarWhereWithAggregatesInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), by: z.array(MaterialsScalarFieldEnumSchema), _count: z.union([ z.literal(true), MaterialsCountAggregateInputObjectSchema ]).optional(), _min: MaterialsMinAggregateInputObjectSchema.optional(), _max: MaterialsMaxAggregateInputObjectSchema.optional(), _avg: MaterialsAvgAggregateInputObjectSchema.optional(), _sum: MaterialsSumAggregateInputObjectSchema.optional() }).strict() as unknown as z.ZodType<Prisma.materialsGroupByArgs>;
+
+export const materialsGroupByZodSchema = z.object({ where: materialsWhereInputObjectSchema.optional(), orderBy: z.union([materialsOrderByWithAggregationInputObjectSchema, materialsOrderByWithAggregationInputObjectSchema.array()]).optional(), having: materialsScalarWhereWithAggregatesInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), by: z.array(MaterialsScalarFieldEnumSchema), _count: z.union([ z.literal(true), MaterialsCountAggregateInputObjectSchema ]).optional(), _min: MaterialsMinAggregateInputObjectSchema.optional(), _max: MaterialsMaxAggregateInputObjectSchema.optional(), _avg: MaterialsAvgAggregateInputObjectSchema.optional(), _sum: MaterialsSumAggregateInputObjectSchema.optional() }).strict();

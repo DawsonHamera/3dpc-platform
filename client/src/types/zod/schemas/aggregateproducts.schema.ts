@@ -1,0 +1,14 @@
+import type { Prisma } from '@prisma/client';
+import * as z from 'zod';
+import { productsOrderByWithRelationInputObjectSchema as productsOrderByWithRelationInputObjectSchema } from './objects/productsOrderByWithRelationInput.schema';
+import { productsWhereInputObjectSchema as productsWhereInputObjectSchema } from './objects/productsWhereInput.schema';
+import { productsWhereUniqueInputObjectSchema as productsWhereUniqueInputObjectSchema } from './objects/productsWhereUniqueInput.schema';
+import { ProductsCountAggregateInputObjectSchema as ProductsCountAggregateInputObjectSchema } from './objects/ProductsCountAggregateInput.schema';
+import { ProductsMinAggregateInputObjectSchema as ProductsMinAggregateInputObjectSchema } from './objects/ProductsMinAggregateInput.schema';
+import { ProductsMaxAggregateInputObjectSchema as ProductsMaxAggregateInputObjectSchema } from './objects/ProductsMaxAggregateInput.schema';
+import { ProductsAvgAggregateInputObjectSchema as ProductsAvgAggregateInputObjectSchema } from './objects/ProductsAvgAggregateInput.schema';
+import { ProductsSumAggregateInputObjectSchema as ProductsSumAggregateInputObjectSchema } from './objects/ProductsSumAggregateInput.schema';
+
+export const productsAggregateSchema: z.ZodType<Prisma.productsAggregateArgs> = z.object({ orderBy: z.union([productsOrderByWithRelationInputObjectSchema, productsOrderByWithRelationInputObjectSchema.array()]).optional(), where: productsWhereInputObjectSchema.optional(), cursor: productsWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), _count: z.union([ z.literal(true), ProductsCountAggregateInputObjectSchema ]).optional(), _min: ProductsMinAggregateInputObjectSchema.optional(), _max: ProductsMaxAggregateInputObjectSchema.optional(), _avg: ProductsAvgAggregateInputObjectSchema.optional(), _sum: ProductsSumAggregateInputObjectSchema.optional() }).strict() as unknown as z.ZodType<Prisma.productsAggregateArgs>;
+
+export const productsAggregateZodSchema = z.object({ orderBy: z.union([productsOrderByWithRelationInputObjectSchema, productsOrderByWithRelationInputObjectSchema.array()]).optional(), where: productsWhereInputObjectSchema.optional(), cursor: productsWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), _count: z.union([ z.literal(true), ProductsCountAggregateInputObjectSchema ]).optional(), _min: ProductsMinAggregateInputObjectSchema.optional(), _max: ProductsMaxAggregateInputObjectSchema.optional(), _avg: ProductsAvgAggregateInputObjectSchema.optional(), _sum: ProductsSumAggregateInputObjectSchema.optional() }).strict();

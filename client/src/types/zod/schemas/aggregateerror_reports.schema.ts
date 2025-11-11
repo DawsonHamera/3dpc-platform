@@ -1,0 +1,14 @@
+import type { Prisma } from '@prisma/client';
+import * as z from 'zod';
+import { error_reportsOrderByWithRelationInputObjectSchema as error_reportsOrderByWithRelationInputObjectSchema } from './objects/error_reportsOrderByWithRelationInput.schema';
+import { error_reportsWhereInputObjectSchema as error_reportsWhereInputObjectSchema } from './objects/error_reportsWhereInput.schema';
+import { error_reportsWhereUniqueInputObjectSchema as error_reportsWhereUniqueInputObjectSchema } from './objects/error_reportsWhereUniqueInput.schema';
+import { Error_reportsCountAggregateInputObjectSchema as Error_reportsCountAggregateInputObjectSchema } from './objects/Error_reportsCountAggregateInput.schema';
+import { Error_reportsMinAggregateInputObjectSchema as Error_reportsMinAggregateInputObjectSchema } from './objects/Error_reportsMinAggregateInput.schema';
+import { Error_reportsMaxAggregateInputObjectSchema as Error_reportsMaxAggregateInputObjectSchema } from './objects/Error_reportsMaxAggregateInput.schema';
+import { Error_reportsAvgAggregateInputObjectSchema as Error_reportsAvgAggregateInputObjectSchema } from './objects/Error_reportsAvgAggregateInput.schema';
+import { Error_reportsSumAggregateInputObjectSchema as Error_reportsSumAggregateInputObjectSchema } from './objects/Error_reportsSumAggregateInput.schema';
+
+export const error_reportsAggregateSchema: z.ZodType<Prisma.Error_reportsAggregateArgs> = z.object({ orderBy: z.union([error_reportsOrderByWithRelationInputObjectSchema, error_reportsOrderByWithRelationInputObjectSchema.array()]).optional(), where: error_reportsWhereInputObjectSchema.optional(), cursor: error_reportsWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), _count: z.union([ z.literal(true), Error_reportsCountAggregateInputObjectSchema ]).optional(), _min: Error_reportsMinAggregateInputObjectSchema.optional(), _max: Error_reportsMaxAggregateInputObjectSchema.optional(), _avg: Error_reportsAvgAggregateInputObjectSchema.optional(), _sum: Error_reportsSumAggregateInputObjectSchema.optional() }).strict() as unknown as z.ZodType<Prisma.Error_reportsAggregateArgs>;
+
+export const error_reportsAggregateZodSchema = z.object({ orderBy: z.union([error_reportsOrderByWithRelationInputObjectSchema, error_reportsOrderByWithRelationInputObjectSchema.array()]).optional(), where: error_reportsWhereInputObjectSchema.optional(), cursor: error_reportsWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), _count: z.union([ z.literal(true), Error_reportsCountAggregateInputObjectSchema ]).optional(), _min: Error_reportsMinAggregateInputObjectSchema.optional(), _max: Error_reportsMaxAggregateInputObjectSchema.optional(), _avg: Error_reportsAvgAggregateInputObjectSchema.optional(), _sum: Error_reportsSumAggregateInputObjectSchema.optional() }).strict();

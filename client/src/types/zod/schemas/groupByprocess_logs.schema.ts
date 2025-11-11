@@ -1,0 +1,15 @@
+import type { Prisma } from '@prisma/client';
+import * as z from 'zod';
+import { process_logsWhereInputObjectSchema as process_logsWhereInputObjectSchema } from './objects/process_logsWhereInput.schema';
+import { process_logsOrderByWithAggregationInputObjectSchema as process_logsOrderByWithAggregationInputObjectSchema } from './objects/process_logsOrderByWithAggregationInput.schema';
+import { process_logsScalarWhereWithAggregatesInputObjectSchema as process_logsScalarWhereWithAggregatesInputObjectSchema } from './objects/process_logsScalarWhereWithAggregatesInput.schema';
+import { ProcessLogsScalarFieldEnumSchema } from './enums/ProcessLogsScalarFieldEnum.schema';
+import { Process_logsCountAggregateInputObjectSchema as Process_logsCountAggregateInputObjectSchema } from './objects/Process_logsCountAggregateInput.schema';
+import { Process_logsMinAggregateInputObjectSchema as Process_logsMinAggregateInputObjectSchema } from './objects/Process_logsMinAggregateInput.schema';
+import { Process_logsMaxAggregateInputObjectSchema as Process_logsMaxAggregateInputObjectSchema } from './objects/Process_logsMaxAggregateInput.schema';
+import { Process_logsAvgAggregateInputObjectSchema as Process_logsAvgAggregateInputObjectSchema } from './objects/Process_logsAvgAggregateInput.schema';
+import { Process_logsSumAggregateInputObjectSchema as Process_logsSumAggregateInputObjectSchema } from './objects/Process_logsSumAggregateInput.schema';
+
+export const process_logsGroupBySchema: z.ZodType<Prisma.process_logsGroupByArgs> = z.object({ where: process_logsWhereInputObjectSchema.optional(), orderBy: z.union([process_logsOrderByWithAggregationInputObjectSchema, process_logsOrderByWithAggregationInputObjectSchema.array()]).optional(), having: process_logsScalarWhereWithAggregatesInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), by: z.array(ProcessLogsScalarFieldEnumSchema), _count: z.union([ z.literal(true), Process_logsCountAggregateInputObjectSchema ]).optional(), _min: Process_logsMinAggregateInputObjectSchema.optional(), _max: Process_logsMaxAggregateInputObjectSchema.optional(), _avg: Process_logsAvgAggregateInputObjectSchema.optional(), _sum: Process_logsSumAggregateInputObjectSchema.optional() }).strict() as unknown as z.ZodType<Prisma.process_logsGroupByArgs>;
+
+export const process_logsGroupByZodSchema = z.object({ where: process_logsWhereInputObjectSchema.optional(), orderBy: z.union([process_logsOrderByWithAggregationInputObjectSchema, process_logsOrderByWithAggregationInputObjectSchema.array()]).optional(), having: process_logsScalarWhereWithAggregatesInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), by: z.array(ProcessLogsScalarFieldEnumSchema), _count: z.union([ z.literal(true), Process_logsCountAggregateInputObjectSchema ]).optional(), _min: Process_logsMinAggregateInputObjectSchema.optional(), _max: Process_logsMaxAggregateInputObjectSchema.optional(), _avg: Process_logsAvgAggregateInputObjectSchema.optional(), _sum: Process_logsSumAggregateInputObjectSchema.optional() }).strict();

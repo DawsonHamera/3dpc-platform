@@ -1,9 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { LoginResponse, LoginRequest, RegisterRequest } from './authTypes'
-import { baseQueryWithAuth } from '../baseApi'
+import { baseQuery } from '../baseApi'
 
 export const authApi = createApi({
-    baseQuery: baseQueryWithAuth,
+    baseQuery: baseQuery,
     endpoints: (build) => ({
         login: build.mutation<LoginResponse, LoginRequest>({
             query: (credentials) => ({

@@ -98,10 +98,17 @@ export class AuthService {
     const payload = { sub: user.id, email: user.email, roleId: user.role_id };
     const accessToken = this.jwtService.sign(payload);
     // const streamToken = this.createStreamToken(user.id.toString());
+
+    const decoded: any = this.jwtService.decode(accessToken);
+    const expires_at =
+      decoded && decoded.exp
+        ? new Date(decoded.exp * 1000).toISOString()
+        : null;
     return success(
       {
         access_token: accessToken,
         stream_token: null,
+        expires_at: expires_at,
         user: {
           id: user.id,
           name: user.name,

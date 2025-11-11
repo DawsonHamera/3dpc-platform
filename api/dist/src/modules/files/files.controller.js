@@ -11,17 +11,23 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var _a, _b;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FilesController = void 0;
 const common_1 = require("@nestjs/common");
 const platform_express_1 = require("@nestjs/platform-express");
 const files_service_1 = require("./files.service");
-const file_entity_1 = require("./entities/file.entity");
 const current_user_decorator_1 = require("../../common/decorators/current-user.decorator");
 const multer_1 = require("multer");
 const roles_decorator_1 = require("../../common/decorators/roles.decorator");
 const public_decorator_1 = require("../../common/decorators/public.decorator");
+var FileType;
+(function (FileType) {
+    FileType["IMAGE"] = "IMAGE";
+    FileType["MODEL"] = "MODEL";
+    FileType["TEXTURE"] = "TEXTURE";
+    FileType["DOCUMENT"] = "DOCUMENT";
+    FileType["OTHER"] = "OTHER";
+})(FileType || (FileType = {}));
 let FilesController = class FilesController {
     filesService;
     constructor(filesService) {
@@ -34,28 +40,28 @@ let FilesController = class FilesController {
         }
         const domain = process.env.DOMAIN_NAME || 'http://localhost:3000';
         const filePath = `${domain}/uploads/${file.filename}`;
-        let fileType = file_entity_1.FileType.OTHER;
+        let fileType = FileType.OTHER;
         switch (file.mimetype) {
             case 'image/jpeg':
             case 'image/png':
             case 'image/gif':
-                fileType = file_entity_1.FileType.IMAGE;
+                fileType = FileType.IMAGE;
                 break;
             case 'model/gltf-binary':
             case 'application/octet-stream':
             case 'model/stl':
-                fileType = file_entity_1.FileType.MODEL;
+                fileType = FileType.MODEL;
                 break;
             case 'image/texture':
-                fileType = file_entity_1.FileType.TEXTURE;
+                fileType = FileType.TEXTURE;
                 break;
             case 'application/pdf':
             case 'application/msword':
             case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
-                fileType = file_entity_1.FileType.DOCUMENT;
+                fileType = FileType.DOCUMENT;
                 break;
             default:
-                fileType = file_entity_1.FileType.OTHER;
+                fileType = FileType.OTHER;
         }
         const fileData = {
             originalName: file.originalname,
@@ -100,7 +106,7 @@ __decorate([
     __param(1, (0, common_1.Body)()),
     __param(2, (0, current_user_decorator_1.CurrentUser)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [typeof (_b = typeof Express !== "undefined" && (_a = Express.Multer) !== void 0 && _a.File) === "function" ? _b : Object, Object, Object]),
+    __metadata("design:paramtypes", [Object, Object, Object]),
     __metadata("design:returntype", void 0)
 ], FilesController.prototype, "upload", null);
 __decorate([

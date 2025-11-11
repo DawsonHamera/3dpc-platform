@@ -1,0 +1,153 @@
+.process-quick-widget {
+  margin-bottom: 16px;
+}
+
+.widget-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.quick-widget-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px;
+  text-align: center;
+}
+
+.quick-widget-empty ion-icon {
+  margin-bottom: 8px;
+  font-size: 2rem;
+}
+
+.quick-widget-empty p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.process-quick-item {
+  border-bottom: 1px solid var(--ion-color-light);
+}
+
+.process-quick-item:last-child {
+  border-bottom: none;
+}
+
+.process-name {
+  margin: 0 0 4px 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.process-status {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+}
+
+.expanded-content {
+  padding: 16px;
+  background: var(--ion-color-light);
+  margin: 0 16px 16px 16px;
+  border-radius: 8px;
+}
+
+.progress-summary {
+  margin-bottom: 16px;
+}
+
+.progress-summary p {
+  margin: 0 0 8px 0;
+  font-size: 0.9rem;
+}
+
+.current-step-summary {
+  margin-bottom: 16px;
+}
+
+.current-step-summary h4 {
+  margin: 0 0 8px 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.step-details h5 {
+  margin: 0 0 4px 0;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.step-description {
+  margin: 0 0 12px 0;
+  font-size: 0.85rem;
+  color: var(--ion-color-medium);
+}
+
+.step-actions-preview {
+  margin: 12px 0;
+}
+
+.step-actions-preview p {
+  margin: 0 0 8px 0;
+  font-size: 0.8rem;
+}
+
+.step-actions-preview ion-chip {
+  margin: 2px 4px 2px 0;
+  font-size: 0.75rem;
+}
+
+.quick-action-btn {
+  margin-top: 12px;
+  --border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+.completion-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  background: var(--ion-color-success-tint);
+  border-radius: 6px;
+}
+
+.completion-status span {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .widget-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .expanded-content {
+    margin: 0 8px 12px 8px;
+    padding: 12px;
+  }
+  
+  .process-name {
+    font-size: 0.95rem;
+  }
+  
+  .step-details h5 {
+    font-size: 0.95rem;
+  }
+}
+
+/* Theme adjustments */
+.ios .expanded-content {
+  background: var(--ion-color-step-50);
+}
+
+.md .expanded-content {
+  background: var(--ion-color-light-shade);
+}

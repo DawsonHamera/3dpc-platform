@@ -1,0 +1,15 @@
+import * as z from 'zod';
+import type { Prisma } from '@prisma/client';
+import { NullableDateTimeFieldUpdateOperationsInputObjectSchema as NullableDateTimeFieldUpdateOperationsInputObjectSchema } from './NullableDateTimeFieldUpdateOperationsInput.schema';
+import { eventsUpdateOneRequiredWithoutAttendancesNestedInputObjectSchema as eventsUpdateOneRequiredWithoutAttendancesNestedInputObjectSchema } from './eventsUpdateOneRequiredWithoutAttendancesNestedInput.schema';
+import { usersUpdateOneRequiredWithoutAttendancesNestedInputObjectSchema as usersUpdateOneRequiredWithoutAttendancesNestedInputObjectSchema } from './usersUpdateOneRequiredWithoutAttendancesNestedInput.schema'
+
+const makeSchema = () => z.object({
+  created_at: z.union([z.coerce.date(), z.lazy(() => NullableDateTimeFieldUpdateOperationsInputObjectSchema)]).optional().nullable(),
+  updated_at: z.union([z.coerce.date(), z.lazy(() => NullableDateTimeFieldUpdateOperationsInputObjectSchema)]).optional().nullable(),
+  arrival_time: z.union([z.coerce.date(), z.lazy(() => NullableDateTimeFieldUpdateOperationsInputObjectSchema)]).optional().nullable(),
+  event: z.lazy(() => eventsUpdateOneRequiredWithoutAttendancesNestedInputObjectSchema).optional(),
+  user: z.lazy(() => usersUpdateOneRequiredWithoutAttendancesNestedInputObjectSchema).optional()
+}).strict();
+export const attendancesUpdateInputObjectSchema: z.ZodType<Prisma.attendancesUpdateInput> = makeSchema() as unknown as z.ZodType<Prisma.attendancesUpdateInput>;
+export const attendancesUpdateInputObjectZodSchema = makeSchema();

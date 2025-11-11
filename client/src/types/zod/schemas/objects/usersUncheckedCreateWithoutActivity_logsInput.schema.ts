@@ -1,0 +1,36 @@
+import * as z from 'zod';
+import type { Prisma } from '@prisma/client';
+import { attendancesUncheckedCreateNestedManyWithoutUserInputObjectSchema as attendancesUncheckedCreateNestedManyWithoutUserInputObjectSchema } from './attendancesUncheckedCreateNestedManyWithoutUserInput.schema';
+import { error_reportsUncheckedCreateNestedManyWithoutUsersInputObjectSchema as error_reportsUncheckedCreateNestedManyWithoutUsersInputObjectSchema } from './error_reportsUncheckedCreateNestedManyWithoutUsersInput.schema';
+import { eventsUncheckedCreateNestedManyWithoutUsersInputObjectSchema as eventsUncheckedCreateNestedManyWithoutUsersInputObjectSchema } from './eventsUncheckedCreateNestedManyWithoutUsersInput.schema';
+import { filesUncheckedCreateNestedManyWithoutUploaderInputObjectSchema as filesUncheckedCreateNestedManyWithoutUploaderInputObjectSchema } from './filesUncheckedCreateNestedManyWithoutUploaderInput.schema';
+import { point_logsUncheckedCreateNestedManyWithoutUsersInputObjectSchema as point_logsUncheckedCreateNestedManyWithoutUsersInputObjectSchema } from './point_logsUncheckedCreateNestedManyWithoutUsersInput.schema';
+import { process_instance_stepsUncheckedCreateNestedManyWithoutUsersInputObjectSchema as process_instance_stepsUncheckedCreateNestedManyWithoutUsersInputObjectSchema } from './process_instance_stepsUncheckedCreateNestedManyWithoutUsersInput.schema';
+import { process_instancesUncheckedCreateNestedManyWithoutUsersInputObjectSchema as process_instancesUncheckedCreateNestedManyWithoutUsersInputObjectSchema } from './process_instancesUncheckedCreateNestedManyWithoutUsersInput.schema';
+import { process_logsUncheckedCreateNestedManyWithoutUsersInputObjectSchema as process_logsUncheckedCreateNestedManyWithoutUsersInputObjectSchema } from './process_logsUncheckedCreateNestedManyWithoutUsersInput.schema';
+import { tasksUncheckedCreateNestedManyWithoutUsersInputObjectSchema as tasksUncheckedCreateNestedManyWithoutUsersInputObjectSchema } from './tasksUncheckedCreateNestedManyWithoutUsersInput.schema'
+
+const makeSchema = () => z.object({
+  id: z.number().int().optional(),
+  name: z.string(),
+  email: z.string(),
+  password_hash: z.string(),
+  role_id: z.number().int().optional(),
+  grade_id: z.number().int().optional().nullable(),
+  score: z.number().int().optional(),
+  last_active: z.coerce.date().optional().nullable(),
+  created_at: z.coerce.date().optional().nullable(),
+  updated_at: z.coerce.date().optional().nullable(),
+  deleted_at: z.coerce.date().optional().nullable(),
+  attendances: z.lazy(() => attendancesUncheckedCreateNestedManyWithoutUserInputObjectSchema).optional(),
+  error_reports: z.lazy(() => error_reportsUncheckedCreateNestedManyWithoutUsersInputObjectSchema).optional(),
+  events: z.lazy(() => eventsUncheckedCreateNestedManyWithoutUsersInputObjectSchema).optional(),
+  files: z.lazy(() => filesUncheckedCreateNestedManyWithoutUploaderInputObjectSchema).optional(),
+  point_logs: z.lazy(() => point_logsUncheckedCreateNestedManyWithoutUsersInputObjectSchema).optional(),
+  process_instance_steps: z.lazy(() => process_instance_stepsUncheckedCreateNestedManyWithoutUsersInputObjectSchema).optional(),
+  process_instances: z.lazy(() => process_instancesUncheckedCreateNestedManyWithoutUsersInputObjectSchema).optional(),
+  process_logs: z.lazy(() => process_logsUncheckedCreateNestedManyWithoutUsersInputObjectSchema).optional(),
+  tasks: z.lazy(() => tasksUncheckedCreateNestedManyWithoutUsersInputObjectSchema).optional()
+}).strict();
+export const usersUncheckedCreateWithoutActivity_logsInputObjectSchema: z.ZodType<Prisma.usersUncheckedCreateWithoutActivity_logsInput> = makeSchema() as unknown as z.ZodType<Prisma.usersUncheckedCreateWithoutActivity_logsInput>;
+export const usersUncheckedCreateWithoutActivity_logsInputObjectZodSchema = makeSchema();

@@ -1,0 +1,13 @@
+import * as z from 'zod';
+// prettier-ignore
+export const migrationsResultSchema = z.object({
+    id: z.number().int(),
+    version: z.string(),
+    class: z.string(),
+    group: z.string(),
+    namespace: z.string(),
+    time: z.number().int(),
+    batch: z.number().int()
+}).strict();
+
+export type migrationsResultType = z.infer<typeof migrationsResultSchema>;
