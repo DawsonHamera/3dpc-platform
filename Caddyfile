@@ -1,15 +1,15 @@
 {
-    email dawsonhamera@gmail.com  # for Let's Encrypt notifications
+    email dawsonhamera@gmail.com
 }
 
-:80 {
+deloro3dpc.tech {
     root * /srv
     encode gzip
 
     # ============================
     #  API REVERSE PROXY (PRIMARY)
     # ============================
-    # Static file uploads - don't strip prefix
+    # Static uploads (no prefix stripping)
     @uploads path /api/uploads/*
     handle @uploads {
         reverse_proxy http://api-prod:3000 {
@@ -27,10 +27,15 @@
     }
 
     # ============================
-    # SPA FALLBACK & STATIC FILES
+    #  SPA FALLBACK & STATIC FILES
     # ============================
     handle {
-        file_server
         try_files {path} {path}/ /index.html
+        file_server
     }
+}
+
+# Optional redirect from non-www to www or vice-versa
+www.deloro3dpc.tech {
+    redir https://deloro3dpc.tech{uri}
 }
