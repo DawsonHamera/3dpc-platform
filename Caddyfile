@@ -37,8 +37,12 @@ deloro3dpc.tech {
     @ws path /ws /ws/*
     handle @ws {
         uri strip_prefix /ws
-        reverse_proxy http://localhost:8080 {
+        reverse_proxy localhost:8080 {
             flush_interval -1
+		transport http {
+			versions 1.1
+}
+		header_up Host {host}
 
             # REQUIRED FOR WEBSOCKET
             header_up Connection {>Connection}
