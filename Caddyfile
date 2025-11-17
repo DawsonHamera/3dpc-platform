@@ -12,7 +12,7 @@ deloro3dpc.tech {
     # Static uploads (no prefix stripping)
     @uploads path /api/uploads/*
     handle @uploads {
-        reverse_proxy http://api-prod:3000 {
+        reverse_proxy http://localhost:3001 {
             flush_interval -1
         }
     }
@@ -21,7 +21,7 @@ deloro3dpc.tech {
     @api path /api/*
     handle @api {
         uri strip_prefix /api
-        reverse_proxy http://api-prod:3000 {
+        reverse_proxy http://localhost:3001 {
             flush_interval -1
         }
     }
@@ -29,7 +29,7 @@ deloro3dpc.tech {
     @ultimakers path /ultimakers/*
     handle @ultimakers {
         uri strip_prefix /ultimakers
-        reverse_proxy http://host.docker.internal:8081 {
+        reverse_proxy http://localhost:8081 {
             flush_interval -1
         }
     }
@@ -37,7 +37,7 @@ deloro3dpc.tech {
     @ws path /ws /ws/*
     handle @ws {
         uri strip_prefix /ws
-        reverse_proxy http://host.docker.internal:8080 {
+        reverse_proxy http://localhost:8080 {
             flush_interval -1
 
             # REQUIRED FOR WEBSOCKET
