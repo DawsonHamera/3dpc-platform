@@ -29,7 +29,7 @@ deloro3dpc.tech {
     @ultimakers path /ultimakers/*
     handle @ultimakers {
         uri strip_prefix /ultimakers
-        reverse_proxy http://127.0.0.1:8081 {
+        reverse_proxy http://host.docker.internal:8081 {
             flush_interval -1
         }
     }
@@ -37,7 +37,7 @@ deloro3dpc.tech {
     @ws path /ws /ws/*
     handle @ws {
         uri strip_prefix /ws
-        reverse_proxy http://127.0.0.1:8080 {
+        reverse_proxy http://host.docker.internal:8080 {
             flush_interval -1
 
             # REQUIRED FOR WEBSOCKET
