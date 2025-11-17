@@ -28,6 +28,9 @@ let UsersController = class UsersController {
     findProfile(user) {
         return user;
     }
+    findPoints() {
+        return this.usersService.findPoints();
+    }
     findOne(id) {
         return this.usersService.findOne(+id);
     }
@@ -39,6 +42,20 @@ let UsersController = class UsersController {
     }
     remove(id) {
         return this.usersService.remove(+id);
+    }
+    heartbeat(user) {
+        return this.usersService.update(user.id, { last_active: new Date() });
+    }
+    async updatePoints(id, body) {
+        const { points, reason, details } = body;
+        const user = await this.usersService.updateUserPoints(+id, points, reason, details);
+        if (!user) {
+            return { error: `No user found with id ${id}` };
+        }
+        return { message: 'User score updated successfully', user };
+    }
+    getUserPointsLogs(id) {
+        return this.usersService.getUserPointsLogs(+id);
     }
 };
 exports.UsersController = UsersController;
@@ -57,6 +74,13 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "findProfile", null);
+__decorate([
+    (0, common_1.Get)('points'),
+    (0, roles_decorator_1.Roles)(['admin', 'member', 'viewer']),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], UsersController.prototype, "findPoints", null);
 __decorate([
     (0, common_1.Get)(':id'),
     (0, roles_decorator_1.Roles)(['admin']),
@@ -90,6 +114,30 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "remove", null);
+__decorate([
+    (0, common_1.Post)('heartbeat'),
+    __param(0, (0, current_user_decorator_1.CurrentUser)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], UsersController.prototype, "heartbeat", null);
+__decorate([
+    (0, common_1.Post)(':id/points'),
+    (0, roles_decorator_1.Roles)(['admin']),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "updatePoints", null);
+__decorate([
+    (0, common_1.Get)(':id/points/logs'),
+    (0, roles_decorator_1.Roles)(['admin']),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], UsersController.prototype, "getUserPointsLogs", null);
 exports.UsersController = UsersController = __decorate([
     (0, common_1.Controller)('users'),
     __metadata("design:paramtypes", [users_service_1.UsersService])

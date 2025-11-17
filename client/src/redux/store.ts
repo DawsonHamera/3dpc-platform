@@ -4,11 +4,13 @@ import { authApi } from "../features/auth/authApi";
 import authReducer from "../features/auth/authSlice";
 import { usersApi } from "../features/users/usersApi";
 import { eventsApi } from "../features/events/eventsApi";
+import { filesApi } from "../features/files/filesApi";
 
 const rootReducer = combineReducers({
     [authApi.reducerPath]: authApi.reducer,
     [usersApi.reducerPath]: usersApi.reducer,
     [eventsApi.reducerPath]: eventsApi.reducer,
+    [filesApi.reducerPath]: filesApi.reducer,
     auth: authReducer,
 });
 
@@ -20,7 +22,8 @@ export const store = configureStore({
         getDefaultMiddleware().concat(
             authApi.middleware,
             usersApi.middleware,
-            eventsApi.middleware
+            eventsApi.middleware,
+            filesApi.middleware
         ),
 });
 

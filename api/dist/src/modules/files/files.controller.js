@@ -20,58 +20,52 @@ const current_user_decorator_1 = require("../../common/decorators/current-user.d
 const multer_1 = require("multer");
 const roles_decorator_1 = require("../../common/decorators/roles.decorator");
 const public_decorator_1 = require("../../common/decorators/public.decorator");
-var FileType;
-(function (FileType) {
-    FileType["IMAGE"] = "IMAGE";
-    FileType["MODEL"] = "MODEL";
-    FileType["TEXTURE"] = "TEXTURE";
-    FileType["DOCUMENT"] = "DOCUMENT";
-    FileType["OTHER"] = "OTHER";
-})(FileType || (FileType = {}));
+const client_1 = require("@prisma/client");
 let FilesController = class FilesController {
     filesService;
     constructor(filesService) {
         this.filesService = filesService;
     }
-    upload(file, body, user) {
+    upload(file, user) {
         console.log('file:', file);
         if (!file) {
             return { success: false, message: 'No file uploaded.' };
         }
         const domain = process.env.DOMAIN_NAME || 'http://localhost:3000';
-        const filePath = `${domain}/uploads/${file.filename}`;
-        let fileType = FileType.OTHER;
+        const filePath = `${domain}/api/uploads/${file.filename}`;
+        let fileType = client_1.file_type.other;
         switch (file.mimetype) {
             case 'image/jpeg':
             case 'image/png':
             case 'image/gif':
-                fileType = FileType.IMAGE;
+                fileType = client_1.file_type.image;
                 break;
             case 'model/gltf-binary':
             case 'application/octet-stream':
             case 'model/stl':
-                fileType = FileType.MODEL;
+                fileType = client_1.file_type.model;
                 break;
             case 'image/texture':
-                fileType = FileType.TEXTURE;
+                fileType = client_1.file_type.texture;
                 break;
             case 'application/pdf':
             case 'application/msword':
             case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
-                fileType = FileType.DOCUMENT;
+                fileType = client_1.file_type.document;
                 break;
             default:
-                fileType = FileType.OTHER;
+                fileType = client_1.file_type.other;
         }
         const fileData = {
-            originalName: file.originalname,
-            fileName: file.filename,
-            filePath,
-            fileType,
-            mimeType: file.mimetype,
-            fileSize: file.size,
-            uploadedBy: user?.id || null,
-            description: body.description || '',
+            original_name: file.originalname,
+            stored_name: file.filename,
+            mime_type: file.mimetype,
+            size: file.size,
+            path: filePath,
+            type: fileType,
+            uploader: {
+                connect: { id: user?.id || null },
+            },
         };
         return this.filesService.create(fileData);
     }
@@ -91,7 +85,7 @@ let FilesController = class FilesController {
 exports.FilesController = FilesController;
 __decorate([
     (0, common_1.Post)(),
-    (0, public_decorator_1.Public)(),
+    (0, roles_decorator_1.Roles)(['admin']),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file', {
         storage: (0, multer_1.diskStorage)({
             destination: './uploads',
@@ -103,10 +97,9 @@ __decorate([
         limits: { fileSize: 100 * 1024 * 1024 },
     })),
     __param(0, (0, common_1.UploadedFile)()),
-    __param(1, (0, common_1.Body)()),
-    __param(2, (0, current_user_decorator_1.CurrentUser)()),
+    __param(1, (0, current_user_decorator_1.CurrentUser)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object, Object]),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", void 0)
 ], FilesController.prototype, "upload", null);
 __decorate([

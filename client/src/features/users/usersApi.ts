@@ -1,15 +1,12 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { baseQuery } from "../baseApi";
-import {
-    usersCreateInputObjectSchema,
-    usersResultSchema,
-    usersUpdateInputObjectSchema,
-} from "../../types/zod/schemas";
-import { z } from "zod";
 
-type UserResult = z.infer<typeof usersResultSchema>;
-type CreateUser = z.infer<typeof usersCreateInputObjectSchema>;
-type UpdateUser = z.infer<typeof usersUpdateInputObjectSchema>;
+import { z } from "zod";
+import { userResultSchema, userCreateInputObjectSchema, userUpdateInputObjectSchema } from "../../types/zod/schemas";
+
+export type User = z.infer<typeof userResultSchema>;
+export type CreateUser = z.infer<typeof userCreateInputObjectSchema>;
+export type UpdateUser = z.infer<typeof userUpdateInputObjectSchema>;
 
 export const usersApi = createApi({
     reducerPath: "users",
@@ -17,24 +14,24 @@ export const usersApi = createApi({
     tagTypes: ["User"],
     endpoints: (build) => ({
         // Get all users
-        getAll: build.query<UserResult[], void>({
+        getAll: build.query<User[], void>({
             query: () => "/users",
             providesTags: ["User"],
         }),
 
         // Get a single user by ID
-        getOne: build.query<UserResult, number>({
+        getOne: build.query<User, number>({
             query: (id) => `/users/${id}`,
             providesTags: ["User"],
         }),
 
-        getScores: build.query<{ name: string; score: number }[], void>({
-            query: () => "/users/scores",
+        getPoints: build.query<{ name: string; points: number }[], void>({
+            query: () => "/users/points",
             providesTags: ["User"],
         }),
 
         // Create a new user
-        create: build.mutation<UserResult, CreateUser>({
+        create: build.mutation<User, CreateUser>({
             query: (body) => ({
                 url: "/users",
                 method: "POST",
@@ -44,7 +41,7 @@ export const usersApi = createApi({
         }),
 
         // Update an existing user
-        update: build.mutation<UserResult, UpdateUser>(
+        update: build.mutation<User, UpdateUser>(
             {
                 query: ({ id, body }) => ({
                     url: `/users/${id}`,
@@ -65,29 +62,28 @@ export const usersApi = createApi({
         }),
 
         // Custom endpoint to send heartbeat and update last active
-        sendHeartbeat: build.mutation<any, { id: number }>({
-            query: (id) => ({
-                url: `/users/${id}/heartbeat`,
+        sendHeartbeat: build.mutation<any, void>({
+            query: () => ({
+                url: `/users/heartbeat`,
                 method: "POST",
-                body: { last_active: new Date().toISOString() }, // Updating last active timestamp
             }),
             invalidatesTags: () => [], // Don't trigger cache invalidation
         }),
 
-        updateScore: build.mutation<
+        updatePoints: build.mutation<
             void,
             { id: number; points: number; reason: string; details?: string }
         >({
             query: ({ id, points, reason, details }) => ({
-                url: `/users/${id}/score`,
+                url: `/users/${id}/points`,
                 method: "POST",
                 body: { points, reason, details },
             }),
             invalidatesTags: ["User"],
         }),
 
-        getUserScoreLogs: build.query<any[], number>({
-            query: (id) => `/users/${id}/score/logs`,
+        getUserPointsLogs: build.query<any[], number>({
+            query: (id) => `/users/${id}/points/logs`,
             providesTags: ["User"],
         }),
     }),
@@ -100,7 +96,7 @@ export const {
     useCreateMutation: useAddUserMutation,
     useUpdateMutation: useUpdateUserMutation,
     useDeleteMutation: useRemoveUserMutation,
-    useGetScoresQuery: useGetUserScoresQuery,
-    useUpdateScoreMutation: useUpdateUserScoreMutation,
-    useGetUserScoreLogsQuery: useGetUserScoreLogsQuery,
+    useGetPointsQuery: useGetUserPointsQuery,
+    useUpdatePointsMutation: useUpdateUserPointsMutation,
+    useGetUserPointsLogsQuery: useGetUserPointsLogsQuery,
 } = usersApi;

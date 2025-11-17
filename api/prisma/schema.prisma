@@ -3,74 +3,76 @@ generator client {
   binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
 
-generator zod {
-  provider = "prisma-zod-generator"
-  output   = "../../client/src/types/zod" // or wherever you want
-}
+// generator zod {
+//   provider = "prisma-zod-generator"
+//   output   = "../../client/src/types/zod" // or wherever you want
+// }
 
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
-model activity_logs {
-  id         Int       @id @default(autoincrement())
-  user_id    Int
-  action_type   String    @db.VarChar(255)
-  table_name   String    @db.VarChar(100)
-  record_id   Int
-  result      String    @db.VarChar(50)
-  details    Json?   @db.Json
-  created_at DateTime? @default(now()) @db.DateTime(0)
+model user {
+  id            Int            @id @default(autoincrement())
+  name          String         @db.VarChar(255)
+  email         String         @unique(map: "email") @db.VarChar(255)
+  password_hash String         @db.VarChar(255)
+  role_id       Int            @default(2)
+  grade         grade          @default(other)
+  points        Int            @default(0)
+  last_active   DateTime?      @db.DateTime(0)
+  attendances   attendance[]
+  events        event[]
+  files         file[]
+  role          role           @relation(fields: [role_id], references: [id], onDelete: Cascade)
+  activity_logs activity_log[]
+  created_at    DateTime?      @default(now())
+  updated_at    DateTime?      @updatedAt
+  deleted_at    DateTime?      @db.DateTime(0)
+  pointLogs     point_log[]
 
-  user       users     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
-model attendances {
-  id           Int       @id @default(autoincrement())
+model point_log {
+  id        Int      @id @default(autoincrement())
+  user_id   Int
+  change    Int
+  reason    String   @db.VarChar(255)
+  details   String?  @db.LongText
+  logged_at DateTime @default(now()) @db.Timestamp(0)
+  user      user     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model activity_log {
+  id          Int       @id @default(autoincrement())
+  user_id     Int
+  action_type String    @db.VarChar(255)
+  table_name  String    @db.VarChar(100)
+  record_id   Int
+  result      String    @db.VarChar(50)
+  details     Json?     @db.Json
+  created_at  DateTime? @default(now()) @db.DateTime(0)
+
+  user user @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model attendance {
+  id           Int               @id @default(autoincrement())
   user_id      Int
   event_id     Int
-  created_at   DateTime? @default(now())
-  updated_at   DateTime? @updatedAt
-  arrival_time DateTime? @default(now())
-  event       events    @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  user        users     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  status       attendance_status @default(rsvp)
+  created_at   DateTime?         @default(now())
+  updated_at   DateTime?         @updatedAt
+  rsvp_time    DateTime?         @default(now())
+  arrival_time DateTime?         @default(now())
+  event        event             @relation(fields: [event_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  user         user              @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   @@unique([event_id, user_id])
 }
 
-model customers {
-  id                         Int       @id @default(autoincrement())
-  first_name                 String?   @db.VarChar(100)
-  last_name                  String?   @db.VarChar(100)
-  email_address              String?   @db.VarChar(100)
-  ip_address                 String?   @db.VarChar(100)
-  session_id                 Int?
-  first_seen                 DateTime? @default(now()) @db.DateTime(0)
-  last_seen                  DateTime? @db.DateTime(0)
-  preferred_shipping_address String?   @db.VarChar(100)
-  preferred_shipping_method  String?   @db.VarChar(100)
-}
-
-model error_reports {
-  id           Int       @id @default(autoincrement())
-  task_id      Int
-  submitted_by Int
-  step_id      Int?
-  description  String?   @db.Text
-  image_url    String?   @db.VarChar(255)
-  created_at   DateTime? @db.DateTime(0)
-  updated_at   DateTime? @db.DateTime(0)
-  steps        steps?    @relation(fields: [step_id], references: [id], onDelete: Cascade, onUpdate: SetNull, map: "error_reports_step_id_foreign")
-  users        users     @relation(fields: [submitted_by], references: [id], onDelete: Cascade, map: "error_reports_submitted_by_foreign")
-  tasks        tasks     @relation(fields: [task_id], references: [id], onDelete: Cascade, map: "error_reports_task_id_foreign")
-
-  @@index([step_id], map: "error_reports_step_id_foreign")
-  @@index([submitted_by], map: "error_reports_submitted_by_foreign")
-  @@index([task_id], map: "error_reports_task_id_foreign")
-}
-
-model events {
+model event {
   id                Int                @id @default(autoincrement())
   title             String             @db.VarChar(255)
   description       String             @db.LongText
@@ -80,76 +82,35 @@ model events {
   image_file_id     Int?
   is_featured       Boolean?           @default(false)
   event_type        events_event_type? @default(meeting)
-  created_by        Int
-  created_at        DateTime?          @db.DateTime(0)
-  updated_at        DateTime?          @db.DateTime(0)
+  user_id           Int?
+  created_at        DateTime?          @default(now())
+  updated_at        DateTime?          @updatedAt
   deleted_at        DateTime?          @db.DateTime(0)
   verification_code String             @db.VarChar(255)
-  attendances       attendances[]
-  files             files?             @relation(fields: [image_file_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  users             users              @relation(fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  
+  attendances       attendance[]
+  image_file        file?              @relation(fields: [image_file_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  created_by        user?              @relation(fields: [user_id], references: [id], onDelete: SetNull, onUpdate: NoAction)
+
   @@unique([start_time, end_time])
   @@unique(verification_code)
 }
 
-model files {
-  id                                         Int         @id @default(autoincrement())
-  original_name                              String      @db.VarChar(255)
-  stored_name                                String      @db.VarChar(255)
-  mime_type                                  String?     @db.VarChar(100)
-  size                                       Int         @db.UnsignedInt
-  path                                       String      @db.VarChar(255)
-  uploaded_by                                Int?
-  created_at                                 DateTime?   @db.DateTime(0)
-  updated_at                                 DateTime?   @db.DateTime(0)
-  deleted_at                                 DateTime?   @db.DateTime(0)
-  description                                String?     @db.Text
-  type                                       files_type  @default(other)
-  events                                     events[]
-  uploader                                      users?      @relation(fields: [uploaded_by], references: [id], onUpdate: Restrict, map: "files_uploaded_by_foreign")
-  materials_materials_image_file_idTofiles   materials[] @relation("materials_image_file_idTofiles")
-  materials_materials_texture_file_idTofiles materials[] @relation("materials_texture_file_idTofiles")
-  printers                                   printers[]
+model file {
+  id            Int       @id @default(autoincrement())
+  original_name String    @db.VarChar(255)
+  stored_name   String    @db.VarChar(255)
+  mime_type     String?   @db.VarChar(100)
+  size          Int       @db.UnsignedInt
+  path          String    @db.VarChar(255)
+  uploaded_by   Int?
+  created_at    DateTime? @default(now())
+  updated_at    DateTime? @updatedAt
+  deleted_at    DateTime? @db.DateTime(0)
+  description   String?   @db.Text
+  type          file_type @default(other)
+  events        event[]
+  uploader      user?     @relation(fields: [uploaded_by], references: [id], onDelete: SetNull, onUpdate: Restrict)
 
-  @@index([uploaded_by], map: "files_uploaded_by_foreign")
-}
-
-model grades {
-  id          Int          @id @default(autoincrement())
-  grade       grades_grade
-  description String?      @db.Text
-  created_at  DateTime?    @db.DateTime(0)
-  updated_at  DateTime?    @db.DateTime(0)
-  users       users[]
-}
-
-model materials {
-  id                                     Int        @id @default(autoincrement())
-  name                                   String     @db.VarChar(255)
-  hex                                    String     @db.VarChar(7)
-  texture_file_id                        Int?
-  image_file_id                          Int?
-  type                                   String?    @db.VarChar(100)
-  vendor                                 String     @db.VarChar(255)
-  min_temp                               Float?     @db.Float
-  max_temp                               Float?     @db.Float
-  details                                String?    @db.Text
-  created_at                             DateTime?  @db.DateTime(0)
-  updated_at                             DateTime?  @db.DateTime(0)
-  deleted_at                             DateTime?  @db.DateTime(0)
-  texture_url                            String?    @db.VarChar(255)
-  cost                                   Decimal?   @db.Decimal(8, 2)
-  cost_unit                              String?    @db.VarChar(50)
-  supplier                               String?    @db.VarChar(255)
-  safety_data                            String?    @db.Text
-  density                                Decimal?   @db.Decimal(5, 2)
-  files_materials_image_file_idTofiles   files?     @relation("materials_image_file_idTofiles", fields: [image_file_id], references: [id], onUpdate: Restrict, map: "material_image_file_id_foreign")
-  files_materials_texture_file_idTofiles files?     @relation("materials_texture_file_idTofiles", fields: [texture_file_id], references: [id], onUpdate: Restrict, map: "material_texture_file_id_foreign")
-  printers                               printers[]
-
-  @@index([image_file_id], map: "material_image_file_id_foreign")
-  @@index([texture_file_id], map: "material_texture_file_id_foreign")
 }
 
 model migrations {
@@ -162,533 +123,21 @@ model migrations {
   batch     Int    @db.UnsignedInt
 }
 
-model models {
-  id                 Int        @id @default(autoincrement())
-  name               String     @db.VarChar(255)
-  image_file_id      Int
-  model_file_id      Int
-  material_slots     String     @db.LongText
-  estimated_duration Int?
-  estimated_filament Float?     @db.Float
-  description        String?    @db.Text
-  tags               String     @db.LongText
-  created_at         DateTime?  @db.DateTime(0)
-  updated_at         DateTime?  @db.DateTime(0)
-  deleted_at         DateTime?  @db.DateTime(0)
-  products           products[]
-  tasks              tasks[]
-
-  @@index([image_file_id], map: "model_image_file_id_foreign")
-  @@index([model_file_id], map: "model_model_file_id_foreign")
-}
-
-model order_items {
-  id          Int     @id @default(autoincrement())
-  order_id    Int
-  product_id  Int
-  quantity    Int
-  unit_price  Float?  @db.Float
-  status      String? @db.VarChar(255)
-  total_price Float?  @db.Float
-  orders      orders  @relation(fields: [order_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_order_items_orders")
-
-  @@index([order_id], map: "fk_order_items_orders")
-  @@index([product_id], map: "fk_order_items_products")
-}
-
-model order_logs {
-  id            Int       @id @default(autoincrement())
-  order_id      Int
-  log_timestamp DateTime? @default(now()) @db.DateTime(0)
-  log_message   String    @db.Text
-  log_details   String?   @db.Text
-  orders        orders    @relation(fields: [order_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_order_logs_orders")
-
-  @@index([order_id], map: "fk_order_logs_orders")
-}
-
-model orders {
-  id                Int           @id @default(autoincrement())
-  customer_id       Int?
-  order_date        DateTime?     @db.Date
-  requested_by_date DateTime?     @db.Date
-  order_status      String?       @default("unpaid") @db.VarChar(255)
-  payment_status    String?       @db.VarChar(255)
-  shipping_method   String?       @db.VarChar(255)
-  shipping_address  String?       @db.VarChar(100)
-  total_price       Float?        @db.Float
-  order_items       order_items[]
-  order_logs        order_logs[]
-}
-
-model point_logs {
-  id        Int      @id @default(autoincrement())
-  user_id   Int
-  change    Int
-  reason    String   @db.VarChar(255)
-  details   String?  @db.LongText
-  logged_at DateTime @default(now()) @db.Timestamp(0)
-  users     users    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_point_logs_users")
-
-  @@index([user_id], map: "fk_point_logs_users")
-}
-
-model printer_statuses {
-  id          Int        @id @default(autoincrement())
-  name        String     @db.VarChar(100)
-  description String?    @db.Text
-  created_at  DateTime?  @db.DateTime(0)
-  updated_at  DateTime?  @db.DateTime(0)
-  printers    printers[]
-}
-
-model printers {
-  id                  Int                @id @default(autoincrement())
-  status_id           Int
-  name                String             @db.VarChar(255)
-  location            String?            @db.VarChar(255)
-  owner               String?            @db.VarChar(255)
-  details             String?            @db.Text
-  image_id            Int?
-  material_id         Int?
-  process_template_id Int?
-  created_at          DateTime?          @db.DateTime(0)
-  updated_at          DateTime?          @db.DateTime(0)
-  deleted_at          DateTime?          @db.DateTime(0)
-  process_templates   process_templates? @relation(fields: [process_template_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "printer_process_template_id_foreign")
-  files               files?             @relation(fields: [image_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "printers_file_id_foreign")
-  materials           materials?         @relation(fields: [material_id], references: [id], onDelete: Cascade, onUpdate: SetNull, map: "printers_material_id_foreign")
-  printer_statuses    printer_statuses   @relation(fields: [status_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "printers_status_id_foreign")
-  tasks               tasks[]
-
-  @@index([image_id], map: "printer_file_id_foreign")
-  @@index([process_template_id], map: "printer_process_template_id_foreign")
-  @@index([material_id], map: "printers_material_id_foreign")
-  @@index([status_id], map: "printers_status_id_foreign")
-}
-
-model process_instance_steps {
-  id                  Int                           @id @default(autoincrement())
-  process_instance_id Int
-  step_id             Int
-  step_order          Int
-  status              process_instance_steps_status @default(pending)
-  started_at          DateTime?                     @db.Timestamp(0)
-  completed_at        DateTime?                     @db.Timestamp(0)
-  assigned_user_id    Int?
-  is_required         Boolean                       @default(true)
-  input_data          String?                       @db.LongText
-  output_data         String?                       @db.LongText
-  metadata            String?                       @db.LongText
-  created_at          DateTime                      @default(now()) @db.Timestamp(0)
-  updated_at          DateTime                      @default(now()) @db.Timestamp(0)
-  deleted_at          DateTime?                     @db.Timestamp(0)
-  due_date            DateTime?                     @db.Timestamp(0)
-  notes               String?                       @db.Text
-  process_instances   process_instances             @relation(fields: [process_instance_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "process_instance_steps_ibfk_1")
-  steps               steps                         @relation(fields: [step_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "process_instance_steps_ibfk_2")
-  users               users?                        @relation(fields: [assigned_user_id], references: [id], onUpdate: Restrict, map: "process_instance_steps_ibfk_3")
-
-  @@unique([process_instance_id, step_order], map: "unique_process_step_order")
-  @@index([assigned_user_id], map: "idx_assigned_user")
-  @@index([process_instance_id], map: "idx_process_instance")
-  @@index([status], map: "idx_status")
-  @@index([step_id], map: "idx_step")
-  @@index([process_instance_id, step_order], map: "idx_step_order")
-}
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model process_instances {
-  id                     Int                        @id @default(autoincrement())
-  name                   String                     @db.VarChar(255)
-  description            String?                    @db.Text
-  process_template_id    Int
-  status                 process_instances_status   @default(pending)
-  priority               process_instances_priority @default(normal)
-  assigned_user_id       Int?
-  current_step_order     Int                        @default(1)
-  estimated_duration     Int?
-  actual_duration        Int?
-  started_at             DateTime?                  @db.Timestamp(0)
-  completed_at           DateTime?                  @db.Timestamp(0)
-  due_date               DateTime?                  @db.DateTime(0)
-  metadata               String?                    @db.LongText
-  created_at             DateTime                   @default(now()) @db.Timestamp(0)
-  updated_at             DateTime                   @default(now()) @db.Timestamp(0)
-  deleted_at             DateTime?                  @db.Timestamp(0)
-  process_instance_steps process_instance_steps[]
-  process_templates      process_templates          @relation(fields: [process_template_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "process_instances_ibfk_1")
-  users                  users?                     @relation(fields: [assigned_user_id], references: [id], onUpdate: Restrict, map: "process_instances_ibfk_2")
-  process_logs           process_logs[]
-  tasks                  tasks[]
-
-  @@index([assigned_user_id], map: "idx_assigned_user")
-  @@index([created_at], map: "idx_created_at")
-  @@index([due_date], map: "idx_due_date")
-  @@index([process_template_id], map: "idx_process_template")
-  @@index([status], map: "idx_status")
-}
-
-model process_logs {
-  id                  Int                 @id @default(autoincrement())
-  process_instance_id Int
-  step_order          Int?
-  level               process_logs_level  @default(info)
-  action              process_logs_action
-  message             String              @db.Text
-  data                String?             @db.LongText
-  user_id             Int?
-  created_at          DateTime            @default(now()) @db.Timestamp(0)
-  deleted_at          DateTime?           @db.Timestamp(0)
-  updated_at          DateTime            @default(now()) @db.Timestamp(0)
-  process_instances   process_instances   @relation(fields: [process_instance_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "process_logs_ibfk_1")
-  users               users?              @relation(fields: [user_id], references: [id], onUpdate: Restrict, map: "process_logs_ibfk_2")
-
-  @@index([action], map: "idx_action")
-  @@index([created_at], map: "idx_created_at")
-  @@index([level], map: "idx_level")
-  @@index([process_instance_id], map: "idx_process_instance")
-  @@index([process_instance_id, step_order], map: "idx_step_order")
-  @@index([user_id], map: "user_id")
-}
-
-model process_template_steps {
-  id                  Int               @id @default(autoincrement())
-  process_template_id Int
-  step_id             Int
-  step_order          Int
-  is_required         Boolean?          @default(true)
-  created_at          DateTime          @default(now()) @db.Timestamp(0)
-  updated_at          DateTime          @default(now()) @db.Timestamp(0)
-  process_templates   process_templates @relation(fields: [process_template_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_process_template_steps_process_templates")
-  steps               steps             @relation(fields: [step_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_process_template_steps_steps")
-
-  @@index([process_template_id], map: "fk_process_template_steps_process_templates")
-  @@index([step_id], map: "idx_workflow_step")
-}
-
-model process_templates {
-  id                     Int                         @id @default(autoincrement())
-  name                   String                      @db.VarChar(255)
-  description            String?                     @db.Text
-  version                String?                     @default("1.0") @db.VarChar(50)
-  category               process_templates_category? @default(printing)
-  estimated_duration     Int?
-  created_at             DateTime                    @default(now()) @db.Timestamp(0)
-  updated_at             DateTime                    @default(now()) @db.Timestamp(0)
-  deleted_at             DateTime?                   @db.Timestamp(0)
-  printers               printers[]
-  process_instances      process_instances[]
-  process_template_steps process_template_steps[]
-
-  @@index([category], map: "idx_category")
-  @@index([name], map: "idx_name")
-}
-
-model product_variants {
-  id               Int      @id @default(autoincrement())
-  material_id      Int?
-  name             String   @db.VarChar(100)
-  image_file_id    Int?
-  background_color String?  @db.VarChar(9)
-  model_color      String?  @db.VarChar(9)
-  product_id       Int
-  products         products @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_product_variants_products")
-
-  @@index([product_id], map: "fk_product_variants_products")
-}
-
-model products {
-  id                 Int                @id @default(autoincrement())
-  name               String             @db.VarChar(100)
-  description        String?            @db.LongText
-  price              Float?             @db.Float
-  model_id           Int
-  default_variant_id Int?
-  custom_options     String?            @db.LongText
-  tags               String?            @db.LongText
-  section_id         Int?
-  product_variants   product_variants[]
-  models             models             @relation(fields: [model_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_products_models")
-  shop_sections      shop_sections?     @relation(fields: [section_id], references: [id], onUpdate: NoAction, map: "fk_products_shop_sections")
-
-  @@index([default_variant_id], map: "fk_products_files")
-  @@index([model_id], map: "fk_products_models")
-  @@index([section_id], map: "fk_products_shop_sections")
-}
-
-model request_statuses {
-  id          Int        @id @default(autoincrement())
-  name        String     @db.VarChar(100)
-  description String?    @db.Text
-  created_at  DateTime?  @db.DateTime(0)
-  updated_at  DateTime?  @db.DateTime(0)
-  requests    requests[]
-}
-
-model requests {
-  id               Int               @id @default(autoincrement())
-  submitted_by     String?           @db.VarChar(255)
-  email            String?           @db.VarChar(255)
-  comments         String?           @db.Text
-  status_id        Int?              @default(1)
-  created_at       DateTime?         @db.DateTime(0)
-  updated_at       DateTime?         @db.DateTime(0)
-  deleted_at       DateTime?         @db.DateTime(0)
-  requested_date   DateTime?         @db.Date
-  due_date         DateTime?         @db.Date
-  priority         Int?              @default(1)
-  request_statuses request_statuses? @relation(fields: [status_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "requests_status_id_foreign")
-  tasks            tasks[]
-
-  @@index([status_id], map: "requests_status_id_foreign")
-}
-
-model roles {
+model role {
   id          Int       @id @default(autoincrement())
   name        String    @db.VarChar(100)
   description String?   @db.Text
   created_at  DateTime? @db.DateTime(0)
   updated_at  DateTime? @db.DateTime(0)
-  users       users[]
+  users       user[]
 }
 
-model shop_sections {
-  id          Int        @id @default(autoincrement())
-  name        String?    @db.VarChar(100)
-  label       String?    @db.VarChar(255)
-  order_index Int?
-  products    products[]
-}
-
-model step_actions {
-  id                   Int                        @id @default(autoincrement())
-  step_id              Int
-  action_order         Int
-  label                String                     @db.VarChar(255)
-  action_type          String                     @db.Text
-  action_config        String?                    @db.Text
-  button_style         step_actions_button_style? @default(primary)
-  icon                 String?                    @db.VarChar(100)
-  is_enabled           Boolean?                   @default(true)
-  confirmation_message String?                    @db.Text
-  created_at           DateTime                   @default(now()) @db.Timestamp(0)
-  updated_at           DateTime                   @default(now()) @db.Timestamp(0)
-  steps                steps                      @relation(fields: [step_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_step_actions_steps")
-  step_triggers        step_triggers[]
-
-  @@index([step_id, action_order], map: "idx_step_actions")
-}
-
-model step_content {
-  id            Int                       @id @default(autoincrement())
-  step_id       Int
-  content_order Int
-  content_type  step_content_content_type
-  content_data  String                    @db.Text
-  created_at    DateTime                  @default(now()) @db.Timestamp(0)
-  updated_at    DateTime                  @default(now()) @db.Timestamp(0)
-  steps         steps                     @relation(fields: [step_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_step_content_steps")
-
-  @@index([step_id, content_order], map: "idx_step_content")
-}
-
-model step_triggers {
-  id              Int                        @id @default(autoincrement())
-  step_action_id  Int
-  trigger_order   Int
-  trigger_type    step_triggers_trigger_type
-  trigger_config  String                     @db.Text
-  condition_rules String?                    @db.Text
-  is_enabled      Boolean?                   @default(true)
-  created_at      DateTime                   @default(now()) @db.Timestamp(0)
-  updated_at      DateTime                   @default(now()) @db.Timestamp(0)
-  step_actions    step_actions               @relation(fields: [step_action_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_step_triggers_step_actions")
-
-  @@index([step_action_id, trigger_order], map: "idx_action_triggers")
-}
-
-model steps {
-  id                     Int                      @id @default(autoincrement())
-  title                  String                   @db.VarChar(255)
-  description            String?                  @db.Text
-  is_critical            Boolean?                 @default(false)
-  created_at             DateTime?                @default(now())
-  updated_at             DateTime?                @updatedAt
-  step_type              steps_step_type?         @default(manual)
-  is_required            Boolean?                 @default(true)
-  deleted_at             DateTime?                @db.Timestamp(0)
-  error_reports          error_reports[]
-  process_instance_steps process_instance_steps[]
-  process_template_steps process_template_steps[]
-  step_actions           step_actions[]
-  step_content           step_content[]
-}
-
-model task_statuses {
-  id          Int       @id @default(autoincrement())
-  name        String    @db.VarChar(100)
-  description String?   @db.Text
-  created_at  DateTime? @db.DateTime(0)
-  updated_at  DateTime? @db.DateTime(0)
-  tasks       tasks[]
-}
-
-model tasks {
-  id                   Int                @id @default(autoincrement())
-  request_id           Int
-  model_id             Int
-  printer_id           Int?
-  material_slots       String             @db.LongText
-  quality              String?            @db.VarChar(100)
-  quantity             Int                @default(1)
-  status_id            Int?               @default(1)
-  assigned_user_id     Int?
-  comments             String?            @db.Text
-  created_at           DateTime?          @db.DateTime(0)
-  updated_at           DateTime?          @db.DateTime(0)
-  deleted_at           DateTime?          @db.DateTime(0)
-  scheduled_start_time DateTime?          @db.Time(0)
-  scheduled_end_time   DateTime?          @db.Time(0)
-  process_instance_id  Int?
-  error_reports        error_reports[]
-  process_instances    process_instances? @relation(fields: [process_instance_id], references: [id], onUpdate: Restrict, map: "fk_tasks_process_instance")
-  users                users?             @relation(fields: [assigned_user_id], references: [id], onDelete: Cascade, onUpdate: SetNull, map: "tasks_assigned_user_id_foreign")
-  models               models             @relation(fields: [model_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "tasks_model_id_foreign")
-  printers             printers?          @relation(fields: [printer_id], references: [id], onDelete: Cascade, onUpdate: SetNull, map: "tasks_printer_id_foreign")
-  requests             requests           @relation(fields: [request_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "tasks_request_id_foreign")
-  task_statuses        task_statuses?     @relation(fields: [status_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "tasks_status_id_foreign")
-
-  @@index([process_instance_id], map: "idx_process_instance")
-  @@index([assigned_user_id], map: "tasks_assigned_user_id_foreign")
-  @@index([model_id], map: "tasks_model_id_foreign")
-  @@index([printer_id], map: "tasks_printer_id_foreign")
-  @@index([request_id], map: "tasks_request_id_foreign")
-  @@index([status_id], map: "tasks_status_id_foreign")
-}
-
-model users {
-  id                     Int                      @id @default(autoincrement())
-  name                   String                   @db.VarChar(255)
-  email                  String                   @unique(map: "email") @db.VarChar(255)
-  password_hash          String                   @db.VarChar(255)
-  role_id                Int                      @default(2)
-  grade_id               Int?
-  score                  Int                      @default(0)
-  last_active            DateTime?                @db.DateTime(0)
-  created_at             DateTime?                @default(now())
-  updated_at             DateTime?                @updatedAt
-  deleted_at             DateTime?                @db.DateTime(0)
-  attendances            attendances[]
-  error_reports          error_reports[]
-  events                 events[]
-  files                  files[]
-  point_logs             point_logs[]
-  process_instance_steps process_instance_steps[]
-  process_instances      process_instances[]
-  process_logs           process_logs[]
-  tasks                  tasks[]
-  grade                  grades?                  @relation(fields: [grade_id], references: [id], onDelete: Cascade, onUpdate: SetNull, map: "users_grade_id_foreign")
-  role                   roles                    @relation(fields: [role_id], references: [id], onDelete: Cascade, map: "users_role_id_foreign")
-  activity_logs          activity_logs[]
-
-  @@index([grade_id], map: "users_grade_id_foreign")
-  @@index([role_id], map: "users_role_id_foreign")
-}
-
-enum grades_grade {
+enum grade {
   freshman
   sophomore
   junior
   senior
-}
-
-enum step_triggers_trigger_type {
-  update_task_status
-  update_printer_status
-  send_notification
-  schedule_timer
-  create_subtask
-  log_event
-}
-
-enum process_logs_level {
-  debug
-  info
-  warn
-  error
-}
-
-enum step_content_content_type {
-  text
-  image
-  video
-  file
-  link
-  template_variable
-}
-
-enum process_instances_status {
-  pending
-  running
-  paused
-  completed
-  failed
-  cancelled
-}
-
-enum process_instance_steps_status {
-  pending
-  running
-  waiting_user
-  waiting_condition
-  waiting_timer
-  completed
-  skipped
-  failed
-}
-
-enum process_templates_category {
-  printing
-  maintenance
-  quality_check
-  post_processing
-}
-
-enum process_logs_action {
-  process_started
-  process_completed
-  process_failed
-  process_paused
-  process_resumed
-  process_cancelled
-  step_started
-  step_completed
-  step_failed
-  step_assigned
-  step_unassigned
-}
-
-enum process_instances_priority {
-  low
-  normal
-  high
-  critical
-}
-
-enum steps_step_type {
-  manual
-  automatic
-  conditional
-  timer
-}
-
-enum step_actions_button_style {
-  primary
-  secondary
-  success
-  warning
-  danger
+  other
 }
 
 enum events_event_type {
@@ -698,10 +147,15 @@ enum events_event_type {
   maintenance
 }
 
-enum files_type {
+enum file_type {
   image
   model
   texture
   document
   other
+}
+
+enum attendance_status {
+  rsvp
+  attended
 }

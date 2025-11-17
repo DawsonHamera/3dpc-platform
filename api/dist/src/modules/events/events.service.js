@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EventsService = void 0;
 const common_1 = require("@nestjs/common");
+const client_1 = require("@prisma/client");
 const prisma_service_1 = require("../../prisma/prisma.service");
 let EventsService = class EventsService {
     prisma;
@@ -18,13 +19,19 @@ let EventsService = class EventsService {
         this.prisma = prisma;
     }
     findAll() {
-        return this.prisma.events.findMany();
+        return this.prisma.event.findMany({
+            orderBy: { start_time: 'desc' },
+            include: {
+                image_file: true,
+                attendances: { include: { user: true } },
+            },
+        });
     }
     findOne(id) {
-        return this.prisma.events.findUnique({ where: { id } });
+        return this.prisma.event.findUnique({ where: { id } });
     }
     findCurrent() {
-        return this.prisma.events.findFirst({
+        return this.prisma.event.findFirst({
             where: {
                 start_time: {
                     lte: new Date(),
@@ -35,17 +42,37 @@ let EventsService = class EventsService {
             },
         });
     }
-    create(data) {
-        return this.prisma.events.create({ data });
+    create(data, created_by) {
+        const verification_code = Math.random()
+            .toString(36)
+            .substring(2, 8)
+            .toUpperCase();
+        const eventData = {
+            title: data.title,
+            description: data.description,
+            location: data.location,
+            image_file: {
+                connect: { id: data.image_file_id },
+            },
+            start_time: new Date(data.start_time),
+            end_time: new Date(data.end_time),
+            verification_code,
+            created_by: { connect: { id: created_by } },
+        };
+        return this.prisma.event.create({ data: eventData });
     }
     update(id, data) {
-        return this.prisma.events.update({ where: { id }, data });
+        if (data.image_file_id) {
+            data.image_file = { connect: { id: data.image_file_id } };
+            delete data.image_file_id;
+        }
+        return this.prisma.event.update({ where: { id }, data });
     }
     remove(id) {
-        return this.prisma.events.delete({ where: { id } });
+        return this.prisma.event.delete({ where: { id } });
     }
     async attendEvent(eventId, userId, code) {
-        const existingAttendance = await this.prisma.attendances.findUnique({
+        const existingAttendance = await this.prisma.attendance.findUnique({
             where: {
                 event_id_user_id: {
                     event_id: eventId,
@@ -53,29 +80,58 @@ let EventsService = class EventsService {
                 },
             },
         });
-        if (existingAttendance) {
-            throw new common_1.ConflictException('User is already attending this event');
-        }
-        const event = await this.prisma.events.findUnique({
+        const event = await this.prisma.event.findUnique({
             where: { id: eventId },
         });
         if (!event) {
             throw new common_1.ConflictException('Event does not exist');
         }
-        if (event.verification_code !== code) {
-            throw new common_1.ConflictException('Invalid event code');
+        if (existingAttendance) {
+            if (existingAttendance.status === client_1.attendance_status.attended) {
+                throw new common_1.ConflictException('You have already attended this event');
+            }
+            if (existingAttendance.status === client_1.attendance_status.rsvp) {
+                throw new common_1.ConflictException('You have already RSVPed for this event');
+            }
+            if (event.start_time <= new Date() && event.end_time >= new Date()) {
+                if (event.verification_code !== code) {
+                    throw new common_1.ConflictException('Invalid event code');
+                }
+                return this.prisma.attendance.update({
+                    where: {
+                        event_id_user_id: {
+                            event_id: eventId,
+                            user_id: userId,
+                        },
+                    },
+                    data: { status: client_1.attendance_status.attended },
+                });
+            }
         }
-        if (event.end_time < new Date()) {
+        else {
+            if (event.start_time <= new Date() && event.end_time >= new Date()) {
+                if (event.verification_code !== code) {
+                    throw new common_1.ConflictException('Invalid event code');
+                }
+                return this.prisma.attendance.create({
+                    data: {
+                        user: { connect: { id: userId } },
+                        event: { connect: { id: eventId } },
+                        status: client_1.attendance_status.attended,
+                    },
+                });
+            }
+            if (event.start_time > new Date()) {
+                return this.prisma.attendance.create({
+                    data: {
+                        user: { connect: { id: userId } },
+                        event: { connect: { id: eventId } },
+                        status: client_1.attendance_status.rsvp,
+                    },
+                });
+            }
             throw new common_1.ConflictException('Event has already ended');
         }
-        if (event.start_time > new Date()) {
-            throw new common_1.ConflictException('Event has not started yet');
-        }
-        const data = {
-            user: { connect: { id: userId } },
-            event: { connect: { id: eventId } },
-        };
-        return this.prisma.attendances.create({ data });
     }
 };
 exports.EventsService = EventsService;

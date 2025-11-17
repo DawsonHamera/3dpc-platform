@@ -11,17 +11,17 @@ export declare class AuthService {
     private streamClient;
     constructor(prisma: PrismaService, jwtService: JwtService, appConfiguration: ConfigType<typeof appConfig>);
     register(registerDto: RegisterDto): Promise<{
-        id: number;
         name: string;
         email: string;
         password_hash: string;
-        role_id: number;
-        grade_id: number | null;
-        score: number;
+        grade: import("@prisma/client").$Enums.grade;
+        points: number;
         last_active: Date | null;
         created_at: Date | null;
         updated_at: Date | null;
         deleted_at: Date | null;
+        id: number;
+        role_id: number;
     }>;
     login(loginDto: LoginDto): Promise<{
         statusCode: number;

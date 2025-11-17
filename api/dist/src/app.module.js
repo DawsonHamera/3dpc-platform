@@ -26,6 +26,7 @@ const jwt_auth_guard_1 = require("./modules/auth/guards/jwt-auth.guard");
 const roles_guards_1 = require("./common/guards/roles.guards");
 const auth_module_1 = require("./modules/auth/auth.module");
 const events_module_1 = require("./modules/events/events.module");
+const files_module_1 = require("./modules/files/files.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -37,13 +38,14 @@ exports.AppModule = AppModule = __decorate([
                 load: [app_config_1.default, database_config_1.default, jwt_config_1.default],
             }),
             serve_static_1.ServeStaticModule.forRoot({
-                rootPath: (0, path_1.join)(__dirname, '..', 'uploads'),
-                serveRoot: '/uploads',
+                rootPath: (0, path_1.join)(process.cwd(), 'uploads'),
+                serveRoot: '/api/uploads',
             }),
             prisma_module_1.PrismaModule,
             users_module_1.UsersModule,
             events_module_1.EventsModule,
             auth_module_1.AuthModule,
+            files_module_1.FilesModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [

@@ -1,93 +1,94 @@
 import { FilesService } from './files.service';
+import { Prisma } from '@prisma/client';
 export declare class FilesController {
     private readonly filesService;
     constructor(filesService: FilesService);
-    upload(file: Express.Multer.File, body: any, user?: any): import("@prisma/client").Prisma.Prisma__filesClient<{
+    upload(file: Express.Multer.File, user?: any): Prisma.Prisma__fileClient<{
         path: string;
-        id: number;
         created_at: Date | null;
         updated_at: Date | null;
         deleted_at: Date | null;
-        type: import("@prisma/client").$Enums.files_type;
+        id: number;
         description: string | null;
+        type: import("@prisma/client").$Enums.file_type;
         original_name: string;
         stored_name: string;
         mime_type: string | null;
         size: number;
         uploaded_by: number | null;
-    }, never, import("@prisma/client/runtime/library").DefaultArgs, import("@prisma/client").Prisma.PrismaClientOptions> | {
+    }, never, import("@prisma/client/runtime/library").DefaultArgs, Prisma.PrismaClientOptions> | {
         success: boolean;
         message: string;
     };
-    findAll(): import("@prisma/client").Prisma.PrismaPromise<({
+    findAll(): Prisma.PrismaPromise<({
         uploader: {
-            id: number;
             name: string;
             email: string;
             password_hash: string;
-            role_id: number;
-            grade_id: number | null;
-            score: number;
+            grade: import("@prisma/client").$Enums.grade;
+            points: number;
             last_active: Date | null;
             created_at: Date | null;
             updated_at: Date | null;
             deleted_at: Date | null;
+            id: number;
+            role_id: number;
         } | null;
     } & {
         path: string;
-        id: number;
         created_at: Date | null;
         updated_at: Date | null;
         deleted_at: Date | null;
-        type: import("@prisma/client").$Enums.files_type;
+        id: number;
         description: string | null;
+        type: import("@prisma/client").$Enums.file_type;
         original_name: string;
         stored_name: string;
         mime_type: string | null;
         size: number;
         uploaded_by: number | null;
     })[]>;
-    findOne(id: string): import("@prisma/client").Prisma.Prisma__filesClient<({
+    findOne(id: string): Prisma.Prisma__fileClient<({
         uploader: {
-            id: number;
             name: string;
             email: string;
             password_hash: string;
-            role_id: number;
-            grade_id: number | null;
-            score: number;
+            grade: import("@prisma/client").$Enums.grade;
+            points: number;
             last_active: Date | null;
             created_at: Date | null;
             updated_at: Date | null;
             deleted_at: Date | null;
+            id: number;
+            role_id: number;
         } | null;
     } & {
         path: string;
-        id: number;
         created_at: Date | null;
         updated_at: Date | null;
         deleted_at: Date | null;
-        type: import("@prisma/client").$Enums.files_type;
+        id: number;
         description: string | null;
+        type: import("@prisma/client").$Enums.file_type;
         original_name: string;
         stored_name: string;
         mime_type: string | null;
         size: number;
         uploaded_by: number | null;
-    }) | null, null, import("@prisma/client/runtime/library").DefaultArgs, import("@prisma/client").Prisma.PrismaClientOptions>;
-    update(id: string, updateFileDto: Partial<File>): Promise<{
+    }) | null, null, import("@prisma/client/runtime/library").DefaultArgs, Prisma.PrismaClientOptions>;
+    update(id: string, updateFileDto: Partial<File>): Prisma.Prisma__fileClient<{
         path: string;
-        id: number;
         created_at: Date | null;
         updated_at: Date | null;
         deleted_at: Date | null;
-        type: import("@prisma/client").$Enums.files_type;
+        id: number;
         description: string | null;
+        type: import("@prisma/client").$Enums.file_type;
         original_name: string;
         stored_name: string;
         mime_type: string | null;
         size: number;
         uploaded_by: number | null;
-    }>;
+    }, never, import("@prisma/client/runtime/library").DefaultArgs, Prisma.PrismaClientOptions>;
     remove(id: string): Promise<void>;
 }

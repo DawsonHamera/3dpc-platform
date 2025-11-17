@@ -18,27 +18,27 @@ let FilesService = class FilesService {
         this.prisma = prisma;
     }
     findAll() {
-        return this.prisma.files.findMany({
+        return this.prisma.file.findMany({
             include: { uploader: true },
         });
     }
     findOne(id) {
-        return this.prisma.files.findUnique({
+        return this.prisma.file.findUnique({
             where: { id },
             include: { uploader: true },
         });
     }
     create(data) {
-        return this.prisma.files.create({ data });
+        return this.prisma.file.create({ data });
     }
-    async update(id, data) {
-        return this.prisma.files.update({
+    update(id, data) {
+        return this.prisma.file.update({
             where: { id },
             data: data,
         });
     }
     async remove(id) {
-        await this.prisma.files.delete({ where: { id } });
+        await this.prisma.file.delete({ where: { id } });
     }
 };
 exports.FilesService = FilesService;

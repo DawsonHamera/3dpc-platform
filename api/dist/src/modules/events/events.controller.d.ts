@@ -2,12 +2,52 @@ import { EventsService } from './events.service';
 export declare class EventsController {
     private readonly eventsService;
     constructor(eventsService: EventsService);
-    findAll(): import("@prisma/client").Prisma.PrismaPromise<{
-        id: number;
+    findAll(): import("@prisma/client").Prisma.PrismaPromise<({
+        attendances: ({
+            user: {
+                name: string;
+                email: string;
+                password_hash: string;
+                grade: import("@prisma/client").$Enums.grade;
+                points: number;
+                last_active: Date | null;
+                created_at: Date | null;
+                updated_at: Date | null;
+                deleted_at: Date | null;
+                id: number;
+                role_id: number;
+            };
+        } & {
+            created_at: Date | null;
+            updated_at: Date | null;
+            id: number;
+            user_id: number;
+            event_id: number;
+            status: import("@prisma/client").$Enums.attendance_status;
+            rsvp_time: Date | null;
+            arrival_time: Date | null;
+        })[];
+        image_file: {
+            path: string;
+            created_at: Date | null;
+            updated_at: Date | null;
+            deleted_at: Date | null;
+            id: number;
+            description: string | null;
+            type: import("@prisma/client").$Enums.file_type;
+            original_name: string;
+            stored_name: string;
+            mime_type: string | null;
+            size: number;
+            uploaded_by: number | null;
+        } | null;
+    } & {
         created_at: Date | null;
         updated_at: Date | null;
         deleted_at: Date | null;
+        id: number;
         description: string;
+        user_id: number | null;
         title: string;
         location: string;
         start_time: Date;
@@ -15,15 +55,15 @@ export declare class EventsController {
         image_file_id: number | null;
         is_featured: boolean | null;
         event_type: import("@prisma/client").$Enums.events_event_type | null;
-        created_by: number;
         verification_code: string;
-    }[]>;
-    findCurrent(): import("@prisma/client").Prisma.Prisma__eventsClient<{
-        id: number;
+    })[]>;
+    findCurrent(): import("@prisma/client").Prisma.Prisma__eventClient<{
         created_at: Date | null;
         updated_at: Date | null;
         deleted_at: Date | null;
+        id: number;
         description: string;
+        user_id: number | null;
         title: string;
         location: string;
         start_time: Date;
@@ -31,15 +71,15 @@ export declare class EventsController {
         image_file_id: number | null;
         is_featured: boolean | null;
         event_type: import("@prisma/client").$Enums.events_event_type | null;
-        created_by: number;
         verification_code: string;
     } | null, null, import("@prisma/client/runtime/library").DefaultArgs, import("@prisma/client").Prisma.PrismaClientOptions>;
-    findOne(id: string): import("@prisma/client").Prisma.Prisma__eventsClient<{
-        id: number;
+    findOne(id: string): import("@prisma/client").Prisma.Prisma__eventClient<{
         created_at: Date | null;
         updated_at: Date | null;
         deleted_at: Date | null;
+        id: number;
         description: string;
+        user_id: number | null;
         title: string;
         location: string;
         start_time: Date;
@@ -47,15 +87,15 @@ export declare class EventsController {
         image_file_id: number | null;
         is_featured: boolean | null;
         event_type: import("@prisma/client").$Enums.events_event_type | null;
-        created_by: number;
         verification_code: string;
     } | null, null, import("@prisma/client/runtime/library").DefaultArgs, import("@prisma/client").Prisma.PrismaClientOptions>;
-    create(createEventDto: any): import("@prisma/client").Prisma.Prisma__eventsClient<{
-        id: number;
+    create(createEventDto: any, user: any): import("@prisma/client").Prisma.Prisma__eventClient<{
         created_at: Date | null;
         updated_at: Date | null;
         deleted_at: Date | null;
+        id: number;
         description: string;
+        user_id: number | null;
         title: string;
         location: string;
         start_time: Date;
@@ -63,15 +103,15 @@ export declare class EventsController {
         image_file_id: number | null;
         is_featured: boolean | null;
         event_type: import("@prisma/client").$Enums.events_event_type | null;
-        created_by: number;
         verification_code: string;
     }, never, import("@prisma/client/runtime/library").DefaultArgs, import("@prisma/client").Prisma.PrismaClientOptions>;
-    update(id: string, updateEventDto: any): import("@prisma/client").Prisma.Prisma__eventsClient<{
-        id: number;
+    update(id: string, updateEventDto: any): import("@prisma/client").Prisma.Prisma__eventClient<{
         created_at: Date | null;
         updated_at: Date | null;
         deleted_at: Date | null;
+        id: number;
         description: string;
+        user_id: number | null;
         title: string;
         location: string;
         start_time: Date;
@@ -79,15 +119,15 @@ export declare class EventsController {
         image_file_id: number | null;
         is_featured: boolean | null;
         event_type: import("@prisma/client").$Enums.events_event_type | null;
-        created_by: number;
         verification_code: string;
     }, never, import("@prisma/client/runtime/library").DefaultArgs, import("@prisma/client").Prisma.PrismaClientOptions>;
-    remove(id: string): import("@prisma/client").Prisma.Prisma__eventsClient<{
-        id: number;
+    remove(id: string): import("@prisma/client").Prisma.Prisma__eventClient<{
         created_at: Date | null;
         updated_at: Date | null;
         deleted_at: Date | null;
+        id: number;
         description: string;
+        user_id: number | null;
         title: string;
         location: string;
         start_time: Date;
@@ -95,15 +135,16 @@ export declare class EventsController {
         image_file_id: number | null;
         is_featured: boolean | null;
         event_type: import("@prisma/client").$Enums.events_event_type | null;
-        created_by: number;
         verification_code: string;
     }, never, import("@prisma/client/runtime/library").DefaultArgs, import("@prisma/client").Prisma.PrismaClientOptions>;
-    attendEvent(id: string, code: string, user: any): Promise<{
-        id: number;
+    attendEvent(id: string, user: any, code?: string): Promise<{
         created_at: Date | null;
         updated_at: Date | null;
+        id: number;
         user_id: number;
         event_id: number;
+        status: import("@prisma/client").$Enums.attendance_status;
+        rsvp_time: Date | null;
         arrival_time: Date | null;
-    }>;
+    } | undefined>;
 }

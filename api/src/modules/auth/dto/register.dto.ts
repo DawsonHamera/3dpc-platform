@@ -1,4 +1,5 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsNumber } from 'class-validator';
+import { grade } from '@prisma/client';
+import { IsEmail, IsNotEmpty, IsOptional } from 'class-validator';
 
 export class RegisterDto {
   @IsNotEmpty()
@@ -11,6 +12,5 @@ export class RegisterDto {
   password: string;
 
   @IsOptional()
-  @IsNumber()
-  grade_id?: number;
+  grade?: grade;
 }

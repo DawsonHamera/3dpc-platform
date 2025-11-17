@@ -15,21 +15,14 @@ import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 import { diskStorage } from 'multer';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { Public } from 'src/common/decorators/public.decorator';
-
-enum FileType {
-  IMAGE = 'IMAGE',
-  MODEL = 'MODEL',
-  TEXTURE = 'TEXTURE',
-  DOCUMENT = 'DOCUMENT',
-  OTHER = 'OTHER',
-}
+import { file_type, Prisma } from '@prisma/client';
 
 @Controller('files')
 export class FilesController {
   constructor(private readonly filesService: FilesService) {}
 
   @Post()
-  @Public()
+  @Roles(['admin'])
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
@@ -42,11 +35,7 @@ export class FilesController {
       limits: { fileSize: 100 * 1024 * 1024 }, // 100 MB limit
     }),
   )
-  upload(
-    @UploadedFile() file: Express.Multer.File,
-    @Body() body: any,
-    @CurrentUser() user?,
-  ) {
+  upload(@UploadedFile() file: Express.Multer.File, @CurrentUser() user?) {
     console.log('file:', file);
     // Ensure file is uploaded and all required fields are set
     // If file is missing, reject the request
@@ -54,44 +43,44 @@ export class FilesController {
       return { success: false, message: 'No file uploaded.' };
     }
 
-    // Generate a random filename if Multer did not provide one
-    const domain = process.env.DOMAIN_NAME || 'http://localhost:3000';
-    const filePath = `${domain}/uploads/${file.filename}`;
+    // Use relative path so it works in both dev and production
+    const filePath = `/api/uploads/${file.filename}`;
 
     // Determine file type
-    let fileType: FileType = FileType.OTHER;
+    let fileType: file_type = file_type.other;
     switch (file.mimetype) {
       case 'image/jpeg':
       case 'image/png':
       case 'image/gif':
-        fileType = FileType.IMAGE;
+        fileType = file_type.image;
         break;
       case 'model/gltf-binary':
       case 'application/octet-stream':
       case 'model/stl':
-        fileType = FileType.MODEL;
+        fileType = file_type.model;
         break;
       case 'image/texture':
-        fileType = FileType.TEXTURE;
+        fileType = file_type.texture;
         break;
       case 'application/pdf':
       case 'application/msword':
       case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
-        fileType = FileType.DOCUMENT;
+        fileType = file_type.document;
         break;
       default:
-        fileType = FileType.OTHER;
+        fileType = file_type.other;
     }
 
-    const fileData = {
-      originalName: file.originalname,
-      fileName: file.filename,
-      filePath,
-      fileType,
-      mimeType: file.mimetype,
-      fileSize: file.size,
-      uploadedBy: user?.id || null,
-      description: body.description || '',
+    const fileData: Prisma.fileCreateInput = {
+      original_name: file.originalname,
+      stored_name: file.filename,
+      mime_type: file.mimetype,
+      size: file.size,
+      path: filePath,
+      type: fileType,
+      uploader: {
+        connect: { id: user?.id || null },
+      },
     };
 
     return this.filesService.create(fileData);

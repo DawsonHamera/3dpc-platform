@@ -27,6 +27,12 @@ export class UsersController {
     return user;
   }
 
+  @Get('points')
+  @Roles(['admin', 'member', 'viewer'])
+  findPoints() {
+    return this.usersService.findPoints();
+  }
+
   @Get(':id')
   @Roles(['admin'])
   findOne(@Param('id') id: string) {
@@ -49,5 +55,35 @@ export class UsersController {
   @Roles(['admin'])
   remove(@Param('id') id: string) {
     return this.usersService.remove(+id);
+  }
+
+  @Post('heartbeat')
+  heartbeat(@CurrentUser() user) {
+    return this.usersService.update(user.id, { last_active: new Date() });
+  }
+
+  @Post(':id/points')
+  @Roles(['admin'])
+  async updatePoints(
+    @Param('id') id: string,
+    @Body() body: { points: number; reason: string; details?: string },
+  ) {
+    const { points, reason, details } = body;
+    const user = await this.usersService.updateUserPoints(
+      +id,
+      points,
+      reason,
+      details,
+    );
+    if (!user) {
+      return { error: `No user found with id ${id}` };
+    }
+    return { message: 'User score updated successfully', user };
+  }
+
+  @Get(':id/points/logs')
+  @Roles(['admin'])
+  getUserPointsLogs(@Param('id') id: string) {
+    return this.usersService.getUserPointsLogs(+id);
   }
 }
