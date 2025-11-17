@@ -14,6 +14,7 @@ import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard';
 import { RolesGuard } from './common/guards/roles.guards';
 import { AuthModule } from './modules/auth/auth.module';
 import { EventsModule } from './modules/events/events.module';
+import { FilesModule } from './modules/files/files.module';
 
 @Module({
   imports: [
@@ -22,13 +23,14 @@ import { EventsModule } from './modules/events/events.module';
       load: [appConfig, databaseConfig, jwtConfig],
     }),
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'uploads'),
-      serveRoot: '/uploads',
+      rootPath: join(process.cwd(), 'uploads'),
+      serveRoot: '/api/uploads',
     }),
     PrismaModule,
     UsersModule,
     EventsModule,
     AuthModule,
+    FilesModule,
   ],
   controllers: [AppController],
   providers: [

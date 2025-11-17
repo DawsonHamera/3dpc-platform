@@ -21,7 +21,13 @@ import { selectCurrentUser } from "./features/auth/authSlice";
 import { useLoginMutation } from "./features/auth/authApi";
 import useNetworkStatus from "./services/NetworkService";
 import useHeartbeat from "./services/HeartbeatService";
-import HomePage from "./pages/site/home/HomePage";
+import HomePage from "./pages/app/Home/HomePage";
+import Header from "./components/Header/Header";
+import EventsPage from "./pages/app/Events/EventsPage";
+import AdminPage from "./pages/app/Admin/AdminPage";
+import PointsPage from "./pages/app/Admin/PointsPage";
+import RecyclePage from "./pages/app/Recycle/RecyclePage";
+import ChatPage from "./pages/app/Chat/ChatPage";
 
 const Dashboard: React.FC = () => {
     const user = useSelector(selectCurrentUser);
@@ -31,12 +37,12 @@ const Dashboard: React.FC = () => {
 
     useHeartbeat(user?.id);
     const roleName = (user?.role as any)?.name;
-    
+
     if (!isLoading && !authenticated) {
         console.log("Unauthenticated, redirecting to login");
         return <Redirect to="/login" />;
     }
-    
+
     if (isLoading) {
         return <IonProgressBar type="indeterminate" />;
     }
@@ -44,12 +50,16 @@ const Dashboard: React.FC = () => {
     return (
         <IonTabs>
             <IonRouterOutlet>
-                {/* <Route exact path="/dashboard" component={HomePage} /> */}
-               
+                <Route exact path="/dashboard" component={HomePage} />
+                <Route exact path="/dashboard/events" component={EventsPage} />
+                <Route exact path="/dashboard/admin" component={AdminPage} />
+                <Route exact path="/dashboard/admin/points" component={PointsPage} />
+                <Route exact path="/dashboard/recycle" component={RecyclePage} />
+                <Route exact path="/dashboard/chat" component={ChatPage} />
             </IonRouterOutlet>
 
             <IonTabBar slot="bottom" id="ion-tab-bar">
-                <IonTabButton tab="home" href="/dashboard/home">
+                <IonTabButton tab="home" href="/dashboard">
                     <IonIcon aria-hidden="true" icon={home} />
                     <IonLabel>Home</IonLabel>
                 </IonTabButton>
@@ -58,15 +68,13 @@ const Dashboard: React.FC = () => {
                     <IonIcon aria-hidden="true" icon={calendarOutline} />
                     <IonLabel>Events</IonLabel>
                 </IonTabButton>
-                <IonTabButton
+                {/* <IonTabButton
                     tab="shop"
-                    href={
-                        roleName === "admin" ? "/shop/admin" : "/shop"
-                    }
+                    href={roleName === "admin" ? "/shop/admin" : "/shop"}
                 >
                     <IonIcon aria-hidden="true" icon={cartOutline} />
                     <IonLabel>Shop</IonLabel>
-                </IonTabButton>
+                </IonTabButton> */}
                 <IonTabButton tab="recycle" href="/dashboard/recycle">
                     <IonIcon aria-hidden="true" icon={leafOutline} />
                     <IonLabel>Recycle</IonLabel>
@@ -78,7 +86,9 @@ const Dashboard: React.FC = () => {
                     </IonTabButton>
                 )}
                 {user &&
-                    ["member", "admin", "viewer"].includes(roleName as string) && (
+                    ["member", "admin", "viewer"].includes(
+                        roleName as string
+                    ) && (
                         <IonTabButton tab="chat" href="/dashboard/chat">
                             <IonIcon
                                 aria-hidden="true"

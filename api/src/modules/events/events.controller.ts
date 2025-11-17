@@ -6,6 +6,7 @@ import {
   Param,
   Delete,
   Patch,
+  Query,
 } from '@nestjs/common';
 import { Public } from 'src/common/decorators/public.decorator';
 import { Roles } from 'src/common/decorators/roles.decorator';
@@ -36,8 +37,8 @@ export class EventsController {
 
   @Post()
   @Roles(['admin'])
-  create(@Body() createEventDto: any) {
-    return this.eventsService.create(createEventDto);
+  create(@Body() createEventDto: any, @CurrentUser() user) {
+    return this.eventsService.create(createEventDto, user.id);
   }
 
   @Patch(':id')
@@ -52,12 +53,12 @@ export class EventsController {
     return this.eventsService.remove(+id);
   }
 
-  @Post(':id/attendance/:code')
+  @Post(':id/attendance')
   @Roles(['admin', 'member'])
   attendEvent(
     @Param('id') id: string,
-    @Param('code') code: string,
     @CurrentUser() user,
+    @Query('code') code?: string,
   ) {
     return this.eventsService.attendEvent(+id, user.id, code);
   }

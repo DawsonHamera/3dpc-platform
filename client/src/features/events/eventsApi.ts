@@ -2,16 +2,16 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQuery } from "../baseApi";
 import z from "zod";
 import {
-    attendancesModelSchema,
-    eventsCreateInputObjectSchema,
-    eventsModelSchema,
-    eventsUpdateInputObjectSchema,
+    attendanceModelSchema,
+    eventCreateInputObjectSchema,
+    eventModelSchema,
+    eventUpdateInputObjectSchema,
 } from "../../types/zod/schemas";
 
-type Event = z.infer<typeof eventsModelSchema>;
-type Attendance = z.infer<typeof attendancesModelSchema>;
-type CreateEvent = z.infer<typeof eventsCreateInputObjectSchema>;
-type UpdateEvent = z.infer<typeof eventsUpdateInputObjectSchema>;
+export type Event = z.infer<typeof eventModelSchema>;
+export type Attendance = z.infer<typeof attendanceModelSchema>;
+export type CreateEvent = z.infer<typeof eventCreateInputObjectSchema>;
+export type UpdateEvent = z.infer<typeof eventUpdateInputObjectSchema>;
 
 export const eventsApi = createApi({
     reducerPath: "eventsApi",
@@ -46,7 +46,7 @@ export const eventsApi = createApi({
                 method: "PATCH",
                 body: data,
             }),
-            invalidatesTags: (result, error, { id }) => [{ type: "Event", id }],
+            invalidatesTags: ["Event"],
         }),
         deleteEvent: builder.mutation<{ success: boolean }, number>({
             query: (id) => ({
@@ -57,13 +57,18 @@ export const eventsApi = createApi({
         }),
         attendEvent: builder.mutation<
             Attendance,
-            { eventId: number; code: string }
+            { eventId: number; code?: string }
         >({
-            query: ({ eventId, code }) => ({
-                url: `/events/${eventId}/attendance/${code}`,
-                method: "POST",
-            }),
-            invalidatesTags: ["Attendance"],
+            query: ({ eventId, code }) => {
+                const params = new URLSearchParams();
+                if (code) params.append("code", code);
+
+                return {
+                    url: `/events/${eventId}/attendance?${params.toString()}`,
+                    method: "POST",
+                };
+            },
+            invalidatesTags: ["Attendance", "Event"],
         }),
     }),
 });

@@ -6,30 +6,30 @@ export class FilesService {
   constructor(private prisma: PrismaService) {}
 
   findAll() {
-    return this.prisma.files.findMany({
+    return this.prisma.file.findMany({
       include: { uploader: true },
     });
   }
 
   findOne(id: number) {
-    return this.prisma.files.findUnique({
+    return this.prisma.file.findUnique({
       where: { id },
       include: { uploader: true },
     });
   }
 
   create(data: any) {
-    return this.prisma.files.create({ data });
+    return this.prisma.file.create({ data });
   }
 
-  async update(id: number, data: any) {
-    return this.prisma.files.update({
+  update(id: number, data: any) {
+    return this.prisma.file.update({
       where: { id },
       data: data,
     });
   }
 
   async remove(id: number): Promise<void> {
-    await this.prisma.files.delete({ where: { id } });
+    await this.prisma.file.delete({ where: { id } });
   }
 }

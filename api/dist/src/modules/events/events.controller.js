@@ -32,8 +32,8 @@ let EventsController = class EventsController {
     findOne(id) {
         return this.eventsService.findOne(+id);
     }
-    create(createEventDto) {
-        return this.eventsService.create(createEventDto);
+    create(createEventDto, user) {
+        return this.eventsService.create(createEventDto, user.id);
     }
     update(id, updateEventDto) {
         return this.eventsService.update(+id, updateEventDto);
@@ -41,7 +41,7 @@ let EventsController = class EventsController {
     remove(id) {
         return this.eventsService.remove(+id);
     }
-    attendEvent(id, code, user) {
+    attendEvent(id, user, code) {
         return this.eventsService.attendEvent(+id, user.id, code);
     }
 };
@@ -72,8 +72,9 @@ __decorate([
     (0, common_1.Post)(),
     (0, roles_decorator_1.Roles)(['admin']),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, current_user_decorator_1.CurrentUser)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", void 0)
 ], EventsController.prototype, "create", null);
 __decorate([
@@ -94,13 +95,13 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], EventsController.prototype, "remove", null);
 __decorate([
-    (0, common_1.Post)(':id/attendance/:code'),
+    (0, common_1.Post)(':id/attendance'),
     (0, roles_decorator_1.Roles)(['admin', 'member']),
     __param(0, (0, common_1.Param)('id')),
-    __param(1, (0, common_1.Param)('code')),
-    __param(2, (0, current_user_decorator_1.CurrentUser)()),
+    __param(1, (0, current_user_decorator_1.CurrentUser)()),
+    __param(2, (0, common_1.Query)('code')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String, Object]),
+    __metadata("design:paramtypes", [String, Object, String]),
     __metadata("design:returntype", void 0)
 ], EventsController.prototype, "attendEvent", null);
 exports.EventsController = EventsController = __decorate([

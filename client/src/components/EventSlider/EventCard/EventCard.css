@@ -1,0 +1,174 @@
+.event-card {
+    width: 100%;
+    height: auto;
+    position: relative;
+    display: flex;
+    padding: 0px;
+    flex-direction: column;
+    align-items: center;
+    /* border: 1px solid #ccc;
+    border-radius: 8px; */
+}
+
+.date-badge {
+    width: 45px;
+    height: 45px;
+    position: absolute;
+    top: 1.4rem;
+    left: 1.4rem;
+    background-color: var(--ion-color-primary);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    box-sizing: border-box;
+    aspect-ratio: 1 / 1;
+}
+
+.edit-badge {
+    width: 35px;
+    height: 35px;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    color: var(--ion-color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    box-sizing: border-box;
+    aspect-ratio: 1 / 1;
+    cursor: pointer;
+}
+
+.date-badge h2 {
+    margin: 0;
+    font-size: 1.2rem;
+    line-height: 1;
+    font-weight: 700;
+}
+
+.date-badge p {
+    margin: 3px 0 0 0;
+    font-size: 0.6rem;
+    line-height: 1;
+    font-weight: 600;
+    text-transform: uppercase;
+    opacity: 0.95;
+}
+
+.image-container {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    border-radius: 8px 8px 0 0;
+    margin-bottom: 1rem;
+}
+
+.event-card-content {
+    width: 100%;
+    padding: 0 10px 10px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.event-details {
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.event-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+    color: var(--ion-color-dark);
+}
+
+.location-chip {
+    display: inline-flex;
+    gap: 0.4rem;
+    align-items: center;
+    font-size: 0.8rem;
+}
+
+.event-info {
+    flex: 1;
+    /* Takes up the majority of the space */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.time-range {
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+    font-size: 0.9rem;
+    color: var(--ion-color-medium);
+}
+
+.time-range p {
+    margin: 0.2rem;
+}
+
+.footer {
+    width: 100%;
+    display: flex;
+    margin: 0.1rem;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.attending {
+    display: flex;
+    align-items: left;
+
+}
+
+.default-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--ion-color-primary-tint);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-left: -10px;
+    /* Overlaps the avatars */
+    border: 2px solid #fff;
+    /* Optional: Adds a border to distinguish overlapping avatars */
+}
+
+.more-attendees {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--ion-color-secondary);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-left: -10px;
+    /* Overlaps the avatars */
+    border: 2px solid #fff;
+    /* Optional: Adds a border to distinguish overlapping avatars */
+}
+
+.attending .default-avatar:first-child {
+    margin-left: 0;
+    /* Ensures the first avatar is not offset */
+}

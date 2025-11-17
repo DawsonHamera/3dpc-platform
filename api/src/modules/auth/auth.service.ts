@@ -26,17 +26,17 @@ export class AuthService {
     private appConfiguration: ConfigType<typeof appConfig>,
   ) {
     // Initialize StreamChat client with API key and secret from env
-    // this.streamClient = StreamChat.getInstance(
-    //   process.env.STREAM_API_KEY!,
-    //   process.env.STREAM_API_SECRET!,
-    // );
+    this.streamClient = StreamChat.getInstance(
+      process.env.STREAM_API_KEY!,
+      process.env.STREAM_API_SECRET,
+    );
   }
 
   async register(registerDto: RegisterDto) {
-    const { name, email, password, grade_id } = registerDto;
+    const { name, email, password, grade } = registerDto;
 
     // Check if user already exists
-    const existingUser = await this.prisma.users.findUnique({
+    const existingUser = await this.prisma.user.findUnique({
       where: { email },
     });
 
@@ -52,20 +52,20 @@ export class AuthService {
     );
 
     // Create user data
-    const userData: Prisma.usersCreateInput = {
+    const userData: Prisma.userCreateInput = {
       name,
       email,
       password_hash: hashedPassword,
-      grade: { connect: { id: grade_id ?? 1 } },
+      grade: grade,
     };
 
     // Create new user
-    const user = await this.prisma.users.create({ data: userData });
+    const user = await this.prisma.user.create({ data: userData });
     // Create Stream user (new case)
-    // await this.streamClient.upsertUser({
-    //   id: newUser.id.toString(),
-    //   name: newUser.name,
-    // });
+    await this.streamClient.upsertUser({
+      id: user.id.toString(),
+      name: user.name,
+    });
 
     return user;
   }
@@ -74,9 +74,17 @@ export class AuthService {
     const { email, password } = loginDto;
 
     // Find user
-    const user = await this.prisma.users.findUnique({
+    const user = await this.prisma.user.findUnique({
       where: { email },
-      include: { role: true },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        grade: true,
+        password_hash: true,
+        role: true,
+        role_id: true,
+      },
     });
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
@@ -89,7 +97,7 @@ export class AuthService {
     }
 
     // Update last active
-    await this.prisma.users.update({
+    await this.prisma.user.update({
       where: { id: user.id },
       data: { last_active: new Date() },
     });
@@ -102,7 +110,7 @@ export class AuthService {
     };
     console.log(new Date().toISOString());
     const accessToken = this.jwtService.sign(payload);
-    // const streamToken = this.createStreamToken(user.id.toString());
+    const streamToken = this.createStreamToken(user.id.toString());
 
     const decoded: any = this.jwtService.decode(accessToken);
     const expires_at =
@@ -112,13 +120,13 @@ export class AuthService {
     return success(
       {
         access_token: accessToken,
-        stream_token: null,
+        stream_token: streamToken,
         expires_at: expires_at,
         user: {
           id: user.id,
           name: user.name,
           email: user.email,
-          grade_id: user.grade_id,
+          grade: user.grade,
           role: user.role,
         },
       },
@@ -132,7 +140,7 @@ export class AuthService {
   }
 
   async validateUser(payload: any): Promise<any> {
-    const user = await this.prisma.users.findUnique({
+    const user = await this.prisma.user.findUnique({
       where: { id: payload.sub },
       include: { role: true },
     });

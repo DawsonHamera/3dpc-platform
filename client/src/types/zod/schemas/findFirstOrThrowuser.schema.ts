@@ -1,0 +1,54 @@
+import type { Prisma } from '@prisma/client';
+import * as z from 'zod';
+import { userIncludeObjectSchema as userIncludeObjectSchema } from './objects/userInclude.schema';
+import { userOrderByWithRelationInputObjectSchema as userOrderByWithRelationInputObjectSchema } from './objects/userOrderByWithRelationInput.schema';
+import { userWhereInputObjectSchema as userWhereInputObjectSchema } from './objects/userWhereInput.schema';
+import { userWhereUniqueInputObjectSchema as userWhereUniqueInputObjectSchema } from './objects/userWhereUniqueInput.schema';
+import { UserScalarFieldEnumSchema } from './enums/UserScalarFieldEnum.schema';
+
+// Select schema needs to be in file to prevent circular imports
+//------------------------------------------------------
+
+export const userFindFirstOrThrowSelectSchema: z.ZodType<Prisma.userSelect> = z.object({
+    id: z.boolean().optional(),
+    name: z.boolean().optional(),
+    email: z.boolean().optional(),
+    password_hash: z.boolean().optional(),
+    role_id: z.boolean().optional(),
+    grade: z.boolean().optional(),
+    score: z.boolean().optional(),
+    last_active: z.boolean().optional(),
+    attendances: z.boolean().optional(),
+    events: z.boolean().optional(),
+    files: z.boolean().optional(),
+    role: z.boolean().optional(),
+    activity_logs: z.boolean().optional(),
+    created_at: z.boolean().optional(),
+    updated_at: z.boolean().optional(),
+    deleted_at: z.boolean().optional(),
+    _count: z.boolean().optional()
+  }).strict() as unknown as z.ZodType<Prisma.userSelect>;
+
+export const userFindFirstOrThrowSelectZodSchema = z.object({
+    id: z.boolean().optional(),
+    name: z.boolean().optional(),
+    email: z.boolean().optional(),
+    password_hash: z.boolean().optional(),
+    role_id: z.boolean().optional(),
+    grade: z.boolean().optional(),
+    score: z.boolean().optional(),
+    last_active: z.boolean().optional(),
+    attendances: z.boolean().optional(),
+    events: z.boolean().optional(),
+    files: z.boolean().optional(),
+    role: z.boolean().optional(),
+    activity_logs: z.boolean().optional(),
+    created_at: z.boolean().optional(),
+    updated_at: z.boolean().optional(),
+    deleted_at: z.boolean().optional(),
+    _count: z.boolean().optional()
+  }).strict();
+
+export const userFindFirstOrThrowSchema: z.ZodType<Prisma.userFindFirstOrThrowArgs> = z.object({ select: userFindFirstOrThrowSelectSchema.optional(), include: z.lazy(() => userIncludeObjectSchema.optional()), orderBy: z.union([userOrderByWithRelationInputObjectSchema, userOrderByWithRelationInputObjectSchema.array()]).optional(), where: userWhereInputObjectSchema.optional(), cursor: userWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), distinct: z.union([UserScalarFieldEnumSchema, UserScalarFieldEnumSchema.array()]).optional() }).strict() as unknown as z.ZodType<Prisma.userFindFirstOrThrowArgs>;
+
+export const userFindFirstOrThrowZodSchema = z.object({ select: userFindFirstOrThrowSelectSchema.optional(), include: z.lazy(() => userIncludeObjectSchema.optional()), orderBy: z.union([userOrderByWithRelationInputObjectSchema, userOrderByWithRelationInputObjectSchema.array()]).optional(), where: userWhereInputObjectSchema.optional(), cursor: userWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), distinct: z.union([UserScalarFieldEnumSchema, UserScalarFieldEnumSchema.array()]).optional() }).strict();
