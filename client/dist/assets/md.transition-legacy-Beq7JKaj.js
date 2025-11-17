@@ -1,4 +1,4 @@
-System.register(["./index-legacy-BLE-sj2K.js"],function(n,e){"use strict";var t,i;return{setters:[function(n){t=n.x,i=n.v}],execute:function(){
+System.register(["./index-legacy-pMlSnucp.js"],function(n,e){"use strict";var t,i;return{setters:[function(n){t=n.x,i=n.v}],execute:function(){
 /*!
              * (C) Ionic http://ionicframework.com - MIT License
              */
