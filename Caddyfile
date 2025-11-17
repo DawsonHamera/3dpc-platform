@@ -39,8 +39,13 @@ deloro3dpc.tech {
         uri strip_prefix /ws
         reverse_proxy http://host.docker.internal:8080 {
             flush_interval -1
+
+            # REQUIRED FOR WEBSOCKET
+            header_up Connection {>Connection}
+            header_up Upgrade {>Upgrade}
         }
     }
+
 
     # ============================
     #  SPA FALLBACK & STATIC FILES
