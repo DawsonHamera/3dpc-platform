@@ -2,14 +2,14 @@
     email dawsonhamera@gmail.com
 }
 
+# ============================
+# Main site (HTTP + HTTPS)
+# ============================
 deloro3dpc.tech {
     root * /srv
     encode gzip
 
-    # ============================
-    #  API REVERSE PROXY (PRIMARY)
-    # ============================
-    # Static uploads (no prefix stripping)
+    # Static uploads
     @uploads path /api/uploads/*
     handle @uploads {
         reverse_proxy http://localhost:3001 {
@@ -17,7 +17,7 @@ deloro3dpc.tech {
         }
     }
 
-    # API endpoints - strip /api prefix
+    # API endpoints
     @api path /api/*
     handle @api {
         uri strip_prefix /api
@@ -26,41 +26,24 @@ deloro3dpc.tech {
         }
     }
 
-    @ultimakers path /ultimakers/*
-    handle @ultimakers {
-        uri strip_prefix /ultimakers
-        reverse_proxy http://localhost:8081 {
-            flush_interval -1
-        }
-    }
-
-    @ws {
-        path /ws /ws/*
-    }
-    handle @ws {
+    # WebSocket tunnel endpoint
+    @wstunnel path /wstunnel
+    handle @wstunnel {
         reverse_proxy 127.0.0.1:8080 {
             transport http {
                 versions 1.1
             }
-            header_up Host {host}
-            # REQUIRED FOR WEBSOCKET
-            header_up Connection {>Connection}
-            header_up Upgrade {>Upgrade}
-            flush_interval -1
         }
     }
 
-
-    # ============================
-    #  SPA FALLBACK & STATIC FILES
-    # ============================
+    # SPA fallback
     handle {
         try_files {path} {path}/ /index.html
         file_server
     }
 }
 
-# # Optional redirect from non-www to www or vice-versa
-# www.deloro3dpc.tech {
-#     redir https://deloro3dpc.tech{uri}
-# }
+# Optional: redirect HTTP to HTTPS
+http://deloro3dpc.tech {
+    redir https://deloro3dpc.tech{uri} permanent
+}
