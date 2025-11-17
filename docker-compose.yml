@@ -61,6 +61,8 @@ services:
 
   client-prod:
     container_name: 3dpc-caddy-prod
+    extra_hosts:
+      - "host.docker.internal:127.0.0.1"
     image: caddy:2
     ports:
       - 80:80
