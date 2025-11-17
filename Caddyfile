@@ -56,7 +56,7 @@ deloro3dpc.tech {
     }
 }
 
-# Optional redirect from non-www to www or vice-versa
-www.deloro3dpc.tech {
-    redir https://deloro3dpc.tech{uri}
-}
+# # Optional redirect from non-www to www or vice-versa
+# www.deloro3dpc.tech {
+#     redir https://deloro3dpc.tech{uri}
+# }
