@@ -26,6 +26,22 @@ deloro3dpc.tech {
         }
     }
 
+    @ultimakers path /ultimakers/*
+    handle @ultimakers {
+        uri strip_prefix /ultimakers
+        reverse_proxy http://host.docker.internal:8081 {
+            flush_interval -1
+        }
+    }
+
+    @ws path /ws/*
+    handle @ws {
+        uri strip_prefix /ws
+        reverse_proxy http://host.docker.internal:8080 {
+            flush_interval -1
+        }
+    }
+
     # ============================
     #  SPA FALLBACK & STATIC FILES
     # ============================
