@@ -62,6 +62,7 @@ services:
   client-prod:
     container_name: 3dpc-caddy-prod
     image: caddy:2
+    network_mode: host
     ports:
       - 80:80
       - 443:443

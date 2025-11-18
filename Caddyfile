@@ -2,40 +2,41 @@
     email dawsonhamera@gmail.com
 }
 
+# ============================
+# Main site
+# ============================
 deloro3dpc.tech {
     root * /srv
     encode gzip
 
-    # ============================
-    #  API REVERSE PROXY (PRIMARY)
-    # ============================
-    # Static uploads (no prefix stripping)
     @uploads path /api/uploads/*
     handle @uploads {
-        reverse_proxy http://api-prod:3000 {
+        reverse_proxy http://localhost:3001 {
             flush_interval -1
         }
     }
 
-    # API endpoints - strip /api prefix
     @api path /api/*
     handle @api {
         uri strip_prefix /api
-        reverse_proxy http://api-prod:3000 {
+        reverse_proxy http://localhost:3001 {
             flush_interval -1
         }
     }
 
-    # ============================
-    #  SPA FALLBACK & STATIC FILES
-    # ============================
     handle {
         try_files {path} {path}/ /index.html
         file_server
     }
 }
 
-# Optional redirect from non-www to www or vice-versa
-www.deloro3dpc.tech {
-    redir https://deloro3dpc.tech{uri}
+# ============================
+# WebSocket tunnel site
+# ============================
+tunnel.deloro3dpc.tech {
+    reverse_proxy 127.0.0.1:8080 {
+        transport http {
+            versions 1.1
+        }
+    }
 }
