@@ -8,7 +8,7 @@ export const eventGroupByResultSchema = z.array(z.object({
   end_time: z.date(),
   image_file_id: z.number().int(),
   is_featured: z.boolean(),
-  created_by: z.number().int(),
+  user_id: z.number().int(),
   created_at: z.date(),
   updated_at: z.date(),
   deleted_at: z.date(),
@@ -23,24 +23,24 @@ export const eventGroupByResultSchema = z.array(z.object({
     image_file_id: z.number(),
     is_featured: z.number(),
     event_type: z.number(),
-    created_by: z.number(),
+    user_id: z.number(),
     created_at: z.number(),
     updated_at: z.number(),
     deleted_at: z.number(),
     verification_code: z.number(),
     attendances: z.number(),
-    files: z.number(),
-    users: z.number()
+    image_file: z.number(),
+    created_by: z.number()
   }).optional(),
   _sum: z.object({
     id: z.number().nullable(),
     image_file_id: z.number().nullable(),
-    created_by: z.number().nullable()
+    user_id: z.number().nullable()
   }).nullable().optional(),
   _avg: z.object({
     id: z.number().nullable(),
     image_file_id: z.number().nullable(),
-    created_by: z.number().nullable()
+    user_id: z.number().nullable()
   }).nullable().optional(),
   _min: z.object({
     id: z.number().int().nullable(),
@@ -50,7 +50,7 @@ export const eventGroupByResultSchema = z.array(z.object({
     start_time: z.date().nullable(),
     end_time: z.date().nullable(),
     image_file_id: z.number().int().nullable(),
-    created_by: z.number().int().nullable(),
+    user_id: z.number().int().nullable(),
     created_at: z.date().nullable(),
     updated_at: z.date().nullable(),
     deleted_at: z.date().nullable(),
@@ -64,7 +64,7 @@ export const eventGroupByResultSchema = z.array(z.object({
     start_time: z.date().nullable(),
     end_time: z.date().nullable(),
     image_file_id: z.number().int().nullable(),
-    created_by: z.number().int().nullable(),
+    user_id: z.number().int().nullable(),
     created_at: z.date().nullable(),
     updated_at: z.date().nullable(),
     deleted_at: z.date().nullable(),

@@ -15,7 +15,7 @@ const makeSchema = () => z.object({
   password_hash: SortOrderSchema.optional(),
   role_id: SortOrderSchema.optional(),
   grade: SortOrderSchema.optional(),
-  score: SortOrderSchema.optional(),
+  points: SortOrderSchema.optional(),
   last_active: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
   created_at: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
   updated_at: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),

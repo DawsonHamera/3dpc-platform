@@ -11,14 +11,14 @@ export const eventResultSchema = z.object({
     image_file_id: z.number().int().nullable(),
     is_featured: z.boolean().nullable(),
     event_type: events_event_typeSchema.nullable(),
-    created_by: z.number().int(),
+    user_id: z.number().int().nullable(),
     created_at: z.date().nullable(),
     updated_at: z.date().nullable(),
     deleted_at: z.date().nullable(),
     verification_code: z.string(),
     attendances: z.array(z.unknown()),
-    files: z.unknown().nullable(),
-    users: z.unknown()
+    image_file: z.unknown().nullable(),
+    created_by: z.unknown().nullable()
 }).strict();
 
 export type eventResultType = z.infer<typeof eventResultSchema>;

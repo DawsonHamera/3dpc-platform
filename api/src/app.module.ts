@@ -15,6 +15,7 @@ import { RolesGuard } from './common/guards/roles.guards';
 import { AuthModule } from './modules/auth/auth.module';
 import { EventsModule } from './modules/events/events.module';
 import { FilesModule } from './modules/files/files.module';
+import { RecyclingModule } from './modules/recycling/recycling.module';
 
 @Module({
   imports: [
@@ -24,13 +25,14 @@ import { FilesModule } from './modules/files/files.module';
     }),
     ServeStaticModule.forRoot({
       rootPath: join(process.cwd(), 'uploads'),
-      serveRoot: '/api/uploads',
+      serveRoot: '/uploads',
     }),
     PrismaModule,
     UsersModule,
     EventsModule,
     AuthModule,
     FilesModule,
+    RecyclingModule,
   ],
   controllers: [AppController],
   providers: [

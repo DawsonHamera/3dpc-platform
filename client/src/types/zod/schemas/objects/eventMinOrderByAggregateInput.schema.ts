@@ -12,7 +12,7 @@ const makeSchema = () => z.object({
   image_file_id: SortOrderSchema.optional(),
   is_featured: SortOrderSchema.optional(),
   event_type: SortOrderSchema.optional(),
-  created_by: SortOrderSchema.optional(),
+  user_id: SortOrderSchema.optional(),
   created_at: SortOrderSchema.optional(),
   updated_at: SortOrderSchema.optional(),
   deleted_at: SortOrderSchema.optional(),

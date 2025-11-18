@@ -8,7 +8,7 @@ import { NullableEnumevents_event_typeFieldUpdateOperationsInputObjectSchema as 
 import { NullableDateTimeFieldUpdateOperationsInputObjectSchema as NullableDateTimeFieldUpdateOperationsInputObjectSchema } from './NullableDateTimeFieldUpdateOperationsInput.schema';
 import { attendanceUpdateManyWithoutEventNestedInputObjectSchema as attendanceUpdateManyWithoutEventNestedInputObjectSchema } from './attendanceUpdateManyWithoutEventNestedInput.schema';
 import { fileUpdateOneWithoutEventsNestedInputObjectSchema as fileUpdateOneWithoutEventsNestedInputObjectSchema } from './fileUpdateOneWithoutEventsNestedInput.schema';
-import { userUpdateOneRequiredWithoutEventsNestedInputObjectSchema as userUpdateOneRequiredWithoutEventsNestedInputObjectSchema } from './userUpdateOneRequiredWithoutEventsNestedInput.schema'
+import { userUpdateOneWithoutEventsNestedInputObjectSchema as userUpdateOneWithoutEventsNestedInputObjectSchema } from './userUpdateOneWithoutEventsNestedInput.schema'
 
 const makeSchema = () => z.object({
   title: z.union([z.string().max(255), z.lazy(() => StringFieldUpdateOperationsInputObjectSchema)]).optional(),
@@ -23,8 +23,8 @@ const makeSchema = () => z.object({
   deleted_at: z.union([z.coerce.date(), z.lazy(() => NullableDateTimeFieldUpdateOperationsInputObjectSchema)]).optional().nullable(),
   verification_code: z.union([z.string().max(255), z.lazy(() => StringFieldUpdateOperationsInputObjectSchema)]).optional(),
   attendances: z.lazy(() => attendanceUpdateManyWithoutEventNestedInputObjectSchema).optional(),
-  files: z.lazy(() => fileUpdateOneWithoutEventsNestedInputObjectSchema).optional(),
-  users: z.lazy(() => userUpdateOneRequiredWithoutEventsNestedInputObjectSchema).optional()
+  image_file: z.lazy(() => fileUpdateOneWithoutEventsNestedInputObjectSchema).optional(),
+  created_by: z.lazy(() => userUpdateOneWithoutEventsNestedInputObjectSchema).optional()
 }).strict();
 export const eventUpdateInputObjectSchema: z.ZodType<Prisma.eventUpdateInput> = makeSchema() as unknown as z.ZodType<Prisma.eventUpdateInput>;
 export const eventUpdateInputObjectZodSchema = makeSchema();

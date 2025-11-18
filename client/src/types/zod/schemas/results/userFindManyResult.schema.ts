@@ -7,7 +7,7 @@ export const userFindManyResultSchema = z.object({
   password_hash: z.string(),
   role_id: z.number().int(),
   grade: z.unknown(),
-  score: z.number().int(),
+  points: z.number().int(),
   last_active: z.date().optional(),
   attendances: z.array(z.unknown()),
   events: z.array(z.unknown()),
@@ -16,7 +16,9 @@ export const userFindManyResultSchema = z.object({
   activity_logs: z.array(z.unknown()),
   created_at: z.date().optional(),
   updated_at: z.date().optional(),
-  deleted_at: z.date().optional()
+  deleted_at: z.date().optional(),
+  pointLogs: z.array(z.unknown()),
+  recycling_logs: z.array(z.unknown())
 })),
   pagination: z.object({
   page: z.number().int().min(1),

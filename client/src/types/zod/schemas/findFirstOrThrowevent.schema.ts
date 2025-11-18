@@ -19,14 +19,14 @@ export const eventFindFirstOrThrowSelectSchema: z.ZodType<Prisma.eventSelect> = 
     image_file_id: z.boolean().optional(),
     is_featured: z.boolean().optional(),
     event_type: z.boolean().optional(),
-    created_by: z.boolean().optional(),
+    user_id: z.boolean().optional(),
     created_at: z.boolean().optional(),
     updated_at: z.boolean().optional(),
     deleted_at: z.boolean().optional(),
     verification_code: z.boolean().optional(),
     attendances: z.boolean().optional(),
-    files: z.boolean().optional(),
-    users: z.boolean().optional(),
+    image_file: z.boolean().optional(),
+    created_by: z.boolean().optional(),
     _count: z.boolean().optional()
   }).strict() as unknown as z.ZodType<Prisma.eventSelect>;
 
@@ -40,14 +40,14 @@ export const eventFindFirstOrThrowSelectZodSchema = z.object({
     image_file_id: z.boolean().optional(),
     is_featured: z.boolean().optional(),
     event_type: z.boolean().optional(),
-    created_by: z.boolean().optional(),
+    user_id: z.boolean().optional(),
     created_at: z.boolean().optional(),
     updated_at: z.boolean().optional(),
     deleted_at: z.boolean().optional(),
     verification_code: z.boolean().optional(),
     attendances: z.boolean().optional(),
-    files: z.boolean().optional(),
-    users: z.boolean().optional(),
+    image_file: z.boolean().optional(),
+    created_by: z.boolean().optional(),
     _count: z.boolean().optional()
   }).strict();
 

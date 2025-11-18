@@ -13,8 +13,10 @@ export const attendanceFindManySelectSchema: z.ZodType<Prisma.attendanceSelect> 
     id: z.boolean().optional(),
     user_id: z.boolean().optional(),
     event_id: z.boolean().optional(),
+    status: z.boolean().optional(),
     created_at: z.boolean().optional(),
     updated_at: z.boolean().optional(),
+    rsvp_time: z.boolean().optional(),
     arrival_time: z.boolean().optional(),
     event: z.boolean().optional(),
     user: z.boolean().optional()
@@ -24,8 +26,10 @@ export const attendanceFindManySelectZodSchema = z.object({
     id: z.boolean().optional(),
     user_id: z.boolean().optional(),
     event_id: z.boolean().optional(),
+    status: z.boolean().optional(),
     created_at: z.boolean().optional(),
     updated_at: z.boolean().optional(),
+    rsvp_time: z.boolean().optional(),
     arrival_time: z.boolean().optional(),
     event: z.boolean().optional(),
     user: z.boolean().optional()

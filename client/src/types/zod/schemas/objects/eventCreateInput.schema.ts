@@ -14,12 +14,11 @@ const makeSchema = () => z.object({
   is_featured: z.boolean().optional().nullable(),
   event_type: events_event_typeSchema.optional().nullable(),
   created_at: z.coerce.date().optional().nullable(),
-  updated_at: z.coerce.date().optional().nullable(),
   deleted_at: z.coerce.date().optional().nullable(),
   verification_code: z.string().max(255),
   attendances: z.lazy(() => attendanceCreateNestedManyWithoutEventInputObjectSchema),
-  files: z.lazy(() => fileCreateNestedOneWithoutEventsInputObjectSchema).optional(),
-  users: z.lazy(() => userCreateNestedOneWithoutEventsInputObjectSchema)
+  image_file: z.lazy(() => fileCreateNestedOneWithoutEventsInputObjectSchema).optional(),
+  created_by: z.lazy(() => userCreateNestedOneWithoutEventsInputObjectSchema).optional()
 }).strict();
 export const eventCreateInputObjectSchema: z.ZodType<Prisma.eventCreateInput> = makeSchema() as unknown as z.ZodType<Prisma.eventCreateInput>;
 export const eventCreateInputObjectZodSchema = makeSchema();

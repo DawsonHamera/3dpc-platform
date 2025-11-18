@@ -1,7 +1,7 @@
 import * as z from 'zod';
 import type { Prisma } from '@prisma/client';
 import { file_typeSchema } from '../enums/file_type.schema';
-import { eventUncheckedCreateNestedManyWithoutFilesInputObjectSchema as eventUncheckedCreateNestedManyWithoutFilesInputObjectSchema } from './eventUncheckedCreateNestedManyWithoutFilesInput.schema'
+import { eventUncheckedCreateNestedManyWithoutImage_fileInputObjectSchema as eventUncheckedCreateNestedManyWithoutImage_fileInputObjectSchema } from './eventUncheckedCreateNestedManyWithoutImage_fileInput.schema'
 
 const makeSchema = () => z.object({
   id: z.number().int().optional(),
@@ -12,11 +12,10 @@ const makeSchema = () => z.object({
   path: z.string().max(255),
   uploaded_by: z.number().int().optional().nullable(),
   created_at: z.coerce.date().optional().nullable(),
-  updated_at: z.coerce.date().optional().nullable(),
   deleted_at: z.coerce.date().optional().nullable(),
   description: z.string().optional().nullable(),
   type: file_typeSchema.optional(),
-  events: z.lazy(() => eventUncheckedCreateNestedManyWithoutFilesInputObjectSchema)
+  events: z.lazy(() => eventUncheckedCreateNestedManyWithoutImage_fileInputObjectSchema)
 }).strict();
 export const fileUncheckedCreateInputObjectSchema: z.ZodType<Prisma.fileUncheckedCreateInput> = makeSchema() as unknown as z.ZodType<Prisma.fileUncheckedCreateInput>;
 export const fileUncheckedCreateInputObjectZodSchema = makeSchema();

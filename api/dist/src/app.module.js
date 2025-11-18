@@ -27,6 +27,7 @@ const roles_guards_1 = require("./common/guards/roles.guards");
 const auth_module_1 = require("./modules/auth/auth.module");
 const events_module_1 = require("./modules/events/events.module");
 const files_module_1 = require("./modules/files/files.module");
+const recycling_module_1 = require("./modules/recycling/recycling.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -39,13 +40,14 @@ exports.AppModule = AppModule = __decorate([
             }),
             serve_static_1.ServeStaticModule.forRoot({
                 rootPath: (0, path_1.join)(process.cwd(), 'uploads'),
-                serveRoot: '/api/uploads',
+                serveRoot: '/uploads',
             }),
             prisma_module_1.PrismaModule,
             users_module_1.UsersModule,
             events_module_1.EventsModule,
             auth_module_1.AuthModule,
             files_module_1.FilesModule,
+            recycling_module_1.RecyclingModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [

@@ -6,8 +6,10 @@ const makeSchema = () => z.object({
   id: z.literal(true).optional(),
   user_id: z.literal(true).optional(),
   event_id: z.literal(true).optional(),
+  status: z.literal(true).optional(),
   created_at: z.literal(true).optional(),
   updated_at: z.literal(true).optional(),
+  rsvp_time: z.literal(true).optional(),
   arrival_time: z.literal(true).optional(),
   _all: z.literal(true).optional()
 }).strict();

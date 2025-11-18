@@ -4,9 +4,11 @@
  */
 
 export { userModelSchema } from './user.pure';
+export { point_logModelSchema } from './point_log.pure';
 export { activity_logModelSchema } from './activity_log.pure';
 export { attendanceModelSchema } from './attendance.pure';
 export { eventModelSchema } from './event.pure';
 export { fileModelSchema } from './file.pure';
 export { migrationsModelSchema } from './migrations.pure';
 export { roleModelSchema } from './role.pure';
+export { recycling_logModelSchema } from './recycling_log.pure';

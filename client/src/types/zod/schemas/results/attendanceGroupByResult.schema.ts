@@ -5,13 +5,16 @@ export const attendanceGroupByResultSchema = z.array(z.object({
   event_id: z.number().int(),
   created_at: z.date(),
   updated_at: z.date(),
+  rsvp_time: z.date(),
   arrival_time: z.date(),
   _count: z.object({
     id: z.number(),
     user_id: z.number(),
     event_id: z.number(),
+    status: z.number(),
     created_at: z.number(),
     updated_at: z.number(),
+    rsvp_time: z.number(),
     arrival_time: z.number(),
     event: z.number(),
     user: z.number()
@@ -32,6 +35,7 @@ export const attendanceGroupByResultSchema = z.array(z.object({
     event_id: z.number().int().nullable(),
     created_at: z.date().nullable(),
     updated_at: z.date().nullable(),
+    rsvp_time: z.date().nullable(),
     arrival_time: z.date().nullable()
   }).nullable().optional(),
   _max: z.object({
@@ -40,6 +44,7 @@ export const attendanceGroupByResultSchema = z.array(z.object({
     event_id: z.number().int().nullable(),
     created_at: z.date().nullable(),
     updated_at: z.date().nullable(),
+    rsvp_time: z.date().nullable(),
     arrival_time: z.date().nullable()
   }).nullable().optional()
 }));

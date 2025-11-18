@@ -5,6 +5,8 @@ import { eventFindManySchema as eventFindManySchema } from '../findManyevent.sch
 import { fileFindManySchema as fileFindManySchema } from '../findManyfile.schema';
 import { roleArgsObjectSchema as roleArgsObjectSchema } from './roleArgs.schema';
 import { activity_logFindManySchema as activity_logFindManySchema } from '../findManyactivity_log.schema';
+import { point_logFindManySchema as point_logFindManySchema } from '../findManypoint_log.schema';
+import { recycling_logFindManySchema as recycling_logFindManySchema } from '../findManyrecycling_log.schema';
 import { UserCountOutputTypeArgsObjectSchema as UserCountOutputTypeArgsObjectSchema } from './UserCountOutputTypeArgs.schema'
 
 const makeSchema = () => z.object({
@@ -13,6 +15,8 @@ const makeSchema = () => z.object({
   files: z.union([z.boolean(), z.lazy(() => fileFindManySchema)]).optional(),
   role: z.union([z.boolean(), z.lazy(() => roleArgsObjectSchema)]).optional(),
   activity_logs: z.union([z.boolean(), z.lazy(() => activity_logFindManySchema)]).optional(),
+  pointLogs: z.union([z.boolean(), z.lazy(() => point_logFindManySchema)]).optional(),
+  recycling_logs: z.union([z.boolean(), z.lazy(() => recycling_logFindManySchema)]).optional(),
   _count: z.union([z.boolean(), z.lazy(() => UserCountOutputTypeArgsObjectSchema)]).optional()
 }).strict();
 export const userIncludeObjectSchema: z.ZodType<Prisma.userInclude> = makeSchema() as unknown as z.ZodType<Prisma.userInclude>;

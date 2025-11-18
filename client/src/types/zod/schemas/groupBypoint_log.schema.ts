@@ -1,0 +1,15 @@
+import type { Prisma } from '@prisma/client';
+import * as z from 'zod';
+import { point_logWhereInputObjectSchema as point_logWhereInputObjectSchema } from './objects/point_logWhereInput.schema';
+import { point_logOrderByWithAggregationInputObjectSchema as point_logOrderByWithAggregationInputObjectSchema } from './objects/point_logOrderByWithAggregationInput.schema';
+import { point_logScalarWhereWithAggregatesInputObjectSchema as point_logScalarWhereWithAggregatesInputObjectSchema } from './objects/point_logScalarWhereWithAggregatesInput.schema';
+import { PointLogScalarFieldEnumSchema } from './enums/PointLogScalarFieldEnum.schema';
+import { Point_logCountAggregateInputObjectSchema as Point_logCountAggregateInputObjectSchema } from './objects/Point_logCountAggregateInput.schema';
+import { Point_logMinAggregateInputObjectSchema as Point_logMinAggregateInputObjectSchema } from './objects/Point_logMinAggregateInput.schema';
+import { Point_logMaxAggregateInputObjectSchema as Point_logMaxAggregateInputObjectSchema } from './objects/Point_logMaxAggregateInput.schema';
+import { Point_logAvgAggregateInputObjectSchema as Point_logAvgAggregateInputObjectSchema } from './objects/Point_logAvgAggregateInput.schema';
+import { Point_logSumAggregateInputObjectSchema as Point_logSumAggregateInputObjectSchema } from './objects/Point_logSumAggregateInput.schema';
+
+export const point_logGroupBySchema: z.ZodType<Prisma.point_logGroupByArgs> = z.object({ where: point_logWhereInputObjectSchema.optional(), orderBy: z.union([point_logOrderByWithAggregationInputObjectSchema, point_logOrderByWithAggregationInputObjectSchema.array()]).optional(), having: point_logScalarWhereWithAggregatesInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), by: z.array(PointLogScalarFieldEnumSchema), _count: z.union([ z.literal(true), Point_logCountAggregateInputObjectSchema ]).optional(), _min: Point_logMinAggregateInputObjectSchema.optional(), _max: Point_logMaxAggregateInputObjectSchema.optional(), _avg: Point_logAvgAggregateInputObjectSchema.optional(), _sum: Point_logSumAggregateInputObjectSchema.optional() }).strict() as unknown as z.ZodType<Prisma.point_logGroupByArgs>;
+
+export const point_logGroupByZodSchema = z.object({ where: point_logWhereInputObjectSchema.optional(), orderBy: z.union([point_logOrderByWithAggregationInputObjectSchema, point_logOrderByWithAggregationInputObjectSchema.array()]).optional(), having: point_logScalarWhereWithAggregatesInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), by: z.array(PointLogScalarFieldEnumSchema), _count: z.union([ z.literal(true), Point_logCountAggregateInputObjectSchema ]).optional(), _min: Point_logMinAggregateInputObjectSchema.optional(), _max: Point_logMaxAggregateInputObjectSchema.optional(), _avg: Point_logAvgAggregateInputObjectSchema.optional(), _sum: Point_logSumAggregateInputObjectSchema.optional() }).strict();

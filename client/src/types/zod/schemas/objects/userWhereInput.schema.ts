@@ -10,7 +10,9 @@ import { EventListRelationFilterObjectSchema as EventListRelationFilterObjectSch
 import { FileListRelationFilterObjectSchema as FileListRelationFilterObjectSchema } from './FileListRelationFilter.schema';
 import { RoleScalarRelationFilterObjectSchema as RoleScalarRelationFilterObjectSchema } from './RoleScalarRelationFilter.schema';
 import { roleWhereInputObjectSchema as roleWhereInputObjectSchema } from './roleWhereInput.schema';
-import { Activity_logListRelationFilterObjectSchema as Activity_logListRelationFilterObjectSchema } from './Activity_logListRelationFilter.schema'
+import { Activity_logListRelationFilterObjectSchema as Activity_logListRelationFilterObjectSchema } from './Activity_logListRelationFilter.schema';
+import { Point_logListRelationFilterObjectSchema as Point_logListRelationFilterObjectSchema } from './Point_logListRelationFilter.schema';
+import { Recycling_logListRelationFilterObjectSchema as Recycling_logListRelationFilterObjectSchema } from './Recycling_logListRelationFilter.schema'
 
 const userwhereinputSchema = z.object({
   AND: z.union([z.lazy(() => userWhereInputObjectSchema), z.lazy(() => userWhereInputObjectSchema).array()]).optional(),
@@ -22,7 +24,7 @@ const userwhereinputSchema = z.object({
   password_hash: z.union([z.lazy(() => StringFilterObjectSchema), z.string().max(255)]).optional(),
   role_id: z.union([z.lazy(() => IntFilterObjectSchema), z.number().int()]).optional(),
   grade: z.union([z.lazy(() => EnumgradeFilterObjectSchema), gradeSchema]).optional(),
-  score: z.union([z.lazy(() => IntFilterObjectSchema), z.number().int()]).optional(),
+  points: z.union([z.lazy(() => IntFilterObjectSchema), z.number().int()]).optional(),
   last_active: z.union([z.lazy(() => DateTimeNullableFilterObjectSchema), z.coerce.date()]).optional().nullable(),
   created_at: z.union([z.lazy(() => DateTimeNullableFilterObjectSchema), z.coerce.date()]).optional().nullable(),
   updated_at: z.union([z.lazy(() => DateTimeNullableFilterObjectSchema), z.coerce.date()]).optional().nullable(),
@@ -31,7 +33,9 @@ const userwhereinputSchema = z.object({
   events: z.lazy(() => EventListRelationFilterObjectSchema).optional(),
   files: z.lazy(() => FileListRelationFilterObjectSchema).optional(),
   role: z.union([z.lazy(() => RoleScalarRelationFilterObjectSchema), z.lazy(() => roleWhereInputObjectSchema)]).optional(),
-  activity_logs: z.lazy(() => Activity_logListRelationFilterObjectSchema).optional()
+  activity_logs: z.lazy(() => Activity_logListRelationFilterObjectSchema).optional(),
+  pointLogs: z.lazy(() => Point_logListRelationFilterObjectSchema).optional(),
+  recycling_logs: z.lazy(() => Recycling_logListRelationFilterObjectSchema).optional()
 }).strict();
 export const userWhereInputObjectSchema: z.ZodType<Prisma.userWhereInput> = userwhereinputSchema as unknown as z.ZodType<Prisma.userWhereInput>;
 export const userWhereInputObjectZodSchema = userwhereinputSchema;
