@@ -49,7 +49,6 @@ const LoginPage: React.FC = () => {
 
     return (
         <IonPage>
-            <IonPage>
                 <div
                     style={{
                         backgroundColor: "var(--ion-color-primary)",
@@ -93,7 +92,6 @@ const LoginPage: React.FC = () => {
                         )}
                     </div>
                 </div>
-            </IonPage>
             <IonAlert
                 isOpen={alert.isOpen}
                 onDidDismiss={() =>
