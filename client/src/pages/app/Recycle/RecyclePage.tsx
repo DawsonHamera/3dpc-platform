@@ -97,41 +97,39 @@ const RecyclePage: React.FC = () => {
             <Header title="Recycle" color="success" />
             <IonContent>
                 <div className="hero-container">
-                    <path class="theGreenLine"
-                        d="M -5,0
-           Q 450 230 300 450 
-           T 130 750
-           Q 100 850 300 1000
-           T 150 1400
-           Q -150 1600 250 2000
-           T 0 2500"
-                        fill="none" stroke="blue" stroke-width="2px" />
-                    <h1 ref={recycledBottlesRef} className="hero-text">
-                        0
-                    </h1>
-                    <h2
-                        style={{
-                            margin: "10px 0 0 0",
-                            textAlign: "center",
-                            fontSize: "1.5rem",
-                            color: "white",
-                        }}
-                    >
-                        <IonIcon icon={leaf} /> Bottles Recycled
-                    </h2>
-                    <h1 ref={recycledGramsRef} className="hero-text">
-                        0
-                    </h1>
-                    <h2
-                        style={{
-                            margin: "10px 0 0 0",
-                            textAlign: "center",
-                            fontSize: "1.5rem",
-                            color: "white",
-                        }}
-                    >
-                        <IonIcon icon={leaf} /> Grams Recycled
-                    </h2>
+                    <img src="/images/recycling_symbol.svg" alt="Recycle Hero" className="hero-image" />
+                    <h1 className="hero-text">Recreator</h1>
+                    <p className="hero-subtitle">Recycling Project</p>
+                    <div className='stat-box'>
+                        <h1 ref={recycledBottlesRef} className="hero-text">
+                            0
+                        </h1>
+                        <h2
+                            style={{
+                                margin: "10px 0 0 0",
+                                textAlign: "center",
+                                fontSize: "1.5rem",
+                                color: "white",
+                            }}
+                        >
+                            <IonIcon icon={leaf} /> Bottles Recycled
+                        </h2>
+                    </div>
+                    <div className='stat-box'>
+                        <h1 ref={recycledGramsRef} className="hero-text">
+                            0
+                        </h1>
+                        <h2
+                            style={{
+                                margin: "10px 0 0 0",
+                                textAlign: "center",
+                                fontSize: "1.5rem",
+                                color: "white",
+                            }}
+                        >
+                            <IonIcon icon={leaf} /> Grams Recycled
+                        </h2>
+                    </div>
                 </div>
                 <div style={{ padding: "20px" }}>
                     <IonCard style={{ padding: "20px", marginBottom: "20px" }}>
