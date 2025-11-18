@@ -16,7 +16,7 @@ export const userFindFirstSelectSchema: z.ZodType<Prisma.userSelect> = z.object(
     password_hash: z.boolean().optional(),
     role_id: z.boolean().optional(),
     grade: z.boolean().optional(),
-    score: z.boolean().optional(),
+    points: z.boolean().optional(),
     last_active: z.boolean().optional(),
     attendances: z.boolean().optional(),
     events: z.boolean().optional(),
@@ -26,6 +26,8 @@ export const userFindFirstSelectSchema: z.ZodType<Prisma.userSelect> = z.object(
     created_at: z.boolean().optional(),
     updated_at: z.boolean().optional(),
     deleted_at: z.boolean().optional(),
+    pointLogs: z.boolean().optional(),
+    recycling_logs: z.boolean().optional(),
     _count: z.boolean().optional()
   }).strict() as unknown as z.ZodType<Prisma.userSelect>;
 
@@ -36,7 +38,7 @@ export const userFindFirstSelectZodSchema = z.object({
     password_hash: z.boolean().optional(),
     role_id: z.boolean().optional(),
     grade: z.boolean().optional(),
-    score: z.boolean().optional(),
+    points: z.boolean().optional(),
     last_active: z.boolean().optional(),
     attendances: z.boolean().optional(),
     events: z.boolean().optional(),
@@ -46,6 +48,8 @@ export const userFindFirstSelectZodSchema = z.object({
     created_at: z.boolean().optional(),
     updated_at: z.boolean().optional(),
     deleted_at: z.boolean().optional(),
+    pointLogs: z.boolean().optional(),
+    recycling_logs: z.boolean().optional(),
     _count: z.boolean().optional()
   }).strict();
 

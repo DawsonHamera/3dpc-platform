@@ -1,0 +1,18 @@
+.hero-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    background-color: var(--ion-color-success);
+}
+
+.hero-text {
+    margin: 15px 0 0 0;
+    text-align: center;
+    font-weight: 800;
+    font-size: 3rem;
+    font-family: Arial, sans-serif;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}

@@ -11,7 +11,7 @@ import { DateTimeNullableFilterObjectSchema as DateTimeNullableFilterObjectSchem
 import { AttendanceListRelationFilterObjectSchema as AttendanceListRelationFilterObjectSchema } from './AttendanceListRelationFilter.schema';
 import { FileNullableScalarRelationFilterObjectSchema as FileNullableScalarRelationFilterObjectSchema } from './FileNullableScalarRelationFilter.schema';
 import { fileWhereInputObjectSchema as fileWhereInputObjectSchema } from './fileWhereInput.schema';
-import { UserScalarRelationFilterObjectSchema as UserScalarRelationFilterObjectSchema } from './UserScalarRelationFilter.schema';
+import { UserNullableScalarRelationFilterObjectSchema as UserNullableScalarRelationFilterObjectSchema } from './UserNullableScalarRelationFilter.schema';
 import { userWhereInputObjectSchema as userWhereInputObjectSchema } from './userWhereInput.schema'
 
 const eventwhereinputSchema = z.object({
@@ -27,14 +27,14 @@ const eventwhereinputSchema = z.object({
   image_file_id: z.union([z.lazy(() => IntNullableFilterObjectSchema), z.number().int()]).optional().nullable(),
   is_featured: z.union([z.lazy(() => BoolNullableFilterObjectSchema), z.boolean()]).optional().nullable(),
   event_type: z.union([z.lazy(() => Enumevents_event_typeNullableFilterObjectSchema), events_event_typeSchema]).optional().nullable(),
-  created_by: z.union([z.lazy(() => IntFilterObjectSchema), z.number().int()]).optional(),
+  user_id: z.union([z.lazy(() => IntNullableFilterObjectSchema), z.number().int()]).optional().nullable(),
   created_at: z.union([z.lazy(() => DateTimeNullableFilterObjectSchema), z.coerce.date()]).optional().nullable(),
   updated_at: z.union([z.lazy(() => DateTimeNullableFilterObjectSchema), z.coerce.date()]).optional().nullable(),
   deleted_at: z.union([z.lazy(() => DateTimeNullableFilterObjectSchema), z.coerce.date()]).optional().nullable(),
   verification_code: z.union([z.lazy(() => StringFilterObjectSchema), z.string().max(255)]).optional(),
   attendances: z.lazy(() => AttendanceListRelationFilterObjectSchema).optional(),
-  files: z.union([z.lazy(() => FileNullableScalarRelationFilterObjectSchema), z.lazy(() => fileWhereInputObjectSchema)]).optional(),
-  users: z.union([z.lazy(() => UserScalarRelationFilterObjectSchema), z.lazy(() => userWhereInputObjectSchema)]).optional()
+  image_file: z.union([z.lazy(() => FileNullableScalarRelationFilterObjectSchema), z.lazy(() => fileWhereInputObjectSchema)]).optional(),
+  created_by: z.union([z.lazy(() => UserNullableScalarRelationFilterObjectSchema), z.lazy(() => userWhereInputObjectSchema)]).optional()
 }).strict();
 export const eventWhereInputObjectSchema: z.ZodType<Prisma.eventWhereInput> = eventwhereinputSchema as unknown as z.ZodType<Prisma.eventWhereInput>;
 export const eventWhereInputObjectZodSchema = eventwhereinputSchema;

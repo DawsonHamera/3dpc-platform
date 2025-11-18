@@ -7,6 +7,8 @@ import { eventOrderByRelationAggregateInputObjectSchema as eventOrderByRelationA
 import { fileOrderByRelationAggregateInputObjectSchema as fileOrderByRelationAggregateInputObjectSchema } from './fileOrderByRelationAggregateInput.schema';
 import { roleOrderByWithRelationInputObjectSchema as roleOrderByWithRelationInputObjectSchema } from './roleOrderByWithRelationInput.schema';
 import { activity_logOrderByRelationAggregateInputObjectSchema as activity_logOrderByRelationAggregateInputObjectSchema } from './activity_logOrderByRelationAggregateInput.schema';
+import { point_logOrderByRelationAggregateInputObjectSchema as point_logOrderByRelationAggregateInputObjectSchema } from './point_logOrderByRelationAggregateInput.schema';
+import { recycling_logOrderByRelationAggregateInputObjectSchema as recycling_logOrderByRelationAggregateInputObjectSchema } from './recycling_logOrderByRelationAggregateInput.schema';
 import { userOrderByRelevanceInputObjectSchema as userOrderByRelevanceInputObjectSchema } from './userOrderByRelevanceInput.schema'
 
 const makeSchema = () => z.object({
@@ -16,7 +18,7 @@ const makeSchema = () => z.object({
   password_hash: SortOrderSchema.optional(),
   role_id: SortOrderSchema.optional(),
   grade: SortOrderSchema.optional(),
-  score: SortOrderSchema.optional(),
+  points: SortOrderSchema.optional(),
   last_active: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
   created_at: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
   updated_at: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
@@ -26,6 +28,8 @@ const makeSchema = () => z.object({
   files: z.lazy(() => fileOrderByRelationAggregateInputObjectSchema).optional(),
   role: z.lazy(() => roleOrderByWithRelationInputObjectSchema).optional(),
   activity_logs: z.lazy(() => activity_logOrderByRelationAggregateInputObjectSchema).optional(),
+  pointLogs: z.lazy(() => point_logOrderByRelationAggregateInputObjectSchema).optional(),
+  recycling_logs: z.lazy(() => recycling_logOrderByRelationAggregateInputObjectSchema).optional(),
   _relevance: z.lazy(() => userOrderByRelevanceInputObjectSchema).optional()
 }).strict();
 export const userOrderByWithRelationInputObjectSchema: z.ZodType<Prisma.userOrderByWithRelationInput> = makeSchema() as unknown as z.ZodType<Prisma.userOrderByWithRelationInput>;

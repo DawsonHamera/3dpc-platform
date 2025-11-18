@@ -8,7 +8,7 @@ const makeSchema = () => z.object({
   email: z.string().max(255),
   password_hash: z.string().max(255),
   grade: gradeSchema.optional(),
-  score: z.number().int().optional(),
+  points: z.number().int().optional(),
   last_active: z.coerce.date().optional().nullable(),
   created_at: z.coerce.date().optional().nullable(),
   updated_at: z.coerce.date().optional().nullable(),

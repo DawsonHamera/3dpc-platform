@@ -1,0 +1,14 @@
+import type { Prisma } from '@prisma/client';
+import * as z from 'zod';
+import { point_logOrderByWithRelationInputObjectSchema as point_logOrderByWithRelationInputObjectSchema } from './objects/point_logOrderByWithRelationInput.schema';
+import { point_logWhereInputObjectSchema as point_logWhereInputObjectSchema } from './objects/point_logWhereInput.schema';
+import { point_logWhereUniqueInputObjectSchema as point_logWhereUniqueInputObjectSchema } from './objects/point_logWhereUniqueInput.schema';
+import { Point_logCountAggregateInputObjectSchema as Point_logCountAggregateInputObjectSchema } from './objects/Point_logCountAggregateInput.schema';
+import { Point_logMinAggregateInputObjectSchema as Point_logMinAggregateInputObjectSchema } from './objects/Point_logMinAggregateInput.schema';
+import { Point_logMaxAggregateInputObjectSchema as Point_logMaxAggregateInputObjectSchema } from './objects/Point_logMaxAggregateInput.schema';
+import { Point_logAvgAggregateInputObjectSchema as Point_logAvgAggregateInputObjectSchema } from './objects/Point_logAvgAggregateInput.schema';
+import { Point_logSumAggregateInputObjectSchema as Point_logSumAggregateInputObjectSchema } from './objects/Point_logSumAggregateInput.schema';
+
+export const point_logAggregateSchema: z.ZodType<Prisma.Point_logAggregateArgs> = z.object({ orderBy: z.union([point_logOrderByWithRelationInputObjectSchema, point_logOrderByWithRelationInputObjectSchema.array()]).optional(), where: point_logWhereInputObjectSchema.optional(), cursor: point_logWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), _count: z.union([ z.literal(true), Point_logCountAggregateInputObjectSchema ]).optional(), _min: Point_logMinAggregateInputObjectSchema.optional(), _max: Point_logMaxAggregateInputObjectSchema.optional(), _avg: Point_logAvgAggregateInputObjectSchema.optional(), _sum: Point_logSumAggregateInputObjectSchema.optional() }).strict() as unknown as z.ZodType<Prisma.Point_logAggregateArgs>;
+
+export const point_logAggregateZodSchema = z.object({ orderBy: z.union([point_logOrderByWithRelationInputObjectSchema, point_logOrderByWithRelationInputObjectSchema.array()]).optional(), where: point_logWhereInputObjectSchema.optional(), cursor: point_logWhereUniqueInputObjectSchema.optional(), take: z.number().optional(), skip: z.number().optional(), _count: z.union([ z.literal(true), Point_logCountAggregateInputObjectSchema ]).optional(), _min: Point_logMinAggregateInputObjectSchema.optional(), _max: Point_logMaxAggregateInputObjectSchema.optional(), _avg: Point_logAvgAggregateInputObjectSchema.optional(), _sum: Point_logSumAggregateInputObjectSchema.optional() }).strict();

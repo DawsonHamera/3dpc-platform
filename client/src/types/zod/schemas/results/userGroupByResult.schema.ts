@@ -5,7 +5,7 @@ export const userGroupByResultSchema = z.array(z.object({
   email: z.string(),
   password_hash: z.string(),
   role_id: z.number().int(),
-  score: z.number().int(),
+  points: z.number().int(),
   last_active: z.date(),
   created_at: z.date(),
   updated_at: z.date(),
@@ -17,7 +17,7 @@ export const userGroupByResultSchema = z.array(z.object({
     password_hash: z.number(),
     role_id: z.number(),
     grade: z.number(),
-    score: z.number(),
+    points: z.number(),
     last_active: z.number(),
     attendances: z.number(),
     events: z.number(),
@@ -26,17 +26,19 @@ export const userGroupByResultSchema = z.array(z.object({
     activity_logs: z.number(),
     created_at: z.number(),
     updated_at: z.number(),
-    deleted_at: z.number()
+    deleted_at: z.number(),
+    pointLogs: z.number(),
+    recycling_logs: z.number()
   }).optional(),
   _sum: z.object({
     id: z.number().nullable(),
     role_id: z.number().nullable(),
-    score: z.number().nullable()
+    points: z.number().nullable()
   }).nullable().optional(),
   _avg: z.object({
     id: z.number().nullable(),
     role_id: z.number().nullable(),
-    score: z.number().nullable()
+    points: z.number().nullable()
   }).nullable().optional(),
   _min: z.object({
     id: z.number().int().nullable(),
@@ -44,7 +46,7 @@ export const userGroupByResultSchema = z.array(z.object({
     email: z.string().nullable(),
     password_hash: z.string().nullable(),
     role_id: z.number().int().nullable(),
-    score: z.number().int().nullable(),
+    points: z.number().int().nullable(),
     last_active: z.date().nullable(),
     created_at: z.date().nullable(),
     updated_at: z.date().nullable(),
@@ -56,7 +58,7 @@ export const userGroupByResultSchema = z.array(z.object({
     email: z.string().nullable(),
     password_hash: z.string().nullable(),
     role_id: z.number().int().nullable(),
-    score: z.number().int().nullable(),
+    points: z.number().int().nullable(),
     last_active: z.date().nullable(),
     created_at: z.date().nullable(),
     updated_at: z.date().nullable(),

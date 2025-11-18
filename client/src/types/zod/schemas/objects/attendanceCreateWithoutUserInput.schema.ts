@@ -1,10 +1,13 @@
 import * as z from 'zod';
 import type { Prisma } from '@prisma/client';
+import { attendance_statusSchema } from '../enums/attendance_status.schema';
 import { eventCreateNestedOneWithoutAttendancesInputObjectSchema as eventCreateNestedOneWithoutAttendancesInputObjectSchema } from './eventCreateNestedOneWithoutAttendancesInput.schema'
 
 const makeSchema = () => z.object({
+  status: attendance_statusSchema.optional(),
   created_at: z.coerce.date().optional().nullable(),
   updated_at: z.coerce.date().optional().nullable(),
+  rsvp_time: z.coerce.date().optional().nullable(),
   arrival_time: z.coerce.date().optional().nullable(),
   event: z.lazy(() => eventCreateNestedOneWithoutAttendancesInputObjectSchema)
 }).strict();

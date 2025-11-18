@@ -7,8 +7,10 @@ const makeSchema = () => z.object({
   id: z.boolean().optional(),
   user_id: z.boolean().optional(),
   event_id: z.boolean().optional(),
+  status: z.boolean().optional(),
   created_at: z.boolean().optional(),
   updated_at: z.boolean().optional(),
+  rsvp_time: z.boolean().optional(),
   arrival_time: z.boolean().optional(),
   event: z.union([z.boolean(), z.lazy(() => eventArgsObjectSchema)]).optional(),
   user: z.union([z.boolean(), z.lazy(() => userArgsObjectSchema)]).optional()

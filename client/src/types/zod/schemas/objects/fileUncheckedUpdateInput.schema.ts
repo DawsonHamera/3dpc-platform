@@ -7,7 +7,7 @@ import { NullableIntFieldUpdateOperationsInputObjectSchema as NullableIntFieldUp
 import { NullableDateTimeFieldUpdateOperationsInputObjectSchema as NullableDateTimeFieldUpdateOperationsInputObjectSchema } from './NullableDateTimeFieldUpdateOperationsInput.schema';
 import { file_typeSchema } from '../enums/file_type.schema';
 import { Enumfile_typeFieldUpdateOperationsInputObjectSchema as Enumfile_typeFieldUpdateOperationsInputObjectSchema } from './Enumfile_typeFieldUpdateOperationsInput.schema';
-import { eventUncheckedUpdateManyWithoutFilesNestedInputObjectSchema as eventUncheckedUpdateManyWithoutFilesNestedInputObjectSchema } from './eventUncheckedUpdateManyWithoutFilesNestedInput.schema'
+import { eventUncheckedUpdateManyWithoutImage_fileNestedInputObjectSchema as eventUncheckedUpdateManyWithoutImage_fileNestedInputObjectSchema } from './eventUncheckedUpdateManyWithoutImage_fileNestedInput.schema'
 
 const makeSchema = () => z.object({
   id: z.union([z.number().int(), z.lazy(() => IntFieldUpdateOperationsInputObjectSchema)]).optional(),
@@ -22,7 +22,7 @@ const makeSchema = () => z.object({
   deleted_at: z.union([z.coerce.date(), z.lazy(() => NullableDateTimeFieldUpdateOperationsInputObjectSchema)]).optional().nullable(),
   description: z.union([z.string(), z.lazy(() => NullableStringFieldUpdateOperationsInputObjectSchema)]).optional().nullable(),
   type: z.union([file_typeSchema, z.lazy(() => Enumfile_typeFieldUpdateOperationsInputObjectSchema)]).optional(),
-  events: z.lazy(() => eventUncheckedUpdateManyWithoutFilesNestedInputObjectSchema).optional()
+  events: z.lazy(() => eventUncheckedUpdateManyWithoutImage_fileNestedInputObjectSchema).optional()
 }).strict();
 export const fileUncheckedUpdateInputObjectSchema: z.ZodType<Prisma.fileUncheckedUpdateInput> = makeSchema() as unknown as z.ZodType<Prisma.fileUncheckedUpdateInput>;
 export const fileUncheckedUpdateInputObjectZodSchema = makeSchema();

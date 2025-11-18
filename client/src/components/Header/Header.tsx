@@ -10,9 +10,10 @@ interface HeaderProps {
     title: string;
     type?: string;
     onBack?: () => void;
+    color?: string;
 }
 
-const Header: React.FC<HeaderProps> = ({ title, type, onBack }) => {
+const Header: React.FC<HeaderProps> = ({ title, type, onBack, color }) => {
     const dispatch = useDispatch();
     const [isPopoverOpen, setIsPopoverOpen] = useState(false);
     const [popoverEvent, setPopoverEvent] = useState<MouseEvent | undefined>(undefined);
@@ -41,7 +42,7 @@ const Header: React.FC<HeaderProps> = ({ title, type, onBack }) => {
     if (type === 'back') {
         return (
             <IonHeader className='ion-header'>
-                <IonToolbar className='primary-gradient'>
+                <IonToolbar color={color || 'primary'}>
                     <IonButtons slot="start">
                         <IonButton onClick={() => onBack ? onBack() : history.back()}>
                             <IonIcon slot="icon-only" icon={arrowBack} />
@@ -64,43 +65,51 @@ const Header: React.FC<HeaderProps> = ({ title, type, onBack }) => {
                 event={popoverEvent}
                 onDidDismiss={() => setIsPopoverOpen(false)}
                 dismissOnSelect={true}
-                style={{ '--width': '50px !important' }}
+                style={{ "--width": "50px !important" }}
             >
-                <IonList style={{ padding: '10px' }}>
+                <IonList style={{ padding: "10px" }}>
                     <IonItem>
                         <IonToolbar>
-                            <IonLabel><b>{user?.name}</b></IonLabel>
-                            <IonLabel slot='end'><i>{user?.role.name}</i></IonLabel>
+                            <IonLabel>
+                                <b>{user?.name}</b>
+                            </IonLabel>
+                            <IonLabel slot="end">
+                                <i>{user?.role.name}</i>
+                            </IonLabel>
                         </IonToolbar>
                     </IonItem>
-                    <IonItem
-                        button
-                        lines='none'
-                        onClick={handleLogout}
-                    >
+                    <IonItem button lines="none" onClick={handleLogout}>
                         <IonLabel>Sign Out</IonLabel>
                     </IonItem>
                     <IonItem>
                         {isSubscribed ? (
-                            <IonButton onClick={async () => {
-                                await OneSignal.User.PushSubscription.optOut();
-                                console.log("unsubscribed from push notifications")
-                                await OneSignal.logout();
-                                console.log("logged out")
+                            <IonButton
+                                onClick={async () => {
+                                    await OneSignal.User.PushSubscription.optOut();
+                                    console.log(
+                                        "unsubscribed from push notifications"
+                                    );
+                                    await OneSignal.logout();
+                                    console.log("logged out");
 
-                                // Optionally show a toast or update UI
-                            }}>
+                                    // Optionally show a toast or update UI
+                                }}
+                            >
                                 Disable Push Notifications
                             </IonButton>
                         ) : (
-                            <IonButton onClick={async () => {
-                                await OneSignal.User.PushSubscription.optIn();
-                                console.log("subscribed to push notifications")
-                                await OneSignal.login(String(user?.id));
-                                console.log("subscribed and logged in")
+                            <IonButton
+                                onClick={async () => {
+                                    await OneSignal.User.PushSubscription.optIn();
+                                    console.log(
+                                        "subscribed to push notifications"
+                                    );
+                                    await OneSignal.login(String(user?.id));
+                                    console.log("subscribed and logged in");
 
-                                // Optionally show a toast or update UI
-                            }}>
+                                    // Optionally show a toast or update UI
+                                }}
+                            >
                                 Enable Push Notifications
                             </IonButton>
                         )}
@@ -108,7 +117,10 @@ const Header: React.FC<HeaderProps> = ({ title, type, onBack }) => {
                 </IonList>
             </IonPopover>
 
-            <IonToolbar color='primary'>
+            <IonToolbar
+                color={color || "primary"}
+                style={{ color: color === "success" ? "white" : "black" }}
+            >
                 <IonButtons slot="end">
                     <IonButton onClick={openPopover}>
                         <IonIcon icon={personCircleOutline} />

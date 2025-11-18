@@ -15,14 +15,14 @@ const makeSchema = () => z.object({
   image_file_id: z.boolean().optional(),
   is_featured: z.boolean().optional(),
   event_type: z.boolean().optional(),
-  created_by: z.boolean().optional(),
+  user_id: z.boolean().optional(),
   created_at: z.boolean().optional(),
   updated_at: z.boolean().optional(),
   deleted_at: z.boolean().optional(),
   verification_code: z.boolean().optional(),
   attendances: z.union([z.boolean(), z.lazy(() => attendanceFindManySchema)]).optional(),
-  files: z.union([z.boolean(), z.lazy(() => fileArgsObjectSchema)]).optional(),
-  users: z.union([z.boolean(), z.lazy(() => userArgsObjectSchema)]).optional(),
+  image_file: z.union([z.boolean(), z.lazy(() => fileArgsObjectSchema)]).optional(),
+  created_by: z.union([z.boolean(), z.lazy(() => userArgsObjectSchema)]).optional(),
   _count: z.union([z.boolean(), z.lazy(() => EventCountOutputTypeArgsObjectSchema)]).optional()
 }).strict();
 export const eventSelectObjectSchema: z.ZodType<Prisma.eventSelect> = makeSchema() as unknown as z.ZodType<Prisma.eventSelect>;

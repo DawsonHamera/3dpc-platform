@@ -1,46 +1,208 @@
-import { IonContent, IonIcon, IonPage } from "@ionic/react";
+import {
+    IonAccordion,
+    IonAccordionGroup,
+    IonAlert,
+    IonButton,
+    IonButtons,
+    IonCard,
+    IonCardContent,
+    IonCardHeader,
+    IonContent,
+    IonHeader,
+    IonIcon,
+    IonItem,
+    IonLabel,
+    IonModal,
+    IonPage,
+    IonTitle,
+    IonToolbar,
+} from "@ionic/react";
 import Header from "../../../components/Header/Header";
 import { leaf } from "ionicons/icons";
+import { useGSAP } from "@gsap/react";
+import { useRef, useState } from "react";
+import Card from "../../../components/Card/Card";
+import gsap from "gsap";
+import "./RecyclePage.css";
+import {
+    useCreateRecyclingLogMutation,
+    useGetRecyclingStatsQuery,
+} from "../../../features/recycling/recyclingApi";
+import RecycleJobs from "./RecycleJobs";
+import { useAuth } from "../../../hooks/useAuth";
+import RecycleLogs from "./RecycleLogs";
 
 const RecyclePage: React.FC = () => {
+    const [isAddBottleAlertOpen, setIsAddBottleAlertOpen] = useState(false);
+    const [isAddGramsAlertOpen, setIsAddGramsAlertOpen] = useState(false);
+
+    const user = useAuth().user;
+
+    const {
+        data: recyclingStats,
+        isLoading,
+        isFetching,
+        isSuccess,
+    } = useGetRecyclingStatsQuery();
+    const [createRecycleLog] = useCreateRecyclingLogMutation();
+
+    console.log("Recycling Stats:", recyclingStats);
+
+    const recycledBottlesRef = useRef<HTMLDivElement>(null);
+    const recycledGramsRef = useRef<HTMLDivElement>(null);
+
+    useGSAP(
+        () => {
+            if (!isLoading && !isFetching && isSuccess) {
+                const start = {
+                    bottles: parseInt(
+                        recycledBottlesRef.current?.textContent || "0"
+                    ),
+                    grams: parseInt(
+                        recycledGramsRef.current?.textContent || "0"
+                    ),
+                };
+
+                let tl = gsap.timeline();
+                tl.to(start, {
+                    bottles: recyclingStats?.bottles || 0,
+                    duration: 1,
+                    ease: "power3.out",
+                    onUpdate: () => {
+                        if (recycledBottlesRef.current) {
+                            recycledBottlesRef.current.textContent = Math.floor(
+                                start.bottles
+                            ).toLocaleString();
+                        }
+                    },
+                }).to(start, {
+                    grams: recyclingStats?.filamentCreated || 0,
+                    duration: 1,
+                    ease: "power3.out",
+                    onUpdate: () => {
+                        if (recycledGramsRef.current) {
+                            recycledGramsRef.current.textContent = Math.floor(
+                                start.grams
+                            ).toLocaleString();
+                        }
+                    },
+                });
+            }
+        },
+        { dependencies: [isLoading, isFetching, isSuccess] }
+    );
+
     return (
         <IonPage>
-            <Header title="Recycle" />
+            <Header title="Recycle" color="success" />
             <IonContent>
-                <div
-                    style={{
-                        padding: 50,
-                        textAlign: "center",
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        height: "100%",
-                    }}
-                >
-                    <div
+                <div className="hero-container">
+                    <h1 ref={recycledBottlesRef} className="hero-text">
+                        0
+                    </h1>
+                    <h2
                         style={{
-                            width: "80%",
-                            display: "flex",
-                            flexDirection: "column",
-                            alignItems: "left",
-                            justifyContent: "center",
-                            height: "100%",
+                            margin: "10px 0 0 0",
+                            textAlign: "center",
+                            fontSize: "1.5rem",
+                            color: "white",
                         }}
                     >
-                        <IonIcon icon={leaf} color="success" size="large" />
-                        <h4>Work in progress</h4>
-                        <p>When complete, you'll be able to</p>
-                        <ul style={{ textAlign: "left", maxWidth: 400 }}>
-                            <li>Log your recycling activities</li>
-                            <li>Track your impact over time</li>
-                            <li>Earn points for recycling</li>
-                            <li>View leaderboards to see how you compare</li>
-                        </ul>
-                        <p>Stay tuned for updates!</p>
-                    </div>
+                        <IonIcon icon={leaf} /> Bottles Recycled
+                    </h2>
+                    <h1 ref={recycledGramsRef} className="hero-text">
+                        0
+                    </h1>
+                    <h2
+                        style={{
+                            margin: "10px 0 0 0",
+                            textAlign: "center",
+                            fontSize: "1.5rem",
+                            color: "white",
+                        }}
+                    >
+                        <IonIcon icon={leaf} /> Grams Recycled
+                    </h2>
+                </div>
+                <div style={{ padding: "20px" }}>
+                    <IonCard style={{ padding: "20px", marginBottom: "20px" }}>
+                        <IonCardHeader>
+                            <IonTitle>Actions</IonTitle>
+                        </IonCardHeader>
+                        <IonCardContent>
+                            Log recycled bottles or grams of filament
+                        </IonCardContent>
+                        <IonButton
+                            color="success"
+                            fill="clear"
+                            onClick={() => setIsAddBottleAlertOpen(true)}
+                        >
+                            + 1 Bottle
+                        </IonButton>
+                        <IonButton
+                            color="success"
+                            fill="clear"
+                            onClick={() => setIsAddGramsAlertOpen(true)}
+                        >
+                            + Grams
+                        </IonButton>
+                    </IonCard>
+                    <RecycleJobs />
+                    {user?.role.name === "admin" && <RecycleLogs />}
                 </div>
             </IonContent>
+            <IonAlert
+                isOpen={isAddBottleAlertOpen}
+                onDidDismiss={() => setIsAddBottleAlertOpen(false)}
+                header="Confirm Addition"
+                message="Are you sure you want to add one more bottle?"
+                buttons={[
+                    {
+                        text: "Cancel",
+                        role: "cancel",
+                    },
+                    {
+                        text: "Confirm",
+                        handler: () => {
+                            // Handle the confirmation logic here
+                            createRecycleLog({ amount: 1, type: "bottle" });
+                            setIsAddBottleAlertOpen(false);
+                        },
+                    },
+                ]}
+            />
+            <IonAlert
+                isOpen={isAddGramsAlertOpen}
+                onDidDismiss={() => setIsAddGramsAlertOpen(false)}
+                header="Confirm Addition"
+                message="Enter the number of grams to add:"
+                inputs={[
+                    {
+                        name: "amount",
+                        type: "number",
+                        placeholder: "Enter amount",
+                    },
+                ]}
+                buttons={[
+                    {
+                        text: "Cancel",
+                        role: "cancel",
+                    },
+                    {
+                        text: "Confirm",
+                        handler: (data) => {
+                            const amount = parseInt(data.amount, 10);
+                            if (!isNaN(amount) && amount > 0) {
+                                createRecycleLog({
+                                    amount,
+                                    type: "filament_created",
+                                });
+                            }
+                            setIsAddGramsAlertOpen(false);
+                        },
+                    },
+                ]}
+            />
         </IonPage>
     );
 };

@@ -8,14 +8,16 @@ import { NullableDateTimeFieldUpdateOperationsInputObjectSchema as NullableDateT
 import { attendanceUpdateManyWithoutUserNestedInputObjectSchema as attendanceUpdateManyWithoutUserNestedInputObjectSchema } from './attendanceUpdateManyWithoutUserNestedInput.schema';
 import { fileUpdateManyWithoutUploaderNestedInputObjectSchema as fileUpdateManyWithoutUploaderNestedInputObjectSchema } from './fileUpdateManyWithoutUploaderNestedInput.schema';
 import { roleUpdateOneRequiredWithoutUsersNestedInputObjectSchema as roleUpdateOneRequiredWithoutUsersNestedInputObjectSchema } from './roleUpdateOneRequiredWithoutUsersNestedInput.schema';
-import { activity_logUpdateManyWithoutUserNestedInputObjectSchema as activity_logUpdateManyWithoutUserNestedInputObjectSchema } from './activity_logUpdateManyWithoutUserNestedInput.schema'
+import { activity_logUpdateManyWithoutUserNestedInputObjectSchema as activity_logUpdateManyWithoutUserNestedInputObjectSchema } from './activity_logUpdateManyWithoutUserNestedInput.schema';
+import { point_logUpdateManyWithoutUserNestedInputObjectSchema as point_logUpdateManyWithoutUserNestedInputObjectSchema } from './point_logUpdateManyWithoutUserNestedInput.schema';
+import { recycling_logUpdateManyWithoutCreated_byNestedInputObjectSchema as recycling_logUpdateManyWithoutCreated_byNestedInputObjectSchema } from './recycling_logUpdateManyWithoutCreated_byNestedInput.schema'
 
 const makeSchema = () => z.object({
   name: z.union([z.string().max(255), z.lazy(() => StringFieldUpdateOperationsInputObjectSchema)]).optional(),
   email: z.union([z.string().max(255), z.lazy(() => StringFieldUpdateOperationsInputObjectSchema)]).optional(),
   password_hash: z.union([z.string().max(255), z.lazy(() => StringFieldUpdateOperationsInputObjectSchema)]).optional(),
   grade: z.union([gradeSchema, z.lazy(() => EnumgradeFieldUpdateOperationsInputObjectSchema)]).optional(),
-  score: z.union([z.number().int(), z.lazy(() => IntFieldUpdateOperationsInputObjectSchema)]).optional(),
+  points: z.union([z.number().int(), z.lazy(() => IntFieldUpdateOperationsInputObjectSchema)]).optional(),
   last_active: z.union([z.coerce.date(), z.lazy(() => NullableDateTimeFieldUpdateOperationsInputObjectSchema)]).optional().nullable(),
   created_at: z.union([z.coerce.date(), z.lazy(() => NullableDateTimeFieldUpdateOperationsInputObjectSchema)]).optional().nullable(),
   updated_at: z.union([z.coerce.date(), z.lazy(() => NullableDateTimeFieldUpdateOperationsInputObjectSchema)]).optional().nullable(),
@@ -23,7 +25,9 @@ const makeSchema = () => z.object({
   attendances: z.lazy(() => attendanceUpdateManyWithoutUserNestedInputObjectSchema).optional(),
   files: z.lazy(() => fileUpdateManyWithoutUploaderNestedInputObjectSchema).optional(),
   role: z.lazy(() => roleUpdateOneRequiredWithoutUsersNestedInputObjectSchema).optional(),
-  activity_logs: z.lazy(() => activity_logUpdateManyWithoutUserNestedInputObjectSchema).optional()
+  activity_logs: z.lazy(() => activity_logUpdateManyWithoutUserNestedInputObjectSchema).optional(),
+  pointLogs: z.lazy(() => point_logUpdateManyWithoutUserNestedInputObjectSchema).optional(),
+  recycling_logs: z.lazy(() => recycling_logUpdateManyWithoutCreated_byNestedInputObjectSchema).optional()
 }).strict();
 export const userUpdateWithoutEventsInputObjectSchema: z.ZodType<Prisma.userUpdateWithoutEventsInput> = makeSchema() as unknown as z.ZodType<Prisma.userUpdateWithoutEventsInput>;
 export const userUpdateWithoutEventsInputObjectZodSchema = makeSchema();

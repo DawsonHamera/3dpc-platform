@@ -16,8 +16,8 @@ const makeSchema = () => z.object({
   updated_at: z.coerce.date().optional().nullable(),
   deleted_at: z.coerce.date().optional().nullable(),
   verification_code: z.string().max(255),
-  files: z.lazy(() => fileCreateNestedOneWithoutEventsInputObjectSchema).optional(),
-  users: z.lazy(() => userCreateNestedOneWithoutEventsInputObjectSchema)
+  image_file: z.lazy(() => fileCreateNestedOneWithoutEventsInputObjectSchema).optional(),
+  created_by: z.lazy(() => userCreateNestedOneWithoutEventsInputObjectSchema).optional()
 }).strict();
 export const eventCreateWithoutAttendancesInputObjectSchema: z.ZodType<Prisma.eventCreateWithoutAttendancesInput> = makeSchema() as unknown as z.ZodType<Prisma.eventCreateWithoutAttendancesInput>;
 export const eventCreateWithoutAttendancesInputObjectZodSchema = makeSchema();

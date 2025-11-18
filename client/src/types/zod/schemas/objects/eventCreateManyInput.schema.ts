@@ -12,7 +12,7 @@ const makeSchema = () => z.object({
   image_file_id: z.number().int().optional().nullable(),
   is_featured: z.boolean().optional().nullable(),
   event_type: events_event_typeSchema.optional().nullable(),
-  created_by: z.number().int(),
+  user_id: z.number().int().optional().nullable(),
   created_at: z.coerce.date().optional().nullable(),
   updated_at: z.coerce.date().optional().nullable(),
   deleted_at: z.coerce.date().optional().nullable(),

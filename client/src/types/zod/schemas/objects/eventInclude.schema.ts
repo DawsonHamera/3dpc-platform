@@ -7,8 +7,8 @@ import { EventCountOutputTypeArgsObjectSchema as EventCountOutputTypeArgsObjectS
 
 const makeSchema = () => z.object({
   attendances: z.union([z.boolean(), z.lazy(() => attendanceFindManySchema)]).optional(),
-  files: z.union([z.boolean(), z.lazy(() => fileArgsObjectSchema)]).optional(),
-  users: z.union([z.boolean(), z.lazy(() => userArgsObjectSchema)]).optional(),
+  image_file: z.union([z.boolean(), z.lazy(() => fileArgsObjectSchema)]).optional(),
+  created_by: z.union([z.boolean(), z.lazy(() => userArgsObjectSchema)]).optional(),
   _count: z.union([z.boolean(), z.lazy(() => EventCountOutputTypeArgsObjectSchema)]).optional()
 }).strict();
 export const eventIncludeObjectSchema: z.ZodType<Prisma.eventInclude> = makeSchema() as unknown as z.ZodType<Prisma.eventInclude>;

@@ -9,7 +9,7 @@ const makeSchema = () => z.object({
   password_hash: SortOrderSchema.optional(),
   role_id: SortOrderSchema.optional(),
   grade: SortOrderSchema.optional(),
-  score: SortOrderSchema.optional(),
+  points: SortOrderSchema.optional(),
   last_active: SortOrderSchema.optional(),
   created_at: SortOrderSchema.optional(),
   updated_at: SortOrderSchema.optional(),

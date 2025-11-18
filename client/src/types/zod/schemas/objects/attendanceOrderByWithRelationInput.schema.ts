@@ -9,8 +9,10 @@ const makeSchema = () => z.object({
   id: SortOrderSchema.optional(),
   user_id: SortOrderSchema.optional(),
   event_id: SortOrderSchema.optional(),
+  status: SortOrderSchema.optional(),
   created_at: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
   updated_at: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
+  rsvp_time: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
   arrival_time: z.union([SortOrderSchema, z.lazy(() => SortOrderInputObjectSchema)]).optional(),
   event: z.lazy(() => eventOrderByWithRelationInputObjectSchema).optional(),
   user: z.lazy(() => userOrderByWithRelationInputObjectSchema).optional()

@@ -5,12 +5,14 @@ import authReducer from "../features/auth/authSlice";
 import { usersApi } from "../features/users/usersApi";
 import { eventsApi } from "../features/events/eventsApi";
 import { filesApi } from "../features/files/filesApi";
+import { recyclingLogsApi } from "../features/recycling/recyclingApi";
 
 const rootReducer = combineReducers({
     [authApi.reducerPath]: authApi.reducer,
     [usersApi.reducerPath]: usersApi.reducer,
     [eventsApi.reducerPath]: eventsApi.reducer,
     [filesApi.reducerPath]: filesApi.reducer,
+    [recyclingLogsApi.reducerPath]: recyclingLogsApi.reducer,
     auth: authReducer,
 });
 
@@ -23,7 +25,8 @@ export const store = configureStore({
             authApi.middleware,
             usersApi.middleware,
             eventsApi.middleware,
-            filesApi.middleware
+            filesApi.middleware,
+            recyclingLogsApi.middleware
         ),
 });
 

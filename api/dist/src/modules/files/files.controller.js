@@ -31,8 +31,7 @@ let FilesController = class FilesController {
         if (!file) {
             return { success: false, message: 'No file uploaded.' };
         }
-        const domain = process.env.DOMAIN_NAME || 'http://localhost:3000';
-        const filePath = `${domain}/api/uploads/${file.filename}`;
+        const filePath = `/api/uploads/${file.filename}`;
         let fileType = client_1.file_type.other;
         switch (file.mimetype) {
             case 'image/jpeg':

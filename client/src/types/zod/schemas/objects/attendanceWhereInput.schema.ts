@@ -1,6 +1,8 @@
 import * as z from 'zod';
 import type { Prisma } from '@prisma/client';
 import { IntFilterObjectSchema as IntFilterObjectSchema } from './IntFilter.schema';
+import { Enumattendance_statusFilterObjectSchema as Enumattendance_statusFilterObjectSchema } from './Enumattendance_statusFilter.schema';
+import { attendance_statusSchema } from '../enums/attendance_status.schema';
 import { DateTimeNullableFilterObjectSchema as DateTimeNullableFilterObjectSchema } from './DateTimeNullableFilter.schema';
 import { EventScalarRelationFilterObjectSchema as EventScalarRelationFilterObjectSchema } from './EventScalarRelationFilter.schema';
 import { eventWhereInputObjectSchema as eventWhereInputObjectSchema } from './eventWhereInput.schema';
@@ -14,8 +16,10 @@ const attendancewhereinputSchema = z.object({
   id: z.union([z.lazy(() => IntFilterObjectSchema), z.number().int()]).optional(),
   user_id: z.union([z.lazy(() => IntFilterObjectSchema), z.number().int()]).optional(),
   event_id: z.union([z.lazy(() => IntFilterObjectSchema), z.number().int()]).optional(),
+  status: z.union([z.lazy(() => Enumattendance_statusFilterObjectSchema), attendance_statusSchema]).optional(),
   created_at: z.union([z.lazy(() => DateTimeNullableFilterObjectSchema), z.coerce.date()]).optional().nullable(),
   updated_at: z.union([z.lazy(() => DateTimeNullableFilterObjectSchema), z.coerce.date()]).optional().nullable(),
+  rsvp_time: z.union([z.lazy(() => DateTimeNullableFilterObjectSchema), z.coerce.date()]).optional().nullable(),
   arrival_time: z.union([z.lazy(() => DateTimeNullableFilterObjectSchema), z.coerce.date()]).optional().nullable(),
   event: z.union([z.lazy(() => EventScalarRelationFilterObjectSchema), z.lazy(() => eventWhereInputObjectSchema)]).optional(),
   user: z.union([z.lazy(() => UserScalarRelationFilterObjectSchema), z.lazy(() => userWhereInputObjectSchema)]).optional()
