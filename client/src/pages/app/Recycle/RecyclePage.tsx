@@ -97,6 +97,15 @@ const RecyclePage: React.FC = () => {
             <Header title="Recycle" color="success" />
             <IonContent>
                 <div className="hero-container">
+                    <path class="theGreenLine"
+                        d="M -5,0
+           Q 450 230 300 450 
+           T 130 750
+           Q 100 850 300 1000
+           T 150 1400
+           Q -150 1600 250 2000
+           T 0 2500"
+                        fill="none" stroke="blue" stroke-width="2px" />
                     <h1 ref={recycledBottlesRef} className="hero-text">
                         0
                     </h1>
