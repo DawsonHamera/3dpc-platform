@@ -4,6 +4,7 @@ WORKDIR /usr/src/api
 
 # Copy only necessary files
 COPY package*.json ./
+COPY prisma ./prisma
 RUN npm ci --only=production
 
 # Generate Prisma Client
