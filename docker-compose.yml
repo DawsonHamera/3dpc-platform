@@ -88,8 +88,6 @@ services:
       - "3001:3000"
     volumes:
       - ./api/uploads:/usr/src/api/uploads
-      - ./api/dist:/usr/src/api/dist
-      - ./api/prisma:/usr/src/api/prisma
     environment:
       - NODE_ENV=production
       - PORT=3000
