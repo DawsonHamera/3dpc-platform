@@ -6,3 +6,18 @@
     gap: 1rem;
     align-items: center;
 }
+
+.new-event-card {
+    width: 100%;
+    max-width: 400px;
+    height: 150px;
+    border: 2px dashed var(--ion-color-primary);
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--ion-color-primary);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}

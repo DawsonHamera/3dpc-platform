@@ -28,7 +28,7 @@ const EventSlider: React.FC<EventSliderProps> = ({ filter }) => {
         switch (filter) {
             case "upcoming":
                 return events.filter(
-                    (event: eventResultType) => new Date(event.start_time) > now
+                    (event: eventResultType) => new Date(event.end_time) > now
                 );
             case "ongoing":
                 return events.filter(

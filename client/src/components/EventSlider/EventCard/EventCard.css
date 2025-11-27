@@ -6,8 +6,9 @@
     padding: 0px;
     flex-direction: column;
     align-items: center;
-    /* border: 1px solid #ccc;
-    border-radius: 8px; */
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
 }
 
 .date-badge {
@@ -64,13 +65,12 @@
     width: 100%;
     height: 200px;
     overflow: hidden;
-    border-radius: 8px 8px 0 0;
     margin-bottom: 1rem;
 }
 
 .event-card-content {
     width: 100%;
-    padding: 0 10px 10px 10px;
+    padding: 0 10px 20px 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -79,7 +79,7 @@
 
 .event-details {
     width: 100%;
-    padding: 10px;
+    padding: 20px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -126,49 +126,4 @@
     margin: 0.1rem;
     justify-content: space-between;
     align-items: center;
-}
-
-.attending {
-    display: flex;
-    align-items: left;
-
-}
-
-.default-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: var(--ion-color-primary-tint);
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.8rem;
-    font-weight: 600;
-    margin-left: -10px;
-    /* Overlaps the avatars */
-    border: 2px solid #fff;
-    /* Optional: Adds a border to distinguish overlapping avatars */
-}
-
-.more-attendees {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: var(--ion-color-secondary);
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.8rem;
-    font-weight: 600;
-    margin-left: -10px;
-    /* Overlaps the avatars */
-    border: 2px solid #fff;
-    /* Optional: Adds a border to distinguish overlapping avatars */
-}
-
-.attending .default-avatar:first-child {
-    margin-left: 0;
-    /* Ensures the first avatar is not offset */
 }

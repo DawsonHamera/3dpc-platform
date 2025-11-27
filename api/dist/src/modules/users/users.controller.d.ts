@@ -126,10 +126,10 @@ export declare class UsersController {
         };
     } & {
         id: number;
+        user_id: number;
         change: number;
         reason: string;
         details: string | null;
         logged_at: Date;
-        user_id: number;
     })[]>;
 }

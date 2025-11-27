@@ -28,6 +28,8 @@ import AdminPage from "./pages/app/Admin/AdminPage";
 import PointsPage from "./pages/app/Admin/PointsPage";
 import RecyclePage from "./pages/app/Recycle/RecyclePage";
 import ChatPage from "./pages/app/Chat/ChatPage";
+import EventAttendancePage from "./pages/app/Events/EventDetailsPage";
+import EventDetailsPage from "./pages/app/Events/EventDetailsPage";
 
 const Dashboard: React.FC = () => {
     const user = useSelector(selectCurrentUser);
@@ -56,6 +58,8 @@ const Dashboard: React.FC = () => {
                 <Route exact path="/dashboard/admin/points" component={PointsPage} />
                 <Route exact path="/dashboard/recycle" component={RecyclePage} />
                 <Route exact path="/dashboard/chat" component={ChatPage} />
+                <Route exact path="/dashboard/events/:eventId" component={EventDetailsPage} />
+
             </IonRouterOutlet>
 
             <IonTabBar slot="bottom" id="ion-tab-bar">

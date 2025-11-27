@@ -19,7 +19,7 @@ import Card from "../../../components/Card/Card";
 const HomePage: React.FC = () => {
     return (
         <IonPage>
-            <Header title="3DPC" />
+            <Header title="3D Printing Club" />
             <IonContent>
                 <div className="home-page-content">
                     <Card title="Upcoming Events" subtitle="Don't miss out on workshops, fundraisers, and more!">

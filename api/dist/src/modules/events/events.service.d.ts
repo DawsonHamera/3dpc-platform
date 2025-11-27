@@ -25,7 +25,6 @@ export declare class EventsService {
             user_id: number;
             event_id: number;
             status: import("@prisma/client").$Enums.attendance_status;
-            rsvp_time: Date | null;
             arrival_time: Date | null;
         })[];
         image_file: {
@@ -48,7 +47,6 @@ export declare class EventsService {
         deleted_at: Date | null;
         id: number;
         description: string;
-        user_id: number | null;
         title: string;
         location: string;
         start_time: Date;
@@ -56,15 +54,53 @@ export declare class EventsService {
         image_file_id: number | null;
         is_featured: boolean | null;
         event_type: import("@prisma/client").$Enums.events_event_type | null;
+        user_id: number | null;
         verification_code: string;
     })[]>;
-    findOne(id: number): Prisma.Prisma__eventClient<{
+    findOne(id: number): Prisma.Prisma__eventClient<({
+        attendances: ({
+            user: {
+                name: string;
+                email: string;
+                password_hash: string;
+                grade: import("@prisma/client").$Enums.grade;
+                points: number;
+                last_active: Date | null;
+                created_at: Date | null;
+                updated_at: Date | null;
+                deleted_at: Date | null;
+                id: number;
+                role_id: number;
+            };
+        } & {
+            created_at: Date | null;
+            updated_at: Date | null;
+            id: number;
+            user_id: number;
+            event_id: number;
+            status: import("@prisma/client").$Enums.attendance_status;
+            arrival_time: Date | null;
+        })[];
+        image_file: {
+            path: string;
+            created_at: Date | null;
+            updated_at: Date | null;
+            deleted_at: Date | null;
+            id: number;
+            description: string | null;
+            type: import("@prisma/client").$Enums.file_type;
+            original_name: string;
+            stored_name: string;
+            mime_type: string | null;
+            size: number;
+            uploaded_by: number | null;
+        } | null;
+    } & {
         created_at: Date | null;
         updated_at: Date | null;
         deleted_at: Date | null;
         id: number;
         description: string;
-        user_id: number | null;
         title: string;
         location: string;
         start_time: Date;
@@ -72,7 +108,20 @@ export declare class EventsService {
         image_file_id: number | null;
         is_featured: boolean | null;
         event_type: import("@prisma/client").$Enums.events_event_type | null;
+        user_id: number | null;
         verification_code: string;
+    }) | null, null, import("@prisma/client/runtime/library").DefaultArgs, Prisma.PrismaClientOptions>;
+    findEventCode(id: number): Prisma.Prisma__eventClient<{
+        verification_code: string;
+    } | null, null, import("@prisma/client/runtime/library").DefaultArgs, Prisma.PrismaClientOptions>;
+    findAttendance(eventId: any, userId: any): Prisma.Prisma__attendanceClient<{
+        created_at: Date | null;
+        updated_at: Date | null;
+        id: number;
+        user_id: number;
+        event_id: number;
+        status: import("@prisma/client").$Enums.attendance_status;
+        arrival_time: Date | null;
     } | null, null, import("@prisma/client/runtime/library").DefaultArgs, Prisma.PrismaClientOptions>;
     findCurrent(): Prisma.Prisma__eventClient<{
         created_at: Date | null;
@@ -80,7 +129,6 @@ export declare class EventsService {
         deleted_at: Date | null;
         id: number;
         description: string;
-        user_id: number | null;
         title: string;
         location: string;
         start_time: Date;
@@ -88,6 +136,7 @@ export declare class EventsService {
         image_file_id: number | null;
         is_featured: boolean | null;
         event_type: import("@prisma/client").$Enums.events_event_type | null;
+        user_id: number | null;
         verification_code: string;
     } | null, null, import("@prisma/client/runtime/library").DefaultArgs, Prisma.PrismaClientOptions>;
     create(data: any, created_by?: number): Prisma.Prisma__eventClient<{
@@ -96,7 +145,6 @@ export declare class EventsService {
         deleted_at: Date | null;
         id: number;
         description: string;
-        user_id: number | null;
         title: string;
         location: string;
         start_time: Date;
@@ -104,6 +152,7 @@ export declare class EventsService {
         image_file_id: number | null;
         is_featured: boolean | null;
         event_type: import("@prisma/client").$Enums.events_event_type | null;
+        user_id: number | null;
         verification_code: string;
     }, never, import("@prisma/client/runtime/library").DefaultArgs, Prisma.PrismaClientOptions>;
     update(id: number, data: any): Prisma.Prisma__eventClient<{
@@ -112,7 +161,6 @@ export declare class EventsService {
         deleted_at: Date | null;
         id: number;
         description: string;
-        user_id: number | null;
         title: string;
         location: string;
         start_time: Date;
@@ -120,6 +168,7 @@ export declare class EventsService {
         image_file_id: number | null;
         is_featured: boolean | null;
         event_type: import("@prisma/client").$Enums.events_event_type | null;
+        user_id: number | null;
         verification_code: string;
     }, never, import("@prisma/client/runtime/library").DefaultArgs, Prisma.PrismaClientOptions>;
     remove(id: number): Prisma.Prisma__eventClient<{
@@ -128,7 +177,6 @@ export declare class EventsService {
         deleted_at: Date | null;
         id: number;
         description: string;
-        user_id: number | null;
         title: string;
         location: string;
         start_time: Date;
@@ -136,16 +184,16 @@ export declare class EventsService {
         image_file_id: number | null;
         is_featured: boolean | null;
         event_type: import("@prisma/client").$Enums.events_event_type | null;
+        user_id: number | null;
         verification_code: string;
     }, never, import("@prisma/client/runtime/library").DefaultArgs, Prisma.PrismaClientOptions>;
-    attendEvent(eventId: number, userId: number, code?: string): Promise<{
+    attendEvent(eventId: number, userId: number, code?: string, status?: string): Promise<{
         created_at: Date | null;
         updated_at: Date | null;
         id: number;
         user_id: number;
         event_id: number;
         status: import("@prisma/client").$Enums.attendance_status;
-        rsvp_time: Date | null;
         arrival_time: Date | null;
     } | undefined>;
 }
