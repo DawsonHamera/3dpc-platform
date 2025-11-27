@@ -9,6 +9,7 @@ import {
     IonTitle,
     IonToast,
     IonToolbar,
+    useIonRouter,
 } from "@ionic/react";
 import {
     at,
@@ -31,6 +32,8 @@ import { useAttendEventMutation } from "../../../features/events/eventsApi";
 import QRCodeScanner from "../../QRCode/QRCodeScanner";
 import { title } from "process";
 import Card from "../../Card/Card";
+import AvatarStack from "../../AvatarStack/AvatarStack";
+import EventHeader from "./EventHeader";
 
 type EventCardProps = {
     event: {
@@ -58,7 +61,7 @@ const EventCard: React.FC<EventCardProps> = ({ event, editMode, editEvent }) => 
     const [scannerOpen, setScannerOpen] = useState(false);
     const [toastMessage, setToastMessage] = useState<string>("");
     const [isError, setIsError] = useState(false);
-
+    const router = useIonRouter();
     const user = useAuth().user;
 
     const attending = event.attendances.find(
@@ -151,77 +154,29 @@ const EventCard: React.FC<EventCardProps> = ({ event, editMode, editEvent }) => 
     };
 
     return (
-        <Card className="event-card">
-            <div className="date-badge">
-                <p>
-                    {new Date(event.start_time).toLocaleDateString("en-US", {
-                        month: "short",
-                    })}
-                </p>
-                <h2>{new Date(event.start_time).getDate()}</h2>
-            </div>
-            {editMode && (
-                <div className="edit-badge">
-                    <IonIcon onClick={() => editEvent?.({
-                        title: event.title,
-                        description: event.description,
-                        id: event.id,
-                        start_time: event.start_time,
-                        end_time: event.end_time,
-                        location: event.location,
-                        image_file_id: event.image_file?.id,
+        <div className="event-card">
+            <EventHeader event={event}>
+                {editMode && (
+                    <div className="edit-badge">
+                        <IonIcon onClick={() => editEvent?.({
+                            title: event.title,
+                            description: event.description,
+                            id: event.id,
+                            start_time: event.start_time,
+                            end_time: event.end_time,
+                            location: event.location,
+                            image_file_id: event.image_file?.id,
 
-                    })} color="primary" icon={settingsOutline} size='large' />
-                </div>
-            )}
-            <div className="image-container">
-                <img src={event.image_file?.path} />
-            </div>
+                        })} color="primary" icon={settingsOutline} size='large' />
+                    </div>
+                )}
+            </EventHeader>
             <div className="event-card-content">
-                <div className="event-details">
-                    <div className="event-info">
-                        <h2 className="event-title">{event.title}</h2>
-                        <div className="location-chip">
-                            <IonIcon color="primary" icon={location} />
-                            <p>{event.location}</p>
-                        </div>
-                    </div>
-                    <div className="time-range">
-                        <p>
-                            {new Date(event.start_time).toLocaleTimeString(
-                                "en-US",
-                                {
-                                    hour: "2-digit",
-                                    minute: "2-digit",
-                                }
-                            )}{" "}
-                        </p>
-                        <p>|</p>
-                        <p>
-                            {" "}
-                            {new Date(event.end_time).toLocaleTimeString("en-US", {
-                                hour: "2-digit",
-                                minute: "2-digit",
-                            })}
-                        </p>
-                    </div>
-                </div>
                 <div className="footer">
-                    <div className="attending">
-                        {(
-                            event.attendances.slice(0, 4) as attendanceResultType[]
-                        ).map((attendance) => (
-                            <div className="default-avatar">
-                                {getInitials(attendance.user.name)}
-                            </div>
-                        ))}
-                        {event.attendances.length > 4 && (
-                            <div className="more-attendees">
-                                +{event.attendances.length - 4}
-                            </div>
-                        )}
-                    </div>
-                    {actionButton()}
+                    <AvatarStack avatars={event.attendances.map(a => a.user)} />
+                    <IonButton fill='clear' onClick={() => router.push(`/dashboard/events/${event.id}`)}>
+                        View event
+                    </IonButton>
                 </div>
             </div>
             <IonModal
@@ -249,7 +204,7 @@ const EventCard: React.FC<EventCardProps> = ({ event, editMode, editEvent }) => 
                 onDidDismiss={() => setToastMessage("")}
                 color={isError ? "danger" : "success"}
             ></IonToast>
-        </Card>
+        </div>
     );
 };
 

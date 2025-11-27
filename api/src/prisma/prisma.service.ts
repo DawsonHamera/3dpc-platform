@@ -10,6 +10,7 @@ export class PrismaService
     super({
       omit: {
         user: { password_hash: true },
+        event: { verification_code: true },
       },
     });
   }

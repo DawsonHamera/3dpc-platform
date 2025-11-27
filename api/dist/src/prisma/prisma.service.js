@@ -17,6 +17,7 @@ let PrismaService = class PrismaService extends client_1.PrismaClient {
         super({
             omit: {
                 user: { password_hash: true },
+                event: { verification_code: true },
             },
         });
     }

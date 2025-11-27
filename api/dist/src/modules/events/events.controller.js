@@ -32,6 +32,9 @@ let EventsController = class EventsController {
     findOne(id) {
         return this.eventsService.findOne(+id);
     }
+    findEventCode(id) {
+        return this.eventsService.findEventCode(+id);
+    }
     create(createEventDto, user) {
         return this.eventsService.create(createEventDto, user.id);
     }
@@ -41,8 +44,11 @@ let EventsController = class EventsController {
     remove(id) {
         return this.eventsService.remove(+id);
     }
-    attendEvent(id, user, code) {
-        return this.eventsService.attendEvent(+id, user.id, code);
+    attendEvent(id, user, code, status) {
+        return this.eventsService.attendEvent(+id, user.id, code, status);
+    }
+    getUserAttendance(eventId, user) {
+        return this.eventsService.findAttendance(+eventId, user.id);
     }
 };
 exports.EventsController = EventsController;
@@ -62,12 +68,20 @@ __decorate([
 ], EventsController.prototype, "findCurrent", null);
 __decorate([
     (0, common_1.Get)(':id'),
-    (0, roles_decorator_1.Roles)(['admin']),
+    (0, roles_decorator_1.Roles)(['admin', 'member']),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], EventsController.prototype, "findOne", null);
+__decorate([
+    (0, common_1.Get)(':id/code'),
+    (0, roles_decorator_1.Roles)(['admin']),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], EventsController.prototype, "findEventCode", null);
 __decorate([
     (0, common_1.Post)(),
     (0, roles_decorator_1.Roles)(['admin']),
@@ -95,15 +109,25 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], EventsController.prototype, "remove", null);
 __decorate([
-    (0, common_1.Post)(':id/attendance'),
+    (0, common_1.Post)(':id/attendance/'),
     (0, roles_decorator_1.Roles)(['admin', 'member']),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, current_user_decorator_1.CurrentUser)()),
     __param(2, (0, common_1.Query)('code')),
+    __param(3, (0, common_1.Query)('status')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object, String]),
+    __metadata("design:paramtypes", [String, Object, String, String]),
     __metadata("design:returntype", void 0)
 ], EventsController.prototype, "attendEvent", null);
+__decorate([
+    (0, common_1.Get)(':eventId/attendance/'),
+    (0, roles_decorator_1.Roles)(['admin', 'member']),
+    __param(0, (0, common_1.Param)('eventId')),
+    __param(1, (0, current_user_decorator_1.CurrentUser)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", void 0)
+], EventsController.prototype, "getUserAttendance", null);
 exports.EventsController = EventsController = __decorate([
     (0, common_1.Controller)('events'),
     __metadata("design:paramtypes", [events_service_1.EventsService])

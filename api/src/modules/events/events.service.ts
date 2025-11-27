@@ -17,7 +17,31 @@ export class EventsService {
   }
 
   findOne(id: number) {
-    return this.prisma.event.findUnique({ where: { id } });
+    return this.prisma.event.findUnique({
+      where: { id },
+      include: {
+        image_file: true,
+        attendances: { include: { user: true } },
+      },
+    });
+  }
+
+  findEventCode(id: number) {
+    return this.prisma.event.findUnique({
+      where: { id },
+      select: { verification_code: true },
+    });
+  }
+
+  findAttendance(eventId, userId) {
+    return this.prisma.attendance.findUnique({
+      where: {
+        event_id_user_id: {
+          event_id: eventId,
+          user_id: userId,
+        },
+      },
+    });
   }
 
   findCurrent() {
@@ -68,7 +92,12 @@ export class EventsService {
     return this.prisma.event.delete({ where: { id } });
   }
 
-  async attendEvent(eventId: number, userId: number, code?: string) {
+  async attendEvent(
+    eventId: number,
+    userId: number,
+    code?: string,
+    status?: string,
+  ) {
     const existingAttendance = await this.prisma.attendance.findUnique({
       where: {
         event_id_user_id: {
@@ -80,19 +109,25 @@ export class EventsService {
 
     const event = await this.prisma.event.findUnique({
       where: { id: eventId },
+      select: {
+        verification_code: true,
+        start_time: true,
+        end_time: true,
+      },
     });
 
     if (!event) {
       throw new ConflictException('Event does not exist');
     }
 
+    if (status && !['going', 'maybe', 'not_going'].includes(status)) {
+      throw new ConflictException('Invalid RSVP status');
+    }
+
     if (existingAttendance) {
       // Already attended case
       if (existingAttendance.status === attendance_status.attended) {
         throw new ConflictException('You have already attended this event');
-      }
-      if (existingAttendance.status === attendance_status.rsvp) {
-        throw new ConflictException('You have already RSVPed for this event');
       }
       // Update to attended case
       if (event.start_time <= new Date() && event.end_time >= new Date()) {
@@ -106,7 +141,24 @@ export class EventsService {
               user_id: userId,
             },
           },
-          data: { status: attendance_status.attended },
+          data: {
+            status: attendance_status.attended,
+            arrival_time: new Date(),
+          },
+        });
+      }
+      // Update RSVP status case
+      if (event.start_time > new Date() && status) {
+        return this.prisma.attendance.update({
+          where: {
+            event_id_user_id: {
+              event_id: eventId,
+              user_id: userId,
+            },
+          },
+          data: {
+            status: attendance_status[status as keyof typeof attendance_status],
+          },
         });
       }
     } else {
@@ -120,16 +172,17 @@ export class EventsService {
             user: { connect: { id: userId } },
             event: { connect: { id: eventId } },
             status: attendance_status.attended,
+            arrival_time: new Date(),
           },
         });
       }
       // Rsvp case
-      if (event.start_time > new Date()) {
+      if (event.start_time > new Date() && status) {
         return this.prisma.attendance.create({
           data: {
             user: { connect: { id: userId } },
             event: { connect: { id: eventId } },
-            status: attendance_status.rsvp,
+            status: attendance_status[status as keyof typeof attendance_status],
           },
         });
       }

@@ -32,6 +32,20 @@ export const eventsApi = createApi({
             }),
             providesTags: (result, error, id) => [{ type: "Event", id }],
         }),
+        getUserAttendance: builder.query<Attendance, number>({
+            query: (eventId) => ({
+                url: `/events/${eventId}/attendance/`,
+                method: "GET",
+            }),
+            providesTags: ["Attendance"],
+        }),
+        getEventCode: builder.query<{ verification_code: string }, number>({
+            query: (id) => ({
+                url: `/events/${id}/code`,
+                method: "GET",
+            }),
+            providesTags: (result, error, id) => [{ type: "Event", id }],
+        }),
         createEvent: builder.mutation<Event, CreateEvent>({
             query: (body) => ({
                 url: "/events",
@@ -57,12 +71,12 @@ export const eventsApi = createApi({
         }),
         attendEvent: builder.mutation<
             Attendance,
-            { eventId: number; code?: string }
+            { eventId: number; code?: string, status?: string }
         >({
-            query: ({ eventId, code }) => {
+            query: ({ eventId, code, status }) => {
                 const params = new URLSearchParams();
                 if (code) params.append("code", code);
-
+                if (status) params.append("status", status);
                 return {
                     url: `/events/${eventId}/attendance?${params.toString()}`,
                     method: "POST",
@@ -76,8 +90,10 @@ export const eventsApi = createApi({
 export const {
     useGetEventsQuery,
     useGetEventQuery,
+    useGetUserAttendanceQuery,
     useCreateEventMutation,
     useUpdateEventMutation,
     useDeleteEventMutation,
     useAttendEventMutation,
+    useGetEventCodeQuery,
 } = eventsApi;

@@ -28,7 +28,29 @@ let EventsService = class EventsService {
         });
     }
     findOne(id) {
-        return this.prisma.event.findUnique({ where: { id } });
+        return this.prisma.event.findUnique({
+            where: { id },
+            include: {
+                image_file: true,
+                attendances: { include: { user: true } },
+            },
+        });
+    }
+    findEventCode(id) {
+        return this.prisma.event.findUnique({
+            where: { id },
+            select: { verification_code: true },
+        });
+    }
+    findAttendance(eventId, userId) {
+        return this.prisma.attendance.findUnique({
+            where: {
+                event_id_user_id: {
+                    event_id: eventId,
+                    user_id: userId,
+                },
+            },
+        });
     }
     findCurrent() {
         return this.prisma.event.findFirst({
@@ -71,7 +93,7 @@ let EventsService = class EventsService {
     remove(id) {
         return this.prisma.event.delete({ where: { id } });
     }
-    async attendEvent(eventId, userId, code) {
+    async attendEvent(eventId, userId, code, status) {
         const existingAttendance = await this.prisma.attendance.findUnique({
             where: {
                 event_id_user_id: {
@@ -82,16 +104,21 @@ let EventsService = class EventsService {
         });
         const event = await this.prisma.event.findUnique({
             where: { id: eventId },
+            select: {
+                verification_code: true,
+                start_time: true,
+                end_time: true,
+            },
         });
         if (!event) {
             throw new common_1.ConflictException('Event does not exist');
         }
+        if (status && !['going', 'maybe', 'not_going'].includes(status)) {
+            throw new common_1.ConflictException('Invalid RSVP status');
+        }
         if (existingAttendance) {
             if (existingAttendance.status === client_1.attendance_status.attended) {
                 throw new common_1.ConflictException('You have already attended this event');
-            }
-            if (existingAttendance.status === client_1.attendance_status.rsvp) {
-                throw new common_1.ConflictException('You have already RSVPed for this event');
             }
             if (event.start_time <= new Date() && event.end_time >= new Date()) {
                 if (event.verification_code !== code) {
@@ -104,7 +131,23 @@ let EventsService = class EventsService {
                             user_id: userId,
                         },
                     },
-                    data: { status: client_1.attendance_status.attended },
+                    data: {
+                        status: client_1.attendance_status.attended,
+                        arrival_time: new Date(),
+                    },
+                });
+            }
+            if (event.start_time > new Date() && status) {
+                return this.prisma.attendance.update({
+                    where: {
+                        event_id_user_id: {
+                            event_id: eventId,
+                            user_id: userId,
+                        },
+                    },
+                    data: {
+                        status: client_1.attendance_status[status],
+                    },
                 });
             }
         }
@@ -118,15 +161,16 @@ let EventsService = class EventsService {
                         user: { connect: { id: userId } },
                         event: { connect: { id: eventId } },
                         status: client_1.attendance_status.attended,
+                        arrival_time: new Date(),
                     },
                 });
             }
-            if (event.start_time > new Date()) {
+            if (event.start_time > new Date() && status) {
                 return this.prisma.attendance.create({
                     data: {
                         user: { connect: { id: userId } },
                         event: { connect: { id: eventId } },
-                        status: client_1.attendance_status.rsvp,
+                        status: client_1.attendance_status[status],
                     },
                 });
             }

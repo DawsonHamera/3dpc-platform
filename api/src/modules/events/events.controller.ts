@@ -30,9 +30,15 @@ export class EventsController {
   }
 
   @Get(':id')
-  @Roles(['admin'])
+  @Roles(['admin', 'member'])
   findOne(@Param('id') id: string) {
     return this.eventsService.findOne(+id);
+  }
+
+  @Get(':id/code')
+  @Roles(['admin'])
+  findEventCode(@Param('id') id: string) {
+    return this.eventsService.findEventCode(+id);
   }
 
   @Post()
@@ -53,13 +59,20 @@ export class EventsController {
     return this.eventsService.remove(+id);
   }
 
-  @Post(':id/attendance')
+  @Post(':id/attendance/')
   @Roles(['admin', 'member'])
   attendEvent(
     @Param('id') id: string,
     @CurrentUser() user,
     @Query('code') code?: string,
+    @Query('status') status?: string,
   ) {
-    return this.eventsService.attendEvent(+id, user.id, code);
+    return this.eventsService.attendEvent(+id, user.id, code, status);
+  }
+
+  @Get(':eventId/attendance/')
+  @Roles(['admin', 'member'])
+  getUserAttendance(@Param('eventId') eventId: string, @CurrentUser() user) {
+    return this.eventsService.findAttendance(+eventId, user.id);
   }
 }

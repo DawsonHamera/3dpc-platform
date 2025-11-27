@@ -9,86 +9,50 @@ import {
     IonInput,
     IonTextarea,
     IonDatetime,
-    IonRadioGroup,
-    IonRadio,
     IonFooter,
     IonButton,
-    IonIcon,
-    IonAlert,
 } from "@ionic/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import FileSelector from "../../../components/FileSelector/FileSelector";
-import QRCode from "react-qr-code";
-import { close, remove, trash } from "ionicons/icons";
-import { Event, useDeleteEventMutation, useUpdateEventMutation } from "../../../features/events/eventsApi";
+import { useCreateEventMutation } from "../../../features/events/eventsApi";
 
-type EventsEditModelProps = {
-    activeEvent: any;
+type EventsCreateModalProps = {
     isOpen: boolean;
     onClose: () => void;
 };
 
-const EventsEditModel: React.FC<EventsEditModelProps> = ({
-    activeEvent,
+const EventsCreateModal: React.FC<EventsCreateModalProps> = ({
     isOpen,
     onClose,
 }) => {
-    const [updateEvent] = useUpdateEventMutation();
-    const [formData, setFormData] = useState<any>(activeEvent || {});
+    const [createEvent] = useCreateEventMutation();
+    const [formData, setFormData] = useState<any>({});
 
-    useEffect(() => {
-        setFormData(activeEvent || {});
-    }, [activeEvent]);
-
-    // Convert UTC time to local time for display in IonDatetime
-    const getLocalTimeForDatetime = (utcString: string) => {
-        if (!utcString) return "";
-        const date = new Date(utcString);
-        // Format as ISO string but treat as local time by removing the Z
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        const hours = String(date.getHours()).padStart(2, '0');
-        const minutes = String(date.getMinutes()).padStart(2, '0');
-        return `${year}-${month}-${day}T${hours}:${minutes}`;
-    };
-    
     // Convert local time from IonDatetime back to UTC for API
     const convertLocalToUTC = (localString: string) => {
         if (!localString) return "";
         const date = new Date(localString);
         return date.toISOString();
     };
-    
+
     const handleSubmit = async () => {
-        // Convert local times back to UTC before submitting
+        // Convert local times to UTC before submitting
         const dataToSubmit = {
             ...formData,
             start_time: convertLocalToUTC(formData.start_time),
             end_time: convertLocalToUTC(formData.end_time),
         };
 
-        delete dataToSubmit.id;
-        
-        await updateEvent({
-            id: formData?.id,
-            data: dataToSubmit,
-        });
-
+        await createEvent(dataToSubmit);
         onClose();
     };
 
     return (
         <div>
-            <IonModal
-                isOpen={isOpen}
-                onDidDismiss={onClose}
-            >
+            <IonModal isOpen={isOpen} onDidDismiss={onClose}>
                 <IonHeader>
                     <IonToolbar>
-                        <IonTitle>
-                            {activeEvent ? "Edit Event" : "Create Event"}
-                        </IonTitle>
+                        <IonTitle>Create Event</IonTitle>
                     </IonToolbar>
                 </IonHeader>
                 <IonContent>
@@ -97,7 +61,7 @@ const EventsEditModel: React.FC<EventsEditModelProps> = ({
                         <IonInput
                             value={formData?.title}
                             onIonInput={(e) =>
-                                setFormData?.((f) => ({
+                                setFormData((f) => ({
                                     ...f,
                                     title: e.detail.value!,
                                 }))
@@ -109,7 +73,7 @@ const EventsEditModel: React.FC<EventsEditModelProps> = ({
                         <IonTextarea
                             value={formData?.description}
                             onIonInput={(e) =>
-                                setFormData?.((f) => ({
+                                setFormData((f) => ({
                                     ...f,
                                     description: e.detail.value!,
                                 }))
@@ -121,7 +85,7 @@ const EventsEditModel: React.FC<EventsEditModelProps> = ({
                         <IonInput
                             value={formData?.location}
                             onIonInput={(e) =>
-                                setFormData?.((f) => ({
+                                setFormData((f) => ({
                                     ...f,
                                     location: e.detail.value!,
                                 }))
@@ -133,11 +97,9 @@ const EventsEditModel: React.FC<EventsEditModelProps> = ({
                         <IonDatetime
                             showAdjacentDays
                             presentation="date-time"
-                            value={getLocalTimeForDatetime(
-                                formData?.start_time
-                            )}
+                            value={formData?.start_time}
                             onIonChange={(e) =>
-                                setFormData?.((f: any) => ({
+                                setFormData((f: any) => ({
                                     ...f,
                                     start_time: Array.isArray(e.detail.value)
                                         ? e.detail.value[0] ?? ""
@@ -151,11 +113,9 @@ const EventsEditModel: React.FC<EventsEditModelProps> = ({
                         <IonDatetime
                             showAdjacentDays
                             presentation="date-time"
-                            value={getLocalTimeForDatetime(
-                                formData?.end_time
-                            )}
+                            value={formData?.end_time}
                             onIonChange={(e) =>
-                                setFormData?.((f: any) => ({
+                                setFormData((f: any) => ({
                                     ...f,
                                     end_time: Array.isArray(e.detail.value)
                                         ? e.detail.value[0] ?? ""
@@ -167,39 +127,18 @@ const EventsEditModel: React.FC<EventsEditModelProps> = ({
                     <IonItem>
                         <FileSelector
                             onChange={(file) =>
-                                setFormData?.((f) => ({
+                                setFormData((f) => ({
                                     ...f,
                                     image_file_id: file.id,
                                 }))
                             }
                         />
                     </IonItem>
-                    {/* <IonItem>
-                        <IonLabel>Featured Event?</IonLabel>
-                        <IonRadioGroup
-                            value={formData?.isFeatured}
-                            onIonChange={(e) =>
-                                setFormData?.((f) => ({
-                                    ...f,
-                                    isFeatured: e.detail.value,
-                                }))
-                            }
-                        >
-                            <IonItem>
-                                <IonLabel>Yes</IonLabel>
-                                <IonRadio slot="start" value={true} />
-                            </IonItem>
-                            <IonItem>
-                                <IonLabel>No</IonLabel>
-                                <IonRadio slot="start" value={false} />
-                            </IonItem>
-                        </IonRadioGroup>
-                    </IonItem> */}
                 </IonContent>
                 <IonFooter>
                     <IonToolbar>
                         <IonButton expand="block" onClick={handleSubmit}>
-                            {activeEvent ? "Update" : "Create"}
+                            Create
                         </IonButton>
                         <IonButton
                             expand="block"
@@ -215,4 +154,4 @@ const EventsEditModel: React.FC<EventsEditModelProps> = ({
     );
 };
 
-export default EventsEditModel;
+export default EventsCreateModal;
