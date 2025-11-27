@@ -1,4 +1,4 @@
-import { IonContent, IonItem, IonLabel, IonList, IonPage, IonChi, IonChipp, IonChip, IonSegmentButton, IonSegment, IonToolbar, IonToast, IonText, IonButton, IonButtons, IonHeader, IonModal, IonTitle } from "@ionic/react";
+import { IonContent, IonItem, IonLabel, IonList, IonPage, IonChip, IonSegmentButton, IonSegment, IonToolbar, IonToast, IonText, IonButton, IonButtons, IonHeader, IonModal, IonTitle } from "@ionic/react";
 import Header from "../../../components/Header/Header";
 import { useAttendEventMutation, useGetEventQuery, useGetUserAttendanceQuery } from "../../../features/events/eventsApi";
 import { useParams } from "react-router";
@@ -47,18 +47,30 @@ const EventDetailsPage: React.FC = () => {
         </IonPage>
     }
 
-    const renderAttendanceStatus = (status: string) => {
+    const renderAttendanceStatus = (status: string, eventEnd: string) => {
         switch (status) {
             case 'going':
+                if (new Date() > new Date(eventEnd)) {
+                    return <IonChip color="danger">Absent</IonChip>;
+                }
                 return <IonChip color="success">Going</IonChip>;
             case 'maybe':
+                if (new Date() > new Date(eventEnd)) {
+                    return <IonChip color="danger">Absent</IonChip>;
+                }
                 return <IonChip color="warning">Maybe</IonChip>;
             case 'not_going':
+                if (new Date() > new Date(eventEnd)) {
+                    return <IonChip color="danger">Absent</IonChip>;
+                }
                 return <IonChip color="danger">Not going</IonChip>;
             case 'unknown':
-                return <IonChip color="medium">Unknown</IonChip>;
+                return <IonChip color="medium">Unknown</IonChip>;               
             case 'attended':
-                return <IonChip color="primary">Attended</IonChip>;
+                if (new Date() > new Date(eventEnd)) {
+                    return <IonChip color="success">Attended</IonChip>;
+                }
+                return <IonChip color="primary">Attending</IonChip>;
             default:
                 return <IonChip color="danger">Error</IonChip>;
         }
@@ -98,7 +110,7 @@ const EventDetailsPage: React.FC = () => {
                             <IonLabel>
                                 <b>{attendance.user.name}</b>
                             </IonLabel>
-                            <IonLabel slot='end'>{renderAttendanceStatus(attendance.status)}</IonLabel>
+                            <IonLabel slot='end'>{renderAttendanceStatus(attendance.status, event.end_time)}</IonLabel>
                         </IonItem>
                     ))}
                 </IonList>
