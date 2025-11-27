@@ -1,10 +1,11 @@
-import { IonContent, IonItem, IonLabel, IonList, IonPage, IonChi, IonChipp, IonChip, IonSegmentButton, IonSegment, IonToolbar, IonToast, IonText } from "@ionic/react";
+import { IonContent, IonItem, IonLabel, IonList, IonPage, IonChi, IonChipp, IonChip, IonSegmentButton, IonSegment, IonToolbar, IonToast, IonText, IonButton, IonButtons, IonHeader, IonModal, IonTitle } from "@ionic/react";
 import Header from "../../../components/Header/Header";
 import { useAttendEventMutation, useGetEventQuery, useGetUserAttendanceQuery } from "../../../features/events/eventsApi";
 import { useParams } from "react-router";
 import EventCard from "../../../components/EventSlider/EventCard/EventCard";
 import EventHeader from "../../../components/EventSlider/EventCard/EventHeader";
 import { useState } from "react";
+import QRCodeScanner from "../../../components/QRCode/QRCodeScanner";
 
 const EventDetailsPage: React.FC = () => {
 
@@ -14,6 +15,7 @@ const EventDetailsPage: React.FC = () => {
     const { data: attendance } = useGetUserAttendanceQuery(parseInt(eventId));
     const [toastMessage, setToastMessage] = useState<string>("");
     const [isError, setIsError] = useState(false);
+    const [scannerOpen, setScannerOpen] = useState(false);
 
     const [updateAttendance] = useAttendEventMutation();
 
@@ -24,6 +26,20 @@ const EventDetailsPage: React.FC = () => {
             setToastMessage("Attendance status updated");
         }
     }
+
+    const handleScan = (text: string) => {
+        verifyCode(text)
+    };
+
+    const verifyCode = async (data: string) => {
+        const verified = await updateAttendance({ eventId: event.id, code: data });
+        if (verified.data) {
+            setToastMessage("You have successfully checked in!");
+            setScannerOpen(false);
+        } else {
+            setToastMessage("Error: " + (verified.error as any).data.message);
+        }
+    };
 
     if (!event) {
         return <IonPage>
@@ -41,6 +57,8 @@ const EventDetailsPage: React.FC = () => {
                 return <IonChip color="danger">Not going</IonChip>;
             case 'unknown':
                 return <IonChip color="medium">Unknown</IonChip>;
+            case 'attended':
+                return <IonChip color="primary">Attended</IonChip>;
             default:
                 return <IonChip color="danger">Error</IonChip>;
         }
@@ -48,26 +66,33 @@ const EventDetailsPage: React.FC = () => {
 
     return (
         <IonPage>
-            <Header title='Event Overview' type="back"/>
+            <Header title='Event Overview' type="back" />
             <IonContent>
                 <EventHeader event={event} />
-                <div style={{padding: '0 20px'}}>
+                <div style={{ padding: '0 20px' }}>
                     <IonText><p>{event.description}</p></IonText>
                 </div>
-                <IonToolbar>
-                    <IonSegment value={attendance?.status} onIonChange={(e) => handleUpdateStatus(e.detail.value)}>
-                        <IonSegmentButton value="not_going">
-                            <IonLabel>Not Going</IonLabel>
-                        </IonSegmentButton>
-                        <IonSegmentButton value="maybe">
-                            <IonLabel>Maybe</IonLabel>
-                        </IonSegmentButton>
-                        <IonSegmentButton value="going">
-                            <IonLabel>Going</IonLabel>
-                        </IonSegmentButton>
-                    </IonSegment>
-                </IonToolbar>
-                <IonList style={{border: '1px solid var(--ion-color-light-shade)', borderRadius: '20px', margin: '20px'}}>
+                {new Date() < new Date(event.start_time) &&
+                    <IonToolbar>
+                        <IonSegment value={attendance?.status} onIonChange={(e) => handleUpdateStatus(e.detail.value)}>
+                            <IonSegmentButton value="not_going">
+                                <IonLabel>Not Going</IonLabel>
+                            </IonSegmentButton>
+                            <IonSegmentButton value="maybe">
+                                <IonLabel>Maybe</IonLabel>
+                            </IonSegmentButton>
+                            <IonSegmentButton value="going">
+                                <IonLabel>Going</IonLabel>
+                            </IonSegmentButton>
+                        </IonSegment>
+                    </IonToolbar>
+                }
+                {new Date() >= new Date(event.start_time) && new Date() <= new Date(event.end_time) && attendance?.status != 'attended' &&
+                    <IonButton expand="block" style={{ margin: '20px' }} onClick={() => setScannerOpen(true)}>
+                        Mark as Attended
+                    </IonButton>
+                }
+                <IonList style={{ border: '1px solid var(--ion-color-light-shade)', borderRadius: '20px', margin: '20px' }}>
                     {event.attendances.map((attendance: any) => (
                         <IonItem key={attendance.id}>
                             <IonLabel>
@@ -78,6 +103,19 @@ const EventDetailsPage: React.FC = () => {
                     ))}
                 </IonList>
             </IonContent>
+            <IonModal isOpen={scannerOpen} onDidDismiss={() => setScannerOpen(false)}>
+                <IonHeader>
+                    <IonToolbar>
+                        <IonTitle>Check In</IonTitle>
+                        <IonButtons slot="end">
+                            <IonButton onClick={() => setScannerOpen(false)}>Close</IonButton>
+                        </IonButtons>
+                    </IonToolbar>
+                </IonHeader>
+                <IonContent>
+                    <QRCodeScanner onScan={handleScan} />
+                </IonContent>
+            </IonModal>
             <IonToast
                 isOpen={!!toastMessage}
                 onDidDismiss={() => setToastMessage("")}
