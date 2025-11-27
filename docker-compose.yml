@@ -90,6 +90,7 @@ services:
       - ./api/uploads:/usr/src/api/uploads
       - ./api/dist:/usr/src/api/dist
       - ./api/prisma:/usr/src/api/prisma
+      - ./api/prisma.config.ts:/usr/src/api/prisma.config.ts
     environment:
       - NODE_ENV=production
       - PORT=3000
