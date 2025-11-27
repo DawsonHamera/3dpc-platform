@@ -33,6 +33,15 @@ const EventsPage: React.FC = () => {
         setShowEventSettings(true);
     }
 
+    const currentEvents = events?.filter((event: eventResultType) => {
+        const eventEndDate = new Date(event.end_time);
+        return eventEndDate >= new Date();
+    });
+
+    const pastEvents = events?.filter((event: eventResultType) => {
+        const eventEndDate = new Date(event.end_time);
+        return eventEndDate < new Date();
+    });
 
     if (isLoading) {
         return (
@@ -61,7 +70,18 @@ const EventsPage: React.FC = () => {
                         <IonIcon icon={add} style={{margin: '0 10px'}}/>
                         <h1 style={{ margin: 0 }}> New event</h1>
                     </div>}
-                    {events?.map((event: eventResultType) => (
+                    {currentEvents?.map((event: eventResultType) => (
+                        <div key={event.id}>
+                            <EventCard
+                                key={event.id}
+                                event={event}
+                                editMode={user?.role.name === "admin"}
+                                editEvent={handleEditEvent}
+                            />
+                        </div>
+                    ))}
+                    <span className="section-divider">Past Events</span>
+                    {pastEvents?.map((event: eventResultType) => (
                         <div key={event.id}>
                             <EventCard
                                 key={event.id}

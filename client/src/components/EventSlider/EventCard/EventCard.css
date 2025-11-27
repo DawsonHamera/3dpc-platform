@@ -15,8 +15,8 @@
     width: 45px;
     height: 45px;
     position: absolute;
-    top: 1.4rem;
-    left: 1.4rem;
+    top: 1rem;
+    left: 1rem;
     background-color: var(--ion-color-primary);
     color: #fff;
     border-radius: 50%;
@@ -42,7 +42,6 @@
     text-align: center;
     box-sizing: border-box;
     aspect-ratio: 1 / 1;
-    cursor: pointer;
 }
 
 .date-badge h2 {
@@ -58,13 +57,13 @@
     line-height: 1;
     font-weight: 600;
     text-transform: uppercase;
-    opacity: 0.95;
 }
 
 .image-container {
     width: 100%;
     height: 200px;
     overflow: hidden;
+    position: relative;
     margin-bottom: 1rem;
 }
 
