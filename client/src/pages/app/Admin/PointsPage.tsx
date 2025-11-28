@@ -19,6 +19,7 @@ const PointsPage: React.FC = () => {
     const { data: userPointsLogs } = useGetUserPointsLogsQuery(
         selectedUser?.id ?? 0
     );
+    const [sortedLogs, setSortedLogs] = useState(userPointsLogs || []);
 
     useEffect(() => {
         if (users && users.length > 0) {
@@ -26,6 +27,13 @@ const PointsPage: React.FC = () => {
             setSelectedUser(sortedUsers[0]);
         }
     }, [users]);
+
+    useEffect(() => {
+        if (userPointsLogs) {
+            const sorted = [...userPointsLogs].sort((a, b) => new Date(b.logged_at).getTime() - new Date(a.logged_at).getTime());
+            setSortedLogs(sorted);
+        }
+    }, [userPointsLogs]);
 
     const handleUpdatepoints = (userId: number, points: number, reason: string, details: string) => {
         updateUserpoints({ id: userId, points, reason, details });
@@ -81,8 +89,8 @@ const PointsPage: React.FC = () => {
                 </IonList>
             </IonContent>
             <IonModal isOpen={isModalOpen} onDidDismiss={() => setIsModalOpen(false)}>
+                <Header title="Edit points" type='back' onBack={() => setIsModalOpen(false)} />
                 <IonContent>
-                    <Header title="Edit points" type='back' onBack={() => setIsModalOpen(false)} />
                     <div style={{ padding: '20px' }}>
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
                             <IonButton fill="outline" onClick={() => setPointsToAdd(pointsToAdd - increment)}>-</IonButton>
@@ -144,11 +152,11 @@ const PointsPage: React.FC = () => {
                 </IonContent>
             </IonModal>
             <IonModal isOpen={isHistoryModalOpen} onDidDismiss={() => setIsHistoryModalOpen(false)}>
+                <Header title="points History" type='back' onBack={() => setIsHistoryModalOpen(false)} />
                 <IonContent>
-                    <Header title="points History" type='back' onBack={() => setIsHistoryModalOpen(false)} />
                     <div style={{ padding: '20px' }}>
                         <IonList>
-                            {userPointsLogs && userPointsLogs.length > 0 ? userPointsLogs.map(log => (
+                            {sortedLogs && sortedLogs.length > 0 ? sortedLogs.map(log => (
                                 <IonItem key={log.id}>
                                     <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', padding: '16px 0 16px 0' }}>

@@ -1,0 +1,4 @@
+.opaque {
+    --background: rgba(var(--ion-color-primary-rgb), 1);
+    --color: var(--ion-color-light);
+}

@@ -14,7 +14,7 @@ interface CardProps {
 
 const Card: React.FC<CardProps> = ({ title, subtitle, children, fontSize, className = '', highlight, onClick, style }) => {
   return (
-    <IonCard
+    <div
       className={`custom-card ${className} ${highlight ? 'highlight' : ''}`}
       onClick={() => onClick && onClick()}
       style={style}
@@ -26,7 +26,7 @@ const Card: React.FC<CardProps> = ({ title, subtitle, children, fontSize, classN
         </IonCardHeader>
       )}
       <IonCardContent>{children}</IonCardContent>
-    </IonCard>
+    </div>
   );
 };
 

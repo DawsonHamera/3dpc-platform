@@ -32,12 +32,20 @@ const EventDetailsPage: React.FC = () => {
     };
 
     const verifyCode = async (data: string) => {
-        const verified = await updateAttendance({ eventId: event.id, code: data });
-        if (verified.data) {
-            setToastMessage("You have successfully checked in!");
+        try {
+            const verified = await updateAttendance({ eventId: event.id, code: data }).unwrap();
+            if (verified.data) {
+            setIsError(false);
+            setToastMessage(verified.data);
             setScannerOpen(false);
-        } else {
-            setToastMessage("Error: " + (verified.error as any).data.message);
+            } else {
+            setToastMessage("An unexpected error occurred.");
+            setIsError(true);
+            }
+        } catch (error: any) {
+            console.error("Error verifying code:", error);
+            setToastMessage(error?.data?.message || "Failed to verify the code. Please try again.");
+            setIsError(true);
         }
     };
 
