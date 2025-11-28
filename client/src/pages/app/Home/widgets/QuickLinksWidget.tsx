@@ -1,6 +1,6 @@
 import { IonButton, useIonRouter } from '@ionic/react';
 import React from 'react';
-import Card from '../../../../components/UI/Card/Card';
+import Card from '../../../../components/Card/Card';
 
 const QuickLinksWidget: React.FC = () => {
   const router = useIonRouter();

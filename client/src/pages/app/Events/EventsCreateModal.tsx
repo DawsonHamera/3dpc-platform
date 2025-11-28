@@ -11,6 +11,8 @@ import {
     IonDatetime,
     IonFooter,
     IonButton,
+    IonSelect,
+    IonSelectOption,
 } from "@ionic/react";
 import { useState } from "react";
 import FileSelector from "../../../components/FileSelector/FileSelector";
@@ -79,6 +81,23 @@ const EventsCreateModal: React.FC<EventsCreateModalProps> = ({
                                 }))
                             }
                         />
+                    </IonItem>
+                    <IonItem>
+                        <IonSelect
+                            value={formData?.event_type}
+                            onIonChange={(e) =>
+                                setFormData?.((f) => ({
+                                    ...f,
+                                    event_type: e.detail.value!,
+                                }))
+                            }
+                            placeholder="Select Event Type">
+                            <IonSelectOption value="meeting">Meeting</IonSelectOption>
+                            <IonSelectOption value="workshop">Workshop</IonSelectOption>
+                            <IonSelectOption value="competition">Competition</IonSelectOption>
+                            <IonSelectOption value="fundraiser">Fundraiser</IonSelectOption>
+                            <IonSelectOption value="work_day">Work Day</IonSelectOption>
+                        </IonSelect>
                     </IonItem>
                     <IonItem>
                         <IonLabel position="stacked">Location</IonLabel>

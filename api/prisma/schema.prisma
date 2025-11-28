@@ -157,7 +157,8 @@ enum events_event_type {
   meeting
   workshop
   competition
-  maintenance
+  fundraiser
+  work_day
 }
 
 enum file_type {

@@ -47,7 +47,8 @@ const QRCodeScanner: React.FC<QRCodeScannerProps> = ({ onScan }) => {
                         type="text"
                         fill='outline'
                         placeholder="Enter code manually"
-                        onIonInput={(e) => setManualEntry(e.detail.value)}
+                        value={ManualEntry}
+                        onIonInput={(e) => setManualEntry(e.detail.value!.toUpperCase())}
                     />
                     <IonButton slot="end" onClick={() => {
                         handleManualEntry(ManualEntry);

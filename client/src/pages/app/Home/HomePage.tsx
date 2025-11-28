@@ -15,6 +15,7 @@ import Header from "../../../components/Header/Header";
 import LeaderboardWidget from "./widgets/LeaderBoardWidget";
 import DevWidget from "./widgets/DevWidget";
 import Card from "../../../components/Card/Card";
+import QuickLinksWidget from "./widgets/QuickLinksWidget";
 
 const HomePage: React.FC = () => {
     return (
@@ -51,7 +52,7 @@ const HomePage: React.FC = () => {
                            
                         </IonList>
                     </Card>
-                    <DevWidget />
+                    {/* <QuickLinksWidget /> */}
                 </div>
             </IonContent>
         </IonPage>

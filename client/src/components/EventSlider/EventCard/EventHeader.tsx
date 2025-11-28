@@ -1,6 +1,8 @@
-import { IonChip, IonIcon } from "@ionic/react";
-import { location } from "ionicons/icons";
+import { IonChip, IonIcon, IonLabel } from "@ionic/react";
+import { calendar, construct, hammer, location, pricetag, pricetags, trophy } from "ionicons/icons";
 import { useGetUserAttendanceQuery } from "../../../features/events/eventsApi";
+import "./EventHeader.css";
+
 
 type EventHeaderProps = {
     event: any;
@@ -10,6 +12,44 @@ type EventHeaderProps = {
 const EventHeader: React.FC<EventHeaderProps> = ({ event, children }) => {
 
     const { data: attendance } = useGetUserAttendanceQuery(event.id);
+
+    const renderTypeChip = (eventType: string) => {
+        switch (eventType) {
+            case 'workshop':
+                return <IonChip className="opaque">
+                    <IonIcon icon={construct} color='light' />
+                    <b style={{margin: ' 0 5px 0 -5px', fontSize: '1rem'}}>20</b>
+                    <IonLabel>Workshop</IonLabel>
+
+                </IonChip>;
+            case 'competition':
+                return <IonChip className="opaque">
+                    <IonIcon icon={trophy} color='light' />
+                    <b style={{ margin: ' 0 5px 0 -5px', fontSize: '1rem' }}>20</b>
+                    <IonLabel>Competition</IonLabel>
+                </IonChip>;
+            case 'fundraiser':
+                return <IonChip className="opaque">
+                    <IonIcon icon={pricetags} color='light' /> 
+                    <b style={{ margin: ' 0 5px 0 -5px', fontSize: '1rem' }}>50</b>
+                    <IonLabel>Fundraiser</IonLabel>
+                </IonChip>;
+            case 'work_day':
+                return <IonChip className="opaque">
+                    <IonIcon icon={hammer} color='light' />
+                    <b style={{ margin: ' 0 5px 0 -5px', fontSize: '1rem' }}>25</b>
+                    <IonLabel>Work Day</IonLabel>
+                </IonChip>;
+            case 'meeting':
+                return <IonChip className="opaque">
+                    <IonIcon icon={calendar} color='light' />
+                    <b style={{ margin: ' 0 5px 0 -5px', fontSize: '1rem' }}>10</b>
+                    <IonLabel>Meeting</IonLabel>
+                </IonChip>;
+            default:
+                return null;
+        }
+    };
 
     return (
         <div className="event-card-header">
@@ -38,16 +78,15 @@ const EventHeader: React.FC<EventHeaderProps> = ({ event, children }) => {
                         Attending
                     </IonChip>
                 }
-                {new Date() >= new Date(event.end_time) &&
-                    <IonChip color='light' style={{
+                <div style={{
                         margin: 'auto',
                         position: 'absolute',
-                        left: '10px',
-                        bottom: '10px',
+                        left: '5px',
+                        bottom: '5px',
+
                     }}>
-                        Event Ended
-                    </IonChip>
-                }
+                    {renderTypeChip(event.event_type)}
+                </div>
             </div>
             <div className="event-details">
                 <div className="event-info">

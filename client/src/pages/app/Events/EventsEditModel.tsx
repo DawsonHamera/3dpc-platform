@@ -15,6 +15,8 @@ import {
     IonButton,
     IonIcon,
     IonAlert,
+    IonSelect,
+    IonSelectOption,
 } from "@ionic/react";
 import { useEffect, useState } from "react";
 import FileSelector from "../../../components/FileSelector/FileSelector";
@@ -52,14 +54,14 @@ const EventsEditModel: React.FC<EventsEditModelProps> = ({
         const minutes = String(date.getMinutes()).padStart(2, '0');
         return `${year}-${month}-${day}T${hours}:${minutes}`;
     };
-    
+
     // Convert local time from IonDatetime back to UTC for API
     const convertLocalToUTC = (localString: string) => {
         if (!localString) return "";
         const date = new Date(localString);
         return date.toISOString();
     };
-    
+
     const handleSubmit = async () => {
         // Convert local times back to UTC before submitting
         const dataToSubmit = {
@@ -69,7 +71,7 @@ const EventsEditModel: React.FC<EventsEditModelProps> = ({
         };
 
         delete dataToSubmit.id;
-        
+
         await updateEvent({
             id: formData?.id,
             data: dataToSubmit,
@@ -115,6 +117,23 @@ const EventsEditModel: React.FC<EventsEditModelProps> = ({
                                 }))
                             }
                         />
+                    </IonItem>
+                    <IonItem>
+                        <IonSelect
+                            value={formData?.event_type}
+                            onIonChange={(e) =>
+                                setFormData?.((f) => ({
+                                    ...f,
+                                    event_type: e.detail.value!,
+                                }))
+                            }
+                            placeholder="Select Event Type">
+                            <IonSelectOption value="meeting">Meeting</IonSelectOption>
+                            <IonSelectOption value="workshop">Workshop</IonSelectOption>
+                            <IonSelectOption value="competition">Competition</IonSelectOption>
+                            <IonSelectOption value="fundraiser">Fundraiser</IonSelectOption>
+                            <IonSelectOption value="work_day">Work Day</IonSelectOption>
+                        </IonSelect>
                     </IonItem>
                     <IonItem>
                         <IonLabel position="stacked">Location</IonLabel>

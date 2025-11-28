@@ -13,10 +13,14 @@ exports.EventsService = void 0;
 const common_1 = require("@nestjs/common");
 const client_1 = require("@prisma/client");
 const prisma_service_1 = require("../../prisma/prisma.service");
+const users_service_1 = require("../users/users.service");
+const response_1 = require("../../utils/response");
 let EventsService = class EventsService {
     prisma;
-    constructor(prisma) {
+    usersService;
+    constructor(prisma, usersService) {
         this.prisma = prisma;
+        this.usersService = usersService;
     }
     findAll() {
         return this.prisma.event.findMany({
@@ -93,6 +97,18 @@ let EventsService = class EventsService {
     remove(id) {
         return this.prisma.event.delete({ where: { id } });
     }
+    addEventPoints(eventType, eventId, userId) {
+        const pointsMap = {
+            workshop: 20,
+            meeting: 10,
+            work_day: 25,
+            competition: 20,
+            fundraiser: 50,
+        };
+        const points = eventType ? (pointsMap[eventType] ?? 0) : 0;
+        this.usersService.updateUserPoints(userId, points, `Attended ${eventType} event`, `Event ID: ${eventId}`);
+        return (0, response_1.success)(`${points} points gained for attending!`);
+    }
     async attendEvent(eventId, userId, code, status) {
         const existingAttendance = await this.prisma.attendance.findUnique({
             where: {
@@ -108,6 +124,7 @@ let EventsService = class EventsService {
                 verification_code: true,
                 start_time: true,
                 end_time: true,
+                event_type: true,
             },
         });
         if (!event) {
@@ -124,7 +141,7 @@ let EventsService = class EventsService {
                 if (event.verification_code !== code) {
                     throw new common_1.ConflictException('Invalid event code');
                 }
-                return this.prisma.attendance.update({
+                const attendanceUpdate = await this.prisma.attendance.update({
                     where: {
                         event_id_user_id: {
                             event_id: eventId,
@@ -136,6 +153,9 @@ let EventsService = class EventsService {
                         arrival_time: new Date(),
                     },
                 });
+                if (!event.event_type)
+                    return attendanceUpdate;
+                return this.addEventPoints(event.event_type, eventId, userId);
             }
             if (event.start_time > new Date() && status) {
                 return this.prisma.attendance.update({
@@ -156,7 +176,7 @@ let EventsService = class EventsService {
                 if (event.verification_code !== code) {
                     throw new common_1.ConflictException('Invalid event code');
                 }
-                return this.prisma.attendance.create({
+                const attendanceCreate = await this.prisma.attendance.create({
                     data: {
                         user: { connect: { id: userId } },
                         event: { connect: { id: eventId } },
@@ -164,6 +184,9 @@ let EventsService = class EventsService {
                         arrival_time: new Date(),
                     },
                 });
+                if (!event.event_type)
+                    return attendanceCreate;
+                return this.addEventPoints(event.event_type, eventId, userId);
             }
             if (event.start_time > new Date() && status) {
                 return this.prisma.attendance.create({
@@ -181,6 +204,7 @@ let EventsService = class EventsService {
 exports.EventsService = EventsService;
 exports.EventsService = EventsService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [prisma_service_1.PrismaService])
+    __metadata("design:paramtypes", [prisma_service_1.PrismaService,
+        users_service_1.UsersService])
 ], EventsService);
 //# sourceMappingURL=events.service.js.map

@@ -1,10 +1,15 @@
 import { Injectable, ConflictException } from '@nestjs/common';
-import { attendance_status, Prisma } from '@prisma/client';
+import { attendance_status, events_event_type, Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { UsersService } from '../users/users.service';
+import { success } from 'src/utils/response';
 
 @Injectable()
 export class EventsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly usersService: UsersService,
+  ) {}
 
   findAll() {
     return this.prisma.event.findMany({
@@ -92,6 +97,31 @@ export class EventsService {
     return this.prisma.event.delete({ where: { id } });
   }
 
+  addEventPoints(
+    eventType: events_event_type,
+    eventId: number,
+    userId: number,
+  ) {
+    const pointsMap = {
+      workshop: 20,
+      meeting: 10,
+      work_day: 25,
+      competition: 20,
+      fundraiser: 50,
+    };
+
+    const points = eventType ? (pointsMap[eventType] ?? 0) : 0;
+
+    this.usersService.updateUserPoints(
+      userId,
+      points,
+      `Attended ${eventType} event`,
+      `Event ID: ${eventId}`,
+    );
+
+    return success(`${points} points gained for attending!`);
+  }
+
   async attendEvent(
     eventId: number,
     userId: number,
@@ -113,6 +143,7 @@ export class EventsService {
         verification_code: true,
         start_time: true,
         end_time: true,
+        event_type: true,
       },
     });
 
@@ -134,7 +165,8 @@ export class EventsService {
         if (event.verification_code !== code) {
           throw new ConflictException('Invalid event code');
         }
-        return this.prisma.attendance.update({
+
+        const attendanceUpdate = await this.prisma.attendance.update({
           where: {
             event_id_user_id: {
               event_id: eventId,
@@ -146,6 +178,10 @@ export class EventsService {
             arrival_time: new Date(),
           },
         });
+
+        if (!event.event_type) return attendanceUpdate;
+
+        return this.addEventPoints(event.event_type, eventId, userId);
       }
       // Update RSVP status case
       if (event.start_time > new Date() && status) {
@@ -167,7 +203,8 @@ export class EventsService {
         if (event.verification_code !== code) {
           throw new ConflictException('Invalid event code');
         }
-        return this.prisma.attendance.create({
+
+        const attendanceCreate = await this.prisma.attendance.create({
           data: {
             user: { connect: { id: userId } },
             event: { connect: { id: eventId } },
@@ -175,6 +212,10 @@ export class EventsService {
             arrival_time: new Date(),
           },
         });
+
+        if (!event.event_type) return attendanceCreate;
+
+        return this.addEventPoints(event.event_type, eventId, userId);
       }
       // Rsvp case
       if (event.start_time > new Date() && status) {

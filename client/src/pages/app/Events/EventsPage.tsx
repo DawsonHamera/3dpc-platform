@@ -80,7 +80,7 @@ const EventsPage: React.FC = () => {
                             />
                         </div>
                     ))}
-                    <span className="section-divider">Past Events</span>
+                    {pastEvents && pastEvents.length > 0 && <span className="section-divider">Past Events</span>}
                     {pastEvents?.map((event: eventResultType) => (
                         <div key={event.id}>
                             <EventCard
