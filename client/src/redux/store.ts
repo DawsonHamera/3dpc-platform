@@ -6,6 +6,12 @@ import { usersApi } from "../features/users/usersApi";
 import { eventsApi } from "../features/events/eventsApi";
 import { filesApi } from "../features/files/filesApi";
 import { recyclingLogsApi } from "../features/recycling/recyclingApi";
+import { tasksApi } from "../features/tasks/tasksApi";
+import { modelsApi } from "../features/models/modelsApi";
+import { materialsApi } from "../features/materials/materialsApi";
+import { productTemplatesApi } from "../features/productTemplates/productTemplatesApi";
+import { ordersApi } from "../features/orders/ordersApi";
+import { printersApi } from "../features/printers/printersApi";
 
 const rootReducer = combineReducers({
     [authApi.reducerPath]: authApi.reducer,
@@ -13,6 +19,12 @@ const rootReducer = combineReducers({
     [eventsApi.reducerPath]: eventsApi.reducer,
     [filesApi.reducerPath]: filesApi.reducer,
     [recyclingLogsApi.reducerPath]: recyclingLogsApi.reducer,
+    [tasksApi.reducerPath]: tasksApi.reducer,
+    [modelsApi.reducerPath]: modelsApi.reducer,
+    [materialsApi.reducerPath]: materialsApi.reducer,
+    [productTemplatesApi.reducerPath]: productTemplatesApi.reducer,
+    [ordersApi.reducerPath]: ordersApi.reducer,
+    [printersApi.reducerPath]: printersApi.reducer,
     auth: authReducer,
 });
 
@@ -26,7 +38,13 @@ export const store = configureStore({
             usersApi.middleware,
             eventsApi.middleware,
             filesApi.middleware,
-            recyclingLogsApi.middleware
+            recyclingLogsApi.middleware,
+            tasksApi.middleware,
+            modelsApi.middleware,
+            materialsApi.middleware,
+            productTemplatesApi.middleware,
+            ordersApi.middleware,
+            printersApi.middleware
         ),
 });
 

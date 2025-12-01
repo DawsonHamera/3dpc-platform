@@ -23,7 +23,6 @@ export class RolesGuard implements CanActivate {
 
     const request = context.switchToHttp().getRequest();
     const user = request.user;
-    console.log("Request User: ", user)
 
     if (!requiredRoles) {
       return user.role.name === 'admin'; //Default to admin-only for unlabeled endpoints for security

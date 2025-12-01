@@ -14,6 +14,7 @@ import {
     shieldOutline,
     cartOutline,
     leafOutline,
+    clipboardOutline,
 } from "ionicons/icons";
 import { useSelector } from "react-redux";
 import { Redirect, Route } from "react-router";
@@ -30,6 +31,9 @@ import RecyclePage from "./pages/app/Recycle/RecyclePage";
 import ChatPage from "./pages/app/Chat/ChatPage";
 import EventAttendancePage from "./pages/app/Events/EventDetailsPage";
 import EventDetailsPage from "./pages/app/Events/EventDetailsPage";
+import TasksPage from "./pages/app/Tasks/TasksPage";
+import CreateTaskPage from "./pages/app/Tasks/CreatePrintTask";
+import InventoryPage from "./pages/app/Inventory/InventoryPage";
 
 const Dashboard: React.FC = () => {
     const user = useSelector(selectCurrentUser);
@@ -55,11 +59,25 @@ const Dashboard: React.FC = () => {
                 <Route exact path="/dashboard" component={HomePage} />
                 <Route exact path="/dashboard/events" component={EventsPage} />
                 <Route exact path="/dashboard/admin" component={AdminPage} />
-                <Route exact path="/dashboard/admin/points" component={PointsPage} />
-                <Route exact path="/dashboard/recycle" component={RecyclePage} />
+                <Route
+                    exact
+                    path="/dashboard/admin/points"
+                    component={PointsPage}
+                />
+                <Route
+                    exact
+                    path="/dashboard/recycle"
+                    component={RecyclePage}
+                />
                 <Route exact path="/dashboard/chat" component={ChatPage} />
-                <Route exact path="/dashboard/events/:eventId" component={EventDetailsPage} />
-
+                <Route
+                    exact
+                    path="/dashboard/events/:eventId"
+                    component={EventDetailsPage}
+                />
+                <Route exact path="/dashboard/tasks" component={TasksPage} />
+                <Route exact path="/dashboard/tasks/create" component={CreateTaskPage} />
+                <Route exact path="/dashboard/inventory" component={InventoryPage} />
             </IonRouterOutlet>
 
             <IonTabBar slot="bottom" id="ion-tab-bar">
@@ -82,6 +100,10 @@ const Dashboard: React.FC = () => {
                 <IonTabButton tab="recycle" href="/dashboard/recycle">
                     <IonIcon aria-hidden="true" icon={leafOutline} />
                     <IonLabel>Recycle</IonLabel>
+                </IonTabButton>
+                <IonTabButton tab="tasks" href="/dashboard/tasks">
+                    <IonIcon aria-hidden="true" icon={clipboardOutline} />
+                    <IonLabel>Tasks</IonLabel>
                 </IonTabButton>
                 {user && roleName === "admin" && (
                     <IonTabButton tab="admin" href="/dashboard/admin">

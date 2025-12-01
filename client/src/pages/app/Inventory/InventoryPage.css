@@ -1,0 +1,91 @@
+.inventory-page {
+    --padding: 20px;
+}
+
+.inventory-section {
+    margin-bottom: 32px;
+}
+
+.inventory-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--padding);
+    margin-bottom: 16px;
+}
+
+.inventory-section-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--ion-text-color);
+}
+
+.inventory-section-icon {
+    font-size: 1.8rem;
+    color: var(--ion-color-primary);
+}
+
+.inventory-add-button {
+    --padding-start: 16px;
+    --padding-end: 16px;
+    height: 36px;
+    font-weight: 500;
+}
+
+.inventory-cards-container {
+    display: flex;
+    overflow-x: auto;
+    gap: 16px;
+    padding: 0 var(--padding) 16px;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+.inventory-cards-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.inventory-cards-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.inventory-cards-container::-webkit-scrollbar-thumb {
+    background: var(--ion-color-primary);
+    border-radius: 4px;
+}
+
+.inventory-cards-container::-webkit-scrollbar-thumb:hover {
+    background: var(--ion-color-primary-shade);
+}
+
+.inventory-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    text-align: center;
+    color: var(--ion-color-medium);
+}
+
+.inventory-empty-icon {
+    font-size: 4rem;
+    margin-bottom: 16px;
+    opacity: 0.5;
+}
+
+.inventory-empty-text {
+    font-size: 1rem;
+    margin: 0;
+}
+
+/* Loading skeleton styles */
+.inventory-skeleton-card {
+    min-width: 280px;
+    width: 280px;
+    height: 360px;
+}

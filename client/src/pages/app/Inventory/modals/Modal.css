@@ -1,0 +1,71 @@
+.inventory-modal {
+    --width: 90%;
+    --max-width: 600px;
+    --height: auto;
+    --max-height: 90vh;
+}
+
+.inventory-modal-content {
+    max-height: calc(90vh - 56px);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.inventory-modal ion-toolbar {
+    --background: var(--ion-color-primary);
+    --color: var(--ion-color-primary-contrast);
+}
+
+.inventory-modal ion-title {
+    font-weight: 600;
+}
+
+.inventory-modal ion-list {
+    background: transparent;
+}
+
+.inventory-modal ion-item {
+    --background: transparent;
+    --padding-start: 0;
+    --padding-end: 0;
+    margin-bottom: 16px;
+}
+
+.inventory-modal ion-label {
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.required-asterisk {
+    color: var(--ion-color-danger);
+    margin-left: 4px;
+}
+
+.error-text {
+    color: var(--ion-color-danger);
+    font-size: 0.75rem;
+    margin-top: 4px;
+    padding-left: 0;
+}
+
+.modal-button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 24px;
+    padding: 0 16px 16px;
+}
+
+.modal-button-container ion-button {
+    margin: 0;
+}
+
+ion-item.ion-invalid {
+    --highlight-color-invalid: var(--ion-color-danger);
+}
+
+ion-item.ion-invalid ion-input,
+ion-item.ion-invalid ion-textarea,
+ion-item.ion-invalid ion-select {
+    --border-color: var(--ion-color-danger);
+}
