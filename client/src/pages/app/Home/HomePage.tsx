@@ -23,9 +23,7 @@ const HomePage: React.FC = () => {
             <Header title="3D Printing Club" />
             <IonContent>
                 <div className="home-page-content">
-                    <Card title="Upcoming Events" subtitle="Don't miss out on workshops, fundraisers, and more!">
-                    </Card>
-                    <EventSlider filter="upcoming" />
+                    <EventSlider filter="upcoming"  title="Upcoming Events" />
                     <LeaderboardWidget />
                     <Card title="Earn Points">
                         <IonList>

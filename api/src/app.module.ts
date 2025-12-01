@@ -16,6 +16,12 @@ import { AuthModule } from './modules/auth/auth.module';
 import { EventsModule } from './modules/events/events.module';
 import { FilesModule } from './modules/files/files.module';
 import { RecyclingModule } from './modules/recycling/recycling.module';
+import { ModelsModule } from './modules/models/models.module';
+import { MaterialsModule } from './modules/materials/materials.module';
+import { ProductTemplatesModule } from './modules/product-templates/product-templates.module';
+import { OrdersModule } from './modules/orders/orders.module';
+import { TasksModule } from './modules/tasks/tasks.module';
+import { PrintersModule } from './modules/printers/printers.module';
 
 @Module({
   imports: [
@@ -33,6 +39,13 @@ import { RecyclingModule } from './modules/recycling/recycling.module';
     AuthModule,
     FilesModule,
     RecyclingModule,
+
+    ModelsModule,
+    MaterialsModule,
+    ProductTemplatesModule,
+    OrdersModule,
+    TasksModule,
+    PrintersModule,
   ],
   controllers: [AppController],
   providers: [

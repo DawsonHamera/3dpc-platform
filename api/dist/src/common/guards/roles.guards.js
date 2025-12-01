@@ -33,7 +33,6 @@ let RolesGuard = class RolesGuard {
         ]);
         const request = context.switchToHttp().getRequest();
         const user = request.user;
-        console.log("Request User: ", user);
         if (!requiredRoles) {
             return user.role.name === 'admin';
         }

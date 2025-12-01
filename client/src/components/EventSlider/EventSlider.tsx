@@ -13,9 +13,10 @@ import Card from "../Card/Card";
 
 type EventSliderProps = {
     filter?: "upcoming" | "ongoing" | "past";
+    title?: string;
 };
 
-const EventSlider: React.FC<EventSliderProps> = ({ filter }) => {
+const EventSlider: React.FC<EventSliderProps> = ({ filter, title }) => {
     const { data: events, isLoading, isError } = useGetEventsQuery();
 
     const filterEvents = (
@@ -61,6 +62,7 @@ const EventSlider: React.FC<EventSliderProps> = ({ filter }) => {
 
     return (
         <div className="event-slider">
+            {title && filterEvents(events, filter).length > 0 && <h2 className="slider-title">{title}</h2>}
             <div className="slider-container">
                 <Swiper
                     modules={[Pagination, Autoplay]}

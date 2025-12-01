@@ -28,6 +28,12 @@ const auth_module_1 = require("./modules/auth/auth.module");
 const events_module_1 = require("./modules/events/events.module");
 const files_module_1 = require("./modules/files/files.module");
 const recycling_module_1 = require("./modules/recycling/recycling.module");
+const models_module_1 = require("./modules/models/models.module");
+const materials_module_1 = require("./modules/materials/materials.module");
+const product_templates_module_1 = require("./modules/product-templates/product-templates.module");
+const orders_module_1 = require("./modules/orders/orders.module");
+const tasks_module_1 = require("./modules/tasks/tasks.module");
+const printers_module_1 = require("./modules/printers/printers.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -48,6 +54,12 @@ exports.AppModule = AppModule = __decorate([
             auth_module_1.AuthModule,
             files_module_1.FilesModule,
             recycling_module_1.RecyclingModule,
+            models_module_1.ModelsModule,
+            materials_module_1.MaterialsModule,
+            product_templates_module_1.ProductTemplatesModule,
+            orders_module_1.OrdersModule,
+            tasks_module_1.TasksModule,
+            printers_module_1.PrintersModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [
