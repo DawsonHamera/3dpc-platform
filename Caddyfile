@@ -9,13 +9,13 @@ deloro3dpc.tech {
     root * /srv
     encode gzip
 
-    @uploads path /api/uploads/*
-    handle @uploads {
-        rewrite * /uploads{path}
-        reverse_proxy http://localhost:3001 {
-            flush_interval -1
-        }
-    }
+    # @uploads path /api/uploads/*
+    # handle @uploads {
+    #     rewrite * /uploads{path}
+    #     reverse_proxy http://localhost:3001 {
+    #         flush_interval -1
+    #     }
+    # }
 
     @api path /api/*
     handle @api {
