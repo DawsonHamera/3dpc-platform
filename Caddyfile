@@ -11,6 +11,7 @@ deloro3dpc.tech {
 
     @uploads path /api/uploads/*
     handle @uploads {
+        rewrite * /uploads{path}
         reverse_proxy http://localhost:3001 {
             flush_interval -1
         }
