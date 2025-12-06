@@ -94,9 +94,9 @@ const EventsCreateModal: React.FC<EventsCreateModalProps> = ({
                             placeholder="Select Event Type">
                             <IonSelectOption value="meeting">Meeting</IonSelectOption>
                             <IonSelectOption value="workshop">Workshop</IonSelectOption>
-                            <IonSelectOption value="competition">Competition</IonSelectOption>
                             <IonSelectOption value="fundraiser">Fundraiser</IonSelectOption>
-                            <IonSelectOption value="work_day">Work Day</IonSelectOption>
+                            <IonSelectOption value="workday">Work Day</IonSelectOption>
+                            <IonSelectOption value="other">Other</IonSelectOption>
                         </IonSelect>
                     </IonItem>
                     <IonItem>

@@ -82,10 +82,7 @@ const EventsEditModel: React.FC<EventsEditModelProps> = ({
 
     return (
         <div>
-            <IonModal
-                isOpen={isOpen}
-                onDidDismiss={onClose}
-            >
+            <IonModal isOpen={isOpen} onDidDismiss={onClose}>
                 <IonHeader>
                     <IonToolbar>
                         <IonTitle>
@@ -127,12 +124,23 @@ const EventsEditModel: React.FC<EventsEditModelProps> = ({
                                     event_type: e.detail.value!,
                                 }))
                             }
-                            placeholder="Select Event Type">
-                            <IonSelectOption value="meeting">Meeting</IonSelectOption>
-                            <IonSelectOption value="workshop">Workshop</IonSelectOption>
-                            <IonSelectOption value="competition">Competition</IonSelectOption>
-                            <IonSelectOption value="fundraiser">Fundraiser</IonSelectOption>
-                            <IonSelectOption value="work_day">Work Day</IonSelectOption>
+                            placeholder="Select Event Type"
+                        >
+                            <IonSelectOption value="meeting">
+                                Meeting
+                            </IonSelectOption>
+                            <IonSelectOption value="workshop">
+                                Workshop
+                            </IonSelectOption>
+                            <IonSelectOption value="fundraiser">
+                                Fundraiser
+                            </IonSelectOption>
+                            <IonSelectOption value="workday">
+                                Work Day
+                            </IonSelectOption>
+                            <IonSelectOption value="other">
+                                Other
+                            </IonSelectOption>
                         </IonSelect>
                     </IonItem>
                     <IonItem>
@@ -170,9 +178,7 @@ const EventsEditModel: React.FC<EventsEditModelProps> = ({
                         <IonDatetime
                             showAdjacentDays
                             presentation="date-time"
-                            value={getLocalTimeForDatetime(
-                                formData?.end_time
-                            )}
+                            value={getLocalTimeForDatetime(formData?.end_time)}
                             onIonChange={(e) =>
                                 setFormData?.((f: any) => ({
                                     ...f,
