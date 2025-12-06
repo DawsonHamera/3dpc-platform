@@ -1,0 +1,192 @@
+.inventory-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.inventory-grid-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.inventory-grid-tabs {
+    display: flex;
+    gap: 8px;
+}
+
+.inventory-grid-tab {
+    padding: 12px 24px;
+    background: transparent;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #718096;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.inventory-grid-tab:hover {
+    background: #f7fafc;
+    border-color: #cbd5e0;
+}
+
+.inventory-grid-tab.active {
+    background: #667eea;
+    border-color: #667eea;
+    color: white;
+}
+
+.inventory-grid-add {
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.inventory-grid-add:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+}
+
+.inventory-grid-content {
+    min-height: 300px;
+}
+
+.inventory-grid-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px;
+    color: #718096;
+    font-size: 16px;
+}
+
+.inventory-grid-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+}
+
+.inventory-card {
+    background: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.inventory-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    border-color: #cbd5e0;
+}
+
+.inventory-card-image {
+    width: 100%;
+    height: 180px;
+    background: #f7fafc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.inventory-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.inventory-card-placeholder {
+    font-size: 64px;
+    color: #cbd5e0;
+}
+
+.inventory-card-content {
+    padding: 16px;
+}
+
+.inventory-card-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1a202c;
+    margin: 0 0 4px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.inventory-card-type {
+    font-size: 13px;
+    color: #718096;
+    margin: 0 0 12px 0;
+}
+
+.inventory-card-description {
+    font-size: 13px;
+    color: #718096;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.inventory-card-footer {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.inventory-card-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    border: 2px solid #e2e8f0;
+}
+
+.inventory-card-quantity {
+    font-size: 13px;
+    font-weight: 600;
+    color: #2d3748;
+}
+
+@media (max-width: 1200px) {
+    .inventory-grid-items {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .inventory-grid-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 16px;
+    }
+
+    .inventory-grid-tabs {
+        width: 100%;
+    }
+
+    .inventory-grid-tab {
+        flex: 1;
+    }
+
+    .inventory-grid-add {
+        width: 100%;
+    }
+
+    .inventory-grid-items {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+}
