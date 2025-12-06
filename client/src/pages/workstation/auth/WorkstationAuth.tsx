@@ -52,8 +52,8 @@ const WorkstationAuth: React.FC<{ children: React.ReactNode }> = ({
 
         try {
             const data = await login({ email, password }).unwrap();
-            if (data.user.role.name !== "admin")
-                throw new Error("Unauthorized: Admin access required");
+            // if (data.user.role.name !== "admin")
+            //     throw new Error("Unauthorized: Admin access required");
             // Store authentication state
             localStorage.setItem(WORKSTATION_AUTH_KEY, "true");
             localStorage.setItem(
