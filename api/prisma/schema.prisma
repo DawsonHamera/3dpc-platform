@@ -320,9 +320,9 @@ enum grade {
 enum events_event_type {
   meeting
   workshop
-  competition
   fundraiser
-  work_day
+  workday
+  other
 }
 
 enum material_type {
