@@ -1,102 +1,121 @@
+import type { ConfigType } from '@nestjs/config';
+import appConfig from 'src/config/app.config';
 import { PrismaService } from 'src/prisma/prisma.service';
 export declare class UsersService {
     private readonly prisma;
-    constructor(prisma: PrismaService);
-    findAll(): import("@prisma/client").Prisma.PrismaPromise<{
+    private appConfiguration;
+    constructor(prisma: PrismaService, appConfiguration: ConfigType<typeof appConfig>);
+    findAll(): import("@prisma/client").Prisma.PrismaPromise<({
+        role: {
+            id: number;
+            name: string;
+            created_at: Date | null;
+            updated_at: Date | null;
+            description: string | null;
+        };
+    } & {
+        id: number;
         name: string;
         email: string;
         password_hash: string;
+        role_id: number;
         grade: import("@prisma/client").$Enums.grade;
         points: number;
         last_active: Date | null;
         created_at: Date | null;
         updated_at: Date | null;
         deleted_at: Date | null;
+    })[]>;
+    findOne(id: number): import("@prisma/client").Prisma.Prisma__userClient<({
+        role: {
+            id: number;
+            name: string;
+            created_at: Date | null;
+            updated_at: Date | null;
+            description: string | null;
+        };
+    } & {
         id: number;
-        role_id: number;
-    }[]>;
-    findOne(id: number): import("@prisma/client").Prisma.Prisma__userClient<{
         name: string;
         email: string;
         password_hash: string;
+        role_id: number;
         grade: import("@prisma/client").$Enums.grade;
         points: number;
         last_active: Date | null;
         created_at: Date | null;
         updated_at: Date | null;
         deleted_at: Date | null;
-        id: number;
-        role_id: number;
-    } | null, null, import("@prisma/client/runtime/library").DefaultArgs, import("@prisma/client").Prisma.PrismaClientOptions>;
+    }) | null, null, import("@prisma/client/runtime/library").DefaultArgs, import("@prisma/client").Prisma.PrismaClientOptions>;
     findPoints(): import("@prisma/client").Prisma.PrismaPromise<{
         name: string;
         points: number;
     }[]>;
-    create(data: any): import("@prisma/client").Prisma.Prisma__userClient<{
+    create(data: any): Promise<{
+        id: number;
         name: string;
         email: string;
         password_hash: string;
+        role_id: number;
         grade: import("@prisma/client").$Enums.grade;
         points: number;
         last_active: Date | null;
         created_at: Date | null;
         updated_at: Date | null;
         deleted_at: Date | null;
+    }>;
+    update(id: number, data: any): Promise<{
         id: number;
-        role_id: number;
-    }, never, import("@prisma/client/runtime/library").DefaultArgs, import("@prisma/client").Prisma.PrismaClientOptions>;
-    update(id: number, data: any): import("@prisma/client").Prisma.Prisma__userClient<{
         name: string;
         email: string;
         password_hash: string;
+        role_id: number;
         grade: import("@prisma/client").$Enums.grade;
         points: number;
         last_active: Date | null;
         created_at: Date | null;
         updated_at: Date | null;
         deleted_at: Date | null;
-        id: number;
-        role_id: number;
-    }, never, import("@prisma/client/runtime/library").DefaultArgs, import("@prisma/client").Prisma.PrismaClientOptions>;
+    }>;
     remove(id: number): import("@prisma/client").Prisma.Prisma__userClient<{
+        id: number;
         name: string;
         email: string;
         password_hash: string;
+        role_id: number;
         grade: import("@prisma/client").$Enums.grade;
         points: number;
         last_active: Date | null;
         created_at: Date | null;
         updated_at: Date | null;
         deleted_at: Date | null;
-        id: number;
-        role_id: number;
     }, never, import("@prisma/client/runtime/library").DefaultArgs, import("@prisma/client").Prisma.PrismaClientOptions>;
     updateUserPoints(id: number, points: number, reason: string, details?: string): Promise<{
+        id: number;
         name: string;
         email: string;
         password_hash: string;
+        role_id: number;
         grade: import("@prisma/client").$Enums.grade;
         points: number;
         last_active: Date | null;
         created_at: Date | null;
         updated_at: Date | null;
         deleted_at: Date | null;
-        id: number;
-        role_id: number;
     } | null>;
     getUserPointsLogs(id: number): import("@prisma/client").Prisma.PrismaPromise<({
         user: {
+            id: number;
             name: string;
             email: string;
             password_hash: string;
+            role_id: number;
             grade: import("@prisma/client").$Enums.grade;
             points: number;
             last_active: Date | null;
             created_at: Date | null;
             updated_at: Date | null;
             deleted_at: Date | null;
-            id: number;
-            role_id: number;
         };
     } & {
         id: number;

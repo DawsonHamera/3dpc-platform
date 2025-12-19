@@ -139,6 +139,12 @@ let AuthService = class AuthService {
             },
         }, 'Login successful');
     }
+    async loginWorkstation(passkey) {
+        if (passkey.password !== process.env.WORKSTATION_PASSKEY) {
+            throw new common_1.UnauthorizedException('Invalid workstation passkey');
+        }
+        return;
+    }
     createStreamToken(userId) {
         return this.streamClient.createToken(userId);
     }

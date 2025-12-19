@@ -32,7 +32,7 @@ const AdminPage: React.FC = () => {
             title: "User Management",
             description: "View and manage user accounts",
             icon: peopleOutline,
-            route: "#",
+            route: "/dashboard/admin/users",
             color: "tertiary",
         },
     ];

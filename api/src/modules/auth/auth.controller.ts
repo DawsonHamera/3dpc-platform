@@ -23,4 +23,11 @@ export class AuthController {
   async login(@Body() loginDto: LoginDto) {
     return this.authService.login(loginDto);
   }
+
+  @Public()
+  @Post('login/workstation')
+  @HttpCode(HttpStatus.OK)
+  async loginWorkstation(@Body() loginDto: LoginDto) {
+    return this.authService.loginWorkstation(loginDto);
+  }
 }

@@ -28,6 +28,7 @@ export declare class AuthService {
         message: string;
         data: any;
     }>;
+    loginWorkstation(passkey: LoginDto): Promise<void>;
     private createStreamToken;
     validateUser(payload: any): Promise<any>;
 }

@@ -1,16 +1,26 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
+import type { ConfigType } from '@nestjs/config';
+import appConfig from 'src/config/app.config';
 import { PrismaService } from 'src/prisma/prisma.service';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    @Inject(appConfig.KEY)
+    private appConfiguration: ConfigType<typeof appConfig>,
+  ) {}
 
   findAll() {
-    return this.prisma.user.findMany();
+    return this.prisma.user.findMany({ include: { role: true } });
   }
 
   findOne(id: number) {
-    return this.prisma.user.findUnique({ where: { id } });
+    return this.prisma.user.findUnique({
+      where: { id },
+      include: { role: true },
+    });
   }
 
   findPoints() {
@@ -22,11 +32,29 @@ export class UsersService {
     });
   }
 
-  create(data: any) {
+  async create(data: any) {
+    if (data.password) {
+      const hashedPassword = await bcrypt.hash(
+        data.password,
+        this.appConfiguration.bcryptRounds,
+      );
+      delete data.password;
+      data.password_hash = hashedPassword;
+    }
+
     return this.prisma.user.create({ data });
   }
 
-  update(id: number, data: any) {
+  async update(id: number, data: any) {
+    if (data.password) {
+      const hashedPassword = await bcrypt.hash(
+        data.password,
+        this.appConfiguration.bcryptRounds,
+      );
+      delete data.password;
+      data.password_hash = hashedPassword;
+    }
+
     return this.prisma.user.update({ where: { id }, data });
   }
 
