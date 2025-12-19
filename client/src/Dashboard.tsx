@@ -34,6 +34,7 @@ import EventDetailsPage from "./pages/app/Events/EventDetailsPage";
 import TasksPage from "./pages/app/Tasks/TasksPage";
 import CreateTaskPage from "./pages/app/Tasks/CreatePrintTask";
 import InventoryPage from "./pages/app/Inventory/InventoryPage";
+import UserManagementPage from "./pages/app/Admin/Users/UserManagementPage";
 
 const Dashboard: React.FC = () => {
     const user = useSelector(selectCurrentUser);
@@ -64,6 +65,7 @@ const Dashboard: React.FC = () => {
                     path="/dashboard/admin/points"
                     component={PointsPage}
                 />
+                <Route exact path="/dashboard/admin/users" component={UserManagementPage} />
                 <Route
                     exact
                     path="/dashboard/recycle"

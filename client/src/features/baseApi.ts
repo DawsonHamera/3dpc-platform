@@ -18,7 +18,7 @@ export const baseQuery = async (args: any, api: any, extraOptions: any) => {
     // Auto sign-out on token expiration / 401
     if (
         result.error &&
-        (result.error.status === 401 ||
+        (result.error.status === 401 &&
             result.error.data?.message === "token expired")
     ) {
         console.log("Signing out due to token expiration");

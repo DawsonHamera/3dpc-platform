@@ -14,4 +14,5 @@ export declare class AuthController {
         message: string;
         data: any;
     }>;
+    loginWorkstation(loginDto: LoginDto): Promise<void>;
 }

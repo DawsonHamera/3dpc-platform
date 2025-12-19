@@ -134,6 +134,13 @@ export class AuthService {
     );
   }
 
+  async loginWorkstation(passkey: LoginDto) {
+    if (passkey.password !== process.env.WORKSTATION_PASSKEY) {
+      throw new UnauthorizedException('Invalid workstation passkey');
+    }
+    return 
+  }
+
   private createStreamToken(userId: string): string {
     // Generate a Stream Chat token for the given userId
     return this.streamClient.createToken(userId);
