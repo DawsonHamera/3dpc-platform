@@ -18,8 +18,6 @@ import { FilesModule } from './modules/files/files.module';
 import { RecyclingModule } from './modules/recycling/recycling.module';
 import { ModelsModule } from './modules/models/models.module';
 import { MaterialsModule } from './modules/materials/materials.module';
-import { ProductTemplatesModule } from './modules/product-templates/product-templates.module';
-import { OrdersModule } from './modules/orders/orders.module';
 import { TasksModule } from './modules/tasks/tasks.module';
 import { PrintersModule } from './modules/printers/printers.module';
 
@@ -42,8 +40,7 @@ import { PrintersModule } from './modules/printers/printers.module';
 
     ModelsModule,
     MaterialsModule,
-    ProductTemplatesModule,
-    OrdersModule,
+    // OrdersModule,
     TasksModule,
     PrintersModule,
   ],

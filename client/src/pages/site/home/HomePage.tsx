@@ -174,7 +174,6 @@ const HomePage: React.FC = () => {
                         Teachers
                     </IonButton>
                     <IonButton
-                        disabled
                         color="light"
                         fill="outline"
                         style={{
