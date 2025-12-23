@@ -51,28 +51,32 @@ export declare class OrdersController {
         id: number;
         quantity: number;
         order_id: number;
-        product_template_id: number;
+        product_id: number;
+        product_variant_id: number;
         price: import("@prisma/client/runtime/library").Decimal;
     }[]>;
     addItem(orderId: string, data: any): import("@prisma/client").Prisma.Prisma__order_itemClient<{
         id: number;
         quantity: number;
         order_id: number;
-        product_template_id: number;
+        product_id: number;
+        product_variant_id: number;
         price: import("@prisma/client/runtime/library").Decimal;
     }, never, import("@prisma/client/runtime/library").DefaultArgs, import("@prisma/client").Prisma.PrismaClientOptions>;
     updateItem(orderId: string, itemId: string, data: any): import("@prisma/client").Prisma.Prisma__order_itemClient<{
         id: number;
         quantity: number;
         order_id: number;
-        product_template_id: number;
+        product_id: number;
+        product_variant_id: number;
         price: import("@prisma/client/runtime/library").Decimal;
     }, never, import("@prisma/client/runtime/library").DefaultArgs, import("@prisma/client").Prisma.PrismaClientOptions>;
     removeItem(orderId: string, itemId: string): import("@prisma/client").Prisma.Prisma__order_itemClient<{
         id: number;
         quantity: number;
         order_id: number;
-        product_template_id: number;
+        product_id: number;
+        product_variant_id: number;
         price: import("@prisma/client/runtime/library").Decimal;
     }, never, import("@prisma/client/runtime/library").DefaultArgs, import("@prisma/client").Prisma.PrismaClientOptions>;
 }

@@ -29,6 +29,7 @@ import LoginPage from "./pages/site/login/LoginPage";
 import HomePage from "./pages/site/home/HomePage";
 import Dashboard from "./Dashboard";
 import WorkstationPage from "./pages/workstation/main/WorkstationPage";
+import Shop from "./pages/shop/Shop";
 
 setupIonicReact();
 
@@ -47,6 +48,7 @@ const App: React.FC = () => {
                                 component={WorkstationPage}
                             />
                             <Route path="/dashboard" component={Dashboard} />
+                            <Route path='/shop' component={Shop} />
                         </IonRouterOutlet>
                     </IonReactRouter>
                 </Provider>
