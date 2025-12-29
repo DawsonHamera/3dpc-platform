@@ -2,13 +2,13 @@ import { IonContent, IonInput, IonItem, IonLabel, IonList, IonPage, IonRadio, Io
 import React, { useState } from 'react';
 import ShopHeader from './ShopHeader';
 import { useShop } from './ShopContext';
-import { dummyProductData } from './CatalogPage';
+import { ProductType, useGetProductsQuery } from '../../features/products/productsApi';
 
 const CheckoutPage: React.FC = () => {
 
     const router = useIonRouter();
     const { cart } = useShop();
-    const products = dummyProductData.products;
+    const { data: products } = useGetProductsQuery();
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
     const [toastColor, setToastColor] = useState<'success' | 'danger'>('success');
@@ -40,9 +40,10 @@ const CheckoutPage: React.FC = () => {
     const calculateTotal = () => {
         if (!cart) return 0;
         return cart.reduce((total: number, item: any) => {
-            const product = products.find(p => p.id === item.productId);
-            if (!product) return total;
-            return total + (product.price * item.quantity);
+            const product = products?.find(p => p.id === item.productId);
+            const variant = product?.variants?.find(v => v.id === item.variantId);
+            if (!product || !variant) return total;
+            return total + (variant.price * item.quantity);
         }, 0);
     };
 
@@ -109,16 +110,19 @@ const CheckoutPage: React.FC = () => {
                     </IonItem>
                     {cart &&
                         cart.map((item: any) => {
-                            const product = products.find(
+                            const product = products?.find(
                                 (p) => p.id === item.productId
                             );
-                            if (!product) return null;
-                            const subtotal = product.price * item.quantity;
+                            const variant = product?.variants?.find(
+                                (v) => v.id === item.variantId
+                            );
+                            if (!product || !variant) return null;
+                            const subtotal = variant.price * item.quantity;
                             return (
                                 <IonItem key={item.id}>
                                     <IonLabel>
                                         <h3>
-                                            {item.quantity}x {product.name}
+                                            {item.quantity}x {variant.type === ProductType.DEFAULT ? "" : variant.name} {product.name}
                                         </h3>
                                         <p>{product.description}</p>
                                     </IonLabel>
@@ -127,7 +131,7 @@ const CheckoutPage: React.FC = () => {
                                         style={{ textAlign: "right" }}
                                     >
                                         <h3>${subtotal.toFixed(2)}</h3>
-                                        <p>${product.price.toFixed(2)} each</p>
+                                        <p>${variant.price.toFixed(2)} each</p>
                                     </IonLabel>
                                 </IonItem>
                             );

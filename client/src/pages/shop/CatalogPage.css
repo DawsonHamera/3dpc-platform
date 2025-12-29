@@ -1,0 +1,31 @@
+/* CatalogPage.css */
+
+.section-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+    padding: 0 16px;
+}
+
+.product-list {
+    display: flex;
+    padding: 16px;
+    gap: 16px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    /* For Firefox */
+    -ms-overflow-style: none;
+    /* For Internet Explorer and Edge */
+}
+
+.product-list::-webkit-scrollbar {
+    display: none;
+    /* For Chrome, Safari, and Opera */
+}
+
+/* Added styles for filtered product list */
+.filtered-product-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 16px;
+}

@@ -14,70 +14,20 @@ import { useParams } from "react-router";
 import MaterialPicker from "./components/ColorPicker";
 import { arrowBackOutline, cartOutline, close, remove } from "ionicons/icons";
 import { useEffect, useMemo, useState } from "react";
-import { ProductType } from "./types";
 import Incrementer from "./components/Incrementer";
 import { useShop } from "./ShopContext";
-
-export const product = {
-    id: 1,
-    name: "Spiral Passthrough 2",
-    description: "A spiral model that demonstrates a passthrough design.",
-    price: 7.0,
-    variants: [
-        {
-            id: 101,
-            type: ProductType.DEFAULT,
-            name: "Default",
-            image: {
-                url: "https://deloro3dpc.tech/api/uploads/1763335592952_ze95jsvy_spiral.png",
-            },
-            color: "Gold",
-            backgroundColor: "#00bf6380",
-            customizations: {},
-        },
-        {
-            id: 102,
-            type: ProductType.STANDARD,
-            name: "Red one",
-            image: {
-                url: "https://deloro3dpc.tech/api/uploads/1763335592952_ze95jsvy_spiral.png",
-            },
-            color: "Red",
-            backgroundColor: "#00027e80",
-            customizations: {},
-        },
-        {
-            id: 103,
-            type: ProductType.STANDARD,
-            name: "Pink one",
-            image: {
-                url: "https://deloro3dpc.tech/api/uploads/1763335592952_ze95jsvy_spiral.png",
-            },
-            color: "Pink",
-            backgroundColor: "#ffe60080",
-            customizations: {},
-        },
-        {
-            id: 104,
-            type: ProductType.STANDARD,
-            name: "Black one",
-            image: {
-                url: "https://deloro3dpc.tech/api/uploads/1763357907054_78wywnfu_star.png",
-            },
-            color: "Black",
-            backgroundColor: "#80808080",
-            customizations: {},
-        },
-    ],
-};
+import { Product, ProductType } from "../../features/products/productsApi";
 
 const ProductModal: React.FC<{
     isOpen: boolean;
     onClose: () => void;
-    product: typeof product;
+    product: Product | null;
     onSave?: () => void;
 }> = ({ isOpen, onClose, product, onSave }) => {
     // const { data: product, error, isLoading } = useGetProductByIdQuery(id);
+    if (!product || !product.variants || product.variants.length === 0) {
+        return null;
+    }
 
     const [selectedVariantId, setSelectedVariantId] = useState<number | null>(
         null
@@ -131,7 +81,11 @@ const ProductModal: React.FC<{
                         <IonIcon icon={close} />
                     </IonButton>
                     <IonTitle>{product?.name || "Product"}</IonTitle>
-                    <IonButton slot="end" fill="clear" onClick={() => router.push('/shop/cart', 'forward')}>
+                    <IonButton
+                        slot="end"
+                        fill="clear"
+                        onClick={() => router.push("/shop/cart", "forward")}
+                    >
                         <IonIcon icon={cartOutline} />
                     </IonButton>
                 </IonToolbar>
@@ -147,13 +101,13 @@ const ProductModal: React.FC<{
                         }}
                     >
                         <img
-                            src={selectedVariant?.image?.url}
+                            src={selectedVariant?.image?.path}
                             alt={selectedVariant?.name || "Product Image"}
                             style={{
                                 width: "100%",
                                 height: "auto",
                                 backgroundColor:
-                                    selectedVariant?.backgroundColor ??
+                                    selectedVariant?.background_color ??
                                     "#00bf6380",
                                 borderRadius: "16px",
                                 display: "block",
@@ -196,9 +150,28 @@ const ProductModal: React.FC<{
                                     ))}
                             </div>
                         </div>
-                        <h2 style={{ fontSize: 20, fontWeight: "bold" }}>
-                            {product.name}
-                        </h2>
+                        <div style={{ margin: "16px 0" }}>
+                            <h2
+                                style={{
+                                    fontSize: "1.5rem",
+                                    fontWeight: "bold",
+                                    margin: "0",
+                                }}
+                            >
+                                {product.name}
+                            </h2>
+                            {selectedVariant?.type != ProductType.DEFAULT && (
+                                <p
+                                    style={{
+                                        fontSize: "1rem",
+                                        color: "var(--ion-color-medium)",
+                                        margin: "4px 0",
+                                    }}
+                                >
+                                    {selectedVariant?.name}
+                                </p>
+                            )}
+                        </div>
                         <div
                             style={{
                                 display: "flex",
@@ -213,7 +186,7 @@ const ProductModal: React.FC<{
                                     color: "var(--ion-color-primary)",
                                 }}
                             >
-                                ${product.price.toFixed(2)}
+                                ${selectedVariant?.price.toFixed(2)}
                             </b>
                         </div>
                         <p

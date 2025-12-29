@@ -20,6 +20,7 @@ import { ModelsModule } from './modules/models/models.module';
 import { MaterialsModule } from './modules/materials/materials.module';
 import { TasksModule } from './modules/tasks/tasks.module';
 import { PrintersModule } from './modules/printers/printers.module';
+import { ProductsModule } from './modules/products/products.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { PrintersModule } from './modules/printers/printers.module';
     // OrdersModule,
     TasksModule,
     PrintersModule,
+    ProductsModule,
   ],
   controllers: [AppController],
   providers: [
