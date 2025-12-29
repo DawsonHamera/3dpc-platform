@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
     IonHeader,
     IonToolbar,
@@ -10,9 +10,10 @@ import {
     useIonRouter,
     IonBackButton,
     IonBadge,
-} from '@ionic/react';
-import { chevronBack, cartOutline, searchOutline, exit, remove } from 'ionicons/icons';
-import { useShop } from './ShopContext';
+} from "@ionic/react";
+import { chevronBack, cartOutline, searchOutline } from "ionicons/icons";
+import { useShop } from "./ShopContext";
+import "./ShopHeader.css";
 
 interface ShopHeaderProps {
     title: string;
@@ -21,10 +22,15 @@ interface ShopHeaderProps {
     onSearchChange?: (value: string) => void;
 }
 
-const ShopHeader: React.FC<ShopHeaderProps> = ({ title, searchbar, onSearchChange, backArrow }) => {
+const ShopHeader: React.FC<ShopHeaderProps> = ({
+    title,
+    searchbar,
+    onSearchChange,
+    backArrow,
+}) => {
     const router = useIonRouter();
 
-    const [searchQuery, setSearchQuery] = React.useState('');
+    const [searchQuery, setSearchQuery] = React.useState("");
     const [searchExpanded, setSearchExpanded] = React.useState(false);
 
     const { cart } = useShop();
@@ -46,22 +52,28 @@ const ShopHeader: React.FC<ShopHeaderProps> = ({ title, searchbar, onSearchChang
                                 </IonBackButton>
                             </IonButtons>
                         )}
-                        <IonTitle slot="start" style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                        <IonTitle slot="start" className="shop-header-title">
                             3DPC
-                            <span style={{ marginLeft: 16, fontSize: '1rem', verticalAlign: 'middle' }}>
+                            <span className="shop-header-subtitle">
                                 {title}
                             </span>
                         </IonTitle>
 
-                        
-
                         <IonButtons slot="end">
-                            <IonButton onClick={() => router.push('/shop/cart')}>
+                            <IonButton
+                                onClick={() => router.push("/shop/cart")}
+                                className="cart-button"
+                            >
                                 <IonIcon icon={cartOutline} />
-                                <IonBadge color='light'>{cart.length}</IonBadge>
+                                <IonBadge color="light" className="cart-badge">
+                                    {cart.length}
+                                </IonBadge>
                             </IonButton>
                             {searchbar && (
-                                <IonButton onClick={() => setSearchExpanded((s) => !s)}>
+                                <IonButton
+                                    onClick={() => setSearchExpanded((s) => !s)}
+                                    className="search-button"
+                                >
                                     <IonIcon icon={searchOutline} />
                                 </IonButton>
                             )}
@@ -71,16 +83,23 @@ const ShopHeader: React.FC<ShopHeaderProps> = ({ title, searchbar, onSearchChang
                     <>
                         <IonSearchbar
                             value={searchQuery}
-                            onIonChange={(e) => handleSearchChange((e.detail.value ?? '').toString())}
+                            onIonInput={(e) =>
+                                handleSearchChange(
+                                    (e.detail.value ?? "").toString()
+                                )
+                            }
                             showCancelButton="never"
                             placeholder="Search..."
                             animated
-                            style={{ width: '100%' }}
+                            className="search-bar"
                             inputmode="search"
                             autoFocus
                         />
                         <IonButtons slot="end">
-                            <IonButton onClick={() => setSearchExpanded((s) => !s)}>
+                            <IonButton
+                                onClick={() => setSearchExpanded((s) => !s)}
+                                className="search-close-button"
+                            >
                                 <IonIcon icon={searchOutline} />
                             </IonButton>
                         </IonButtons>

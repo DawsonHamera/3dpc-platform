@@ -50,33 +50,33 @@ export declare class OrdersService {
     findOrderItems(orderId: number): import("@prisma/client").Prisma.PrismaPromise<{
         id: number;
         quantity: number;
-        order_id: number;
         product_id: number;
-        product_variant_id: number;
         price: import("@prisma/client/runtime/library").Decimal;
+        order_id: number;
+        product_variant_id: number;
     }[]>;
     addOrderItem(orderId: number, data: any): import("@prisma/client").Prisma.Prisma__order_itemClient<{
         id: number;
         quantity: number;
-        order_id: number;
         product_id: number;
-        product_variant_id: number;
         price: import("@prisma/client/runtime/library").Decimal;
+        order_id: number;
+        product_variant_id: number;
     }, never, import("@prisma/client/runtime/library").DefaultArgs, import("@prisma/client").Prisma.PrismaClientOptions>;
     updateOrderItem(orderId: number, itemId: number, data: any): import("@prisma/client").Prisma.Prisma__order_itemClient<{
         id: number;
         quantity: number;
-        order_id: number;
         product_id: number;
-        product_variant_id: number;
         price: import("@prisma/client/runtime/library").Decimal;
+        order_id: number;
+        product_variant_id: number;
     }, never, import("@prisma/client/runtime/library").DefaultArgs, import("@prisma/client").Prisma.PrismaClientOptions>;
     deleteOrderItem(orderId: number, itemId: number): import("@prisma/client").Prisma.Prisma__order_itemClient<{
         id: number;
         quantity: number;
-        order_id: number;
         product_id: number;
-        product_variant_id: number;
         price: import("@prisma/client/runtime/library").Decimal;
+        order_id: number;
+        product_variant_id: number;
     }, never, import("@prisma/client/runtime/library").DefaultArgs, import("@prisma/client").Prisma.PrismaClientOptions>;
 }

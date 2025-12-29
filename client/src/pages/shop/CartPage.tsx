@@ -11,16 +11,24 @@ import {
 import { useShop } from "./ShopContext";
 import ShopHeader from "./ShopHeader";
 import Card from "../../components/Card/Card";
-import { dummyProductData } from "./CatalogPage";
 import Incrementer from "./components/Incrementer";
 import { trash } from "ionicons/icons";
+import { useGetProductsQuery } from "../../features/products/productsApi";
 
 const CartPage: React.FC = () => {
     const { cart, updateCartItemQuantity } = useShop();
 
-    const products = dummyProductData.products;
-
+    const { data: products } = useGetProductsQuery();
+    
     const router = useIonRouter();
+
+    if (!products) {
+        return (
+            <IonPage>
+                <IonContent className="ion-padding">Loading...</IonContent>
+            </IonPage>
+        );
+    }
 
     return (
         <IonPage>
@@ -89,7 +97,7 @@ const CartPage: React.FC = () => {
                                         }}
                                     >
                                         <img
-                                            src={variant?.image.url}
+                                            src={variant?.image.path}
                                             alt={product?.name}
                                             style={{
                                                 width: "100px",
@@ -126,7 +134,7 @@ const CartPage: React.FC = () => {
                                                         fontSize: "1.5rem",
                                                     }}
                                                 >
-                                                    ${product?.price.toFixed(2)}
+                                                    ${variant?.price.toFixed(2)}
                                                 </h1>
                                                 <Incrementer
                                                     value={item.quantity}

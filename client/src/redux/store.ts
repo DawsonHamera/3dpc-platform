@@ -9,9 +9,9 @@ import { recyclingLogsApi } from "../features/recycling/recyclingApi";
 import { tasksApi } from "../features/tasks/tasksApi";
 import { modelsApi } from "../features/models/modelsApi";
 import { materialsApi } from "../features/materials/materialsApi";
-import { productTemplatesApi } from "../features/productTemplates/productTemplatesApi";
 import { ordersApi } from "../features/orders/ordersApi";
 import { printersApi } from "../features/printers/printersApi";
+import { productsApi } from "../features/products/productsApi";
 
 const rootReducer = combineReducers({
     [authApi.reducerPath]: authApi.reducer,
@@ -22,9 +22,9 @@ const rootReducer = combineReducers({
     [tasksApi.reducerPath]: tasksApi.reducer,
     [modelsApi.reducerPath]: modelsApi.reducer,
     [materialsApi.reducerPath]: materialsApi.reducer,
-    [productTemplatesApi.reducerPath]: productTemplatesApi.reducer,
     [ordersApi.reducerPath]: ordersApi.reducer,
     [printersApi.reducerPath]: printersApi.reducer,
+    [productsApi.reducerPath]: productsApi.reducer,
     auth: authReducer,
 });
 
@@ -42,9 +42,9 @@ export const store = configureStore({
             tasksApi.middleware,
             modelsApi.middleware,
             materialsApi.middleware,
-            productTemplatesApi.middleware,
             ordersApi.middleware,
-            printersApi.middleware
+            printersApi.middleware,
+            productsApi.middleware
         ),
 });
 

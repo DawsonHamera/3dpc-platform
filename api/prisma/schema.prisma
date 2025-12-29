@@ -123,24 +123,25 @@ model event {
 }
 
 model file {
-  id              Int        @id @default(autoincrement())
-  original_name   String     @db.VarChar(255)
-  stored_name     String     @db.VarChar(255)
-  mime_type       String?    @db.VarChar(100)
-  size            Int        @db.UnsignedInt
-  path            String     @db.VarChar(255)
+  id              Int               @id @default(autoincrement())
+  original_name   String            @db.VarChar(255)
+  stored_name     String            @db.VarChar(255)
+  mime_type       String?           @db.VarChar(100)
+  size            Int               @db.UnsignedInt
+  path            String            @db.VarChar(255)
   uploaded_by     Int?
-  created_at      DateTime?  @default(now())
-  updated_at      DateTime?  @updatedAt
-  deleted_at      DateTime?  @db.DateTime(0)
-  description     String?    @db.Text
-  type            file_type  @default(other)
+  created_at      DateTime?         @default(now())
+  updated_at      DateTime?         @updatedAt
+  deleted_at      DateTime?         @db.DateTime(0)
+  description     String?           @db.Text
+  type            file_type         @default(other)
   events          event[]
-  models_as_file  model[]    @relation("model_file")
-  models_as_image model[]    @relation("model_image_file")
-  uploader        user?      @relation(fields: [uploaded_by], references: [id], onDelete: SetNull, onUpdate: Restrict)
+  models_as_file  model[]           @relation("model_file")
+  models_as_image model[]           @relation("model_image_file")
+  uploader        user?             @relation(fields: [uploaded_by], references: [id], onDelete: SetNull, onUpdate: Restrict)
   material        material[]
   printer         printer[]
+  productVariants product_variant[]
 }
 
 // Inventory
@@ -217,20 +218,19 @@ model task {
 model section {
   id         Int       @id @default(autoincrement())
   name       String    @db.VarChar(100)
-  products   Json      @db.Json
+  productIds Json      @db.Json
   created_at DateTime? @default(now())
   updated_at DateTime? @updatedAt
 }
 
 model product {
-  id          Int       @id @default(autoincrement())
-  name        String    @db.VarChar(255)
-  description String?   @db.Text
-  created_at  DateTime? @default(now())
-  updated_at  DateTime? @updatedAt
-
-  product_variant product_variant[]
-  order_item      order_item[]
+  id              Int               @id @default(autoincrement())
+  name            String            @db.VarChar(255)
+  description     String?           @db.Text
+  created_at      DateTime?         @default(now())
+  updated_at      DateTime?         @updatedAt
+  variants product_variant[]
+  order_items      order_item[]
 }
 
 model product_variant {
@@ -238,12 +238,19 @@ model product_variant {
   product_id Int
   name       String               @db.VarChar(255)
   type       product_variant_type @default(STANDARD)
-  price      Float                @db.Float()
-  created_at DateTime?            @default(now())
-  updated_at DateTime?            @updatedAt
+
+  image_file_id Int?
+
+  color            String?   @db.VarChar(50)
+  background_color String?   @db.VarChar(50)
+  price            Float     @db.Float()
+  customizations   Json?     @db.Json()
+  created_at       DateTime? @default(now())
+  updated_at       DateTime? @updatedAt
 
   product    product      @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
   order_item order_item[]
+  image      file?        @relation(fields: [image_file_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model order {
