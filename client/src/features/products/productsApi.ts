@@ -40,7 +40,10 @@ export enum ProductType {
 export interface Section {
     id: number;
     name: string;
-    productIds: number[];
+    items: {
+        product_id: number;
+        variant_id: number;
+    }[];
 }
 
 export const productsApi = createApi({

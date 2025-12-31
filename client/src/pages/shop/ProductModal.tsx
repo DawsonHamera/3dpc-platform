@@ -22,15 +22,16 @@ const ProductModal: React.FC<{
     isOpen: boolean;
     onClose: () => void;
     product: Product | null;
+    variantId?: string;
     onSave?: () => void;
-}> = ({ isOpen, onClose, product, onSave }) => {
+}> = ({ isOpen, onClose, product, variantId, onSave }) => {
     // const { data: product, error, isLoading } = useGetProductByIdQuery(id);
     if (!product || !product.variants || product.variants.length === 0) {
         return null;
     }
 
     const [selectedVariantId, setSelectedVariantId] = useState<number | null>(
-        null
+        variantId ? parseInt(variantId) : null
     );
     const [quantity, setQuantity] = useState(1);
 

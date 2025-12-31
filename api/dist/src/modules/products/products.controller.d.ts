@@ -43,7 +43,7 @@ export declare class ProductsController {
         created_at: Date | null;
         updated_at: Date | null;
         id: number;
-        productIds: import("@prisma/client/runtime/library").JsonValue;
+        items: import("@prisma/client/runtime/library").JsonValue;
     }[]>;
     findVarient(id: string, variantId: string): import("@prisma/client").Prisma.Prisma__product_variantClient<({
         image: {
@@ -134,14 +134,14 @@ export declare class ProductsController {
         created_at: Date | null;
         updated_at: Date | null;
         id: number;
-        productIds: import("@prisma/client/runtime/library").JsonValue;
+        items: import("@prisma/client/runtime/library").JsonValue;
     }, never, import("@prisma/client/runtime/library").DefaultArgs, import("@prisma/client").Prisma.PrismaClientOptions>;
     updateSection(id: string, data: any): import("@prisma/client").Prisma.Prisma__sectionClient<{
         name: string;
         created_at: Date | null;
         updated_at: Date | null;
         id: number;
-        productIds: import("@prisma/client/runtime/library").JsonValue;
+        items: import("@prisma/client/runtime/library").JsonValue;
     }, never, import("@prisma/client/runtime/library").DefaultArgs, import("@prisma/client").Prisma.PrismaClientOptions>;
     updateVariant(id: string, variantId: string, data: any): import("@prisma/client").Prisma.Prisma__product_variantClient<{
         name: string;
@@ -168,7 +168,7 @@ export declare class ProductsController {
         created_at: Date | null;
         updated_at: Date | null;
         id: number;
-        productIds: import("@prisma/client/runtime/library").JsonValue;
+        items: import("@prisma/client/runtime/library").JsonValue;
     }, never, import("@prisma/client/runtime/library").DefaultArgs, import("@prisma/client").Prisma.PrismaClientOptions>;
     removeVariant(id: string, variantId: string): import("@prisma/client").Prisma.Prisma__product_variantClient<{
         name: string;
