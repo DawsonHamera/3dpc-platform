@@ -218,7 +218,7 @@ model task {
 model section {
   id         Int       @id @default(autoincrement())
   name       String    @db.VarChar(100)
-  productIds Json      @db.Json
+  items      Json      @db.Json
   created_at DateTime? @default(now())
   updated_at DateTime? @updatedAt
 }

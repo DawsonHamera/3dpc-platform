@@ -43,7 +43,7 @@ export declare class ProductsService {
         created_at: Date | null;
         updated_at: Date | null;
         id: number;
-        productIds: import("@prisma/client/runtime/library").JsonValue;
+        items: import("@prisma/client/runtime/library").JsonValue;
     }[]>;
     findProductById(id: number): import("@prisma/client").Prisma.Prisma__productClient<({
         variants: ({
@@ -114,7 +114,7 @@ export declare class ProductsService {
         created_at: Date | null;
         updated_at: Date | null;
         id: number;
-        productIds: import("@prisma/client/runtime/library").JsonValue;
+        items: import("@prisma/client/runtime/library").JsonValue;
     }, never, import("@prisma/client/runtime/library").DefaultArgs, import("@prisma/client").Prisma.PrismaClientOptions>;
     createProduct(data: any): import("@prisma/client").Prisma.Prisma__productClient<{
         name: string;
@@ -141,7 +141,7 @@ export declare class ProductsService {
         created_at: Date | null;
         updated_at: Date | null;
         id: number;
-        productIds: import("@prisma/client/runtime/library").JsonValue;
+        items: import("@prisma/client/runtime/library").JsonValue;
     }, never, import("@prisma/client/runtime/library").DefaultArgs, import("@prisma/client").Prisma.PrismaClientOptions>;
     updateProduct(id: number, data: any): import("@prisma/client").Prisma.Prisma__productClient<{
         name: string;
@@ -168,7 +168,7 @@ export declare class ProductsService {
         created_at: Date | null;
         updated_at: Date | null;
         id: number;
-        productIds: import("@prisma/client/runtime/library").JsonValue;
+        items: import("@prisma/client/runtime/library").JsonValue;
     }, never, import("@prisma/client/runtime/library").DefaultArgs, import("@prisma/client").Prisma.PrismaClientOptions>;
     deleteProduct(id: number): import("@prisma/client").Prisma.Prisma__productClient<{
         name: string;

@@ -35,8 +35,8 @@ let OrdersService = class OrdersService {
             },
         });
     }
-    findOrderByKey(key) {
-        return this.prisma.order.findUnique({
+    async findOrderByKey(key) {
+        const order = await this.prisma.order.findUnique({
             where: { key },
             include: {
                 order_items: {
@@ -49,6 +49,10 @@ let OrdersService = class OrdersService {
                 },
             },
         });
+        if (!order) {
+            throw new common_1.InternalServerErrorException('Order not found');
+        }
+        return order;
     }
     async createOrder(data) {
         const orderData = {

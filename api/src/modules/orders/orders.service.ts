@@ -1,6 +1,5 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { success } from 'src/utils/response';
 
 @Injectable()
 export class OrdersService {
@@ -26,8 +25,8 @@ export class OrdersService {
     });
   }
 
-  findOrderByKey(key: string) {
-    return this.prisma.order.findUnique({
+  async findOrderByKey(key: string) {
+    const order = await this.prisma.order.findUnique({
       where: { key },
       include: {
         order_items: {
@@ -40,6 +39,12 @@ export class OrdersService {
         },
       },
     });
+
+    if (!order) {
+      throw new InternalServerErrorException('Order not found');
+    }
+
+    return order;
   }
 
   async createOrder(data: any) {

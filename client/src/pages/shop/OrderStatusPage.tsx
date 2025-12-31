@@ -126,7 +126,7 @@ const OrderStatusPage: React.FC = () => {
                                 <h2>Error Loading Order</h2>
                                 <p>
                                     We couldn't load your order details. Please
-                                    check your order key and try again.
+                                    check your url and try again.
                                 </p>
                             </IonText>
                         </IonCardContent>

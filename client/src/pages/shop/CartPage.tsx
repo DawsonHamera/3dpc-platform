@@ -1,198 +1,353 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
     IonPage,
     IonContent,
-    IonItem,
-    IonList,
     IonButton,
     useIonRouter,
     IonIcon,
+    IonImg,
+    IonText,
+    IonCard,
+    IonCardContent,
+    IonCardHeader,
+    IonCardTitle,
+    IonList,
+    IonItem,
+    IonThumbnail,
+    IonLabel,
+    IonNote,
+    IonItemSliding,
+    IonItemOptions,
+    IonItemOption,
+    IonSkeletonText,
 } from "@ionic/react";
 import { useShop } from "./ShopContext";
 import ShopHeader from "./ShopHeader";
-import Card from "../../components/Card/Card";
 import Incrementer from "./components/Incrementer";
-import { trash } from "ionicons/icons";
-import { useGetProductsQuery } from "../../features/products/productsApi";
+import { trash, cartOutline, storefrontOutline } from "ionicons/icons";
+import { ProductType, useGetProductsQuery } from "../../features/products/productsApi";
 
 const CartPage: React.FC = () => {
     const { cart, updateCartItemQuantity } = useShop();
-
     const { data: products } = useGetProductsQuery();
-    
     const router = useIonRouter();
+
+    const cartTotal = useMemo(() => {
+        if (!cart || !products) return 0;
+        return cart.reduce((total, item) => {
+            const product = products.find((p) => p.id === item.productId);
+            const variant = product?.variants.find(
+                (v) => v.id === item.variantId
+            );
+            return total + (variant?.price || 0) * item.quantity;
+        }, 0);
+    }, [cart, products]);
 
     if (!products) {
         return (
             <IonPage>
-                <IonContent className="ion-padding">Loading...</IonContent>
+                <ShopHeader title="Shopping Cart" backArrow />
+                <IonContent className="ion-padding">
+                    <div style={{ maxWidth: "800px", margin: "0 auto" }}>
+                        <IonList>
+                            {[1, 2, 3].map((i) => (
+                                <IonItem key={i}>
+                                    <IonThumbnail slot="start">
+                                        <IonSkeletonText animated />
+                                    </IonThumbnail>
+                                    <IonLabel>
+                                        <h3>
+                                            <IonSkeletonText
+                                                animated
+                                                style={{ width: "60%" }}
+                                            />
+                                        </h3>
+                                        <p>
+                                            <IonSkeletonText
+                                                animated
+                                                style={{ width: "40%" }}
+                                            />
+                                        </p>
+                                        <p>
+                                            <IonSkeletonText
+                                                animated
+                                                style={{ width: "30%" }}
+                                            />
+                                        </p>
+                                    </IonLabel>
+                                </IonItem>
+                            ))}
+                        </IonList>
+                        <IonCard className="ion-margin-top">
+                            <IonCardContent>
+                                <IonSkeletonText
+                                    animated
+                                    style={{ width: "100%", height: "60px" }}
+                                />
+                            </IonCardContent>
+                        </IonCard>
+                    </div>
+                </IonContent>
             </IonPage>
         );
     }
 
     return (
         <IonPage>
-            <ShopHeader title="Cart" backArrow />
+            <ShopHeader title="Shopping Cart" backArrow />
             <IonContent className="ion-padding">
-                {cart && cart.length > 0 && (
-                    <div
-                        style={{
-                            // width: '50%',
-                            display: "grid",
-                            gridTemplateColumns:
-                                "repeat(auto-fit, minmax(200px, 1fr))",
-                            gap: "16px",
-                            padding: "16px",
-                            paddingBottom: "32px",
-                        }}
-                    >
-                        {cart.map((item) => {
-                            const product = products.find(
-                                (p) => p.id === item.productId
-                            );
-                            const variant = product?.variants.find(
-                                (v) => v.id === item.variantId
-                            );
-                            if (!product) return null;
-
-                            if (!variant)
-                                return (
-                                    <Card key={item.id}>
-                                        <div
-                                            style={{
-                                                display: "flex",
-                                                flexDirection: "row",
-                                                alignItems: "center",
-                                                justifyContent: "space-between",
-                                            }}
-                                        >
-                                            <b>Error loading item</b>
-                                            <IonButton
-                                                fill="clear"
-                                                onClick={() =>
-                                                    updateCartItemQuantity({
-                                                        productId:
-                                                            item.productId,
-                                                        variantId:
-                                                            item.variantId,
-                                                        quantity: 0,
-                                                    })
-                                                }
+                {cart && cart.length > 0 ? (
+                    <div style={{ maxWidth: "800px", margin: "0 auto" }}>
+                        {/* Cart Items */}
+                        <IonCard>
+                            <IonList>
+                                {cart.map((item) => {
+                                    const product = products.find(
+                                        (p) => p.id === item.productId
+                                    );
+                                    const variant = product?.variants.find(
+                                        (v) => v.id === item.variantId
+                                    );
+                                    if (!product) return null;
+                                    if (!variant) {
+                                        return (
+                                            <IonItem
+                                                key={item.id}
+                                                color="danger"
                                             >
-                                                <IonIcon
-                                                    slot="icon-only"
-                                                    icon={trash}
-                                                    color="danger"
-                                                />
-                                            </IonButton>
-                                        </div>
-                                    </Card>
-                                );
-
-                            return (
-                                <Card key={item.id}>
-                                    <div
-                                        style={{
-                                            display: "flex",
-                                        }}
-                                    >
-                                        <img
-                                            src={variant?.image.path}
-                                            alt={product?.name}
-                                            style={{
-                                                width: "100px",
-                                                height: "100px",
-                                                borderRadius: "4px",
-                                            }}
-                                        />
-                                        <div
-                                            style={{
-                                                flex: 1,
-                                                display: "flex",
-                                                flexDirection: "column",
-                                                justifyContent: "space-between",
-                                                paddingLeft: 10,
-                                                position: "relative",
-                                            }}
-                                        >
-                                            <div>
-                                                <b>{product.name}</b>
-                                                <h3>{variant?.name}</h3>
-                                            </div>
-                                            <div
-                                                style={{
-                                                    display: "flex",
-                                                    justifyContent:
-                                                        "space-between",
-                                                    width: "100%",
-                                                }}
-                                            >
-                                                <h1
-                                                    style={{
-                                                        color: "var(--ion-color-primary)",
-                                                        fontWeight: "bold",
-                                                        fontSize: "1.5rem",
-                                                    }}
-                                                >
-                                                    ${variant?.price.toFixed(2)}
-                                                </h1>
-                                                <Incrementer
-                                                    value={item.quantity}
-                                                    type="small"
-                                                    min={1}
-                                                    onChange={(value) =>
+                                                <IonLabel>
+                                                    <IonText color="light">
+                                                        <strong>
+                                                            Error loading item
+                                                        </strong>
+                                                    </IonText>
+                                                </IonLabel>
+                                                <IonButton
+                                                    slot="end"
+                                                    fill="clear"
+                                                    color="light"
+                                                    onClick={() =>
                                                         updateCartItemQuantity({
                                                             productId:
                                                                 item.productId,
                                                             variantId:
                                                                 item.variantId,
-                                                            quantity: value,
+                                                            quantity: 0,
                                                         })
                                                     }
-                                                />
-                                            </div>
-                                        </div>
-                                        <IonButton
-                                            fill="clear"
-                                            style={{
-                                                position: "absolute",
-                                                right: 2,
-                                                top: 0,
-                                            }}
-                                            onClick={() =>
-                                                updateCartItemQuantity({
-                                                    productId: item.productId,
-                                                    variantId: item.variantId,
-                                                    quantity: 0,
-                                                })
-                                            }
-                                        >
-                                            <IonIcon
-                                                slot="icon-only"
-                                                icon={trash}
-                                                color="danger"
-                                            />
-                                        </IonButton>
-                                    </div>
-                                </Card>
-                            );
-                        })}
-                        <IonButton
-                            expand="block"
-                            onClick={() => router.push("/shop/checkout")}
-                        >
-                            Proceed to Checkout
-                        </IonButton>
+                                                >
+                                                    <IonIcon
+                                                        slot="icon-only"
+                                                        icon={trash}
+                                                    />
+                                                </IonButton>
+                                            </IonItem>
+                                        );
+                                    }
+                                    return (
+                                        <IonItemSliding key={item.id}>
+                                            <IonItem lines="full">
+                                                <IonThumbnail slot="start">
+                                                    {variant.image?.path ? (
+                                                        <IonImg
+                                                            src={
+                                                                variant.image
+                                                                    .path
+                                                            }
+                                                            alt={product.name}
+                                                        />
+                                                    ) : (
+                                                        <div
+                                                            style={{
+                                                                width: "100%",
+                                                                height: "100%",
+                                                                display: "flex",
+                                                                alignItems:
+                                                                    "center",
+                                                                justifyContent:
+                                                                    "center",
+                                                                backgroundColor:
+                                                                    "#f5f5f5",
+                                                            }}
+                                                        >
+                                                            <IonText color="medium">
+                                                                <small>
+                                                                    No image
+                                                                </small>
+                                                            </IonText>
+                                                        </div>
+                                                    )}
+                                                </IonThumbnail>
+                                                <IonLabel>
+                                                    <h2
+                                                        style={{
+                                                            fontWeight: "bold",
+                                                        }}
+                                                    >
+                                                        {product.name}
+                                                    </h2>
+                                                    <IonNote color="medium">
+                                                        {variant.type === ProductType.DEFAULT ? "" : variant.name}
+                                                    </IonNote>
+                                                    <div
+                                                        style={{
+                                                            display: "flex",
+                                                            alignItems:
+                                                                "center",
+                                                            gap: "12px",
+                                                            marginTop: "8px",
+                                                            flexWrap: "wrap",
+                                                        }}
+                                                    >
+                                                        <IonText
+                                                            color="primary"
+                                                            style={{
+                                                                fontWeight:
+                                                                    "bold",
+                                                                fontSize:
+                                                                    "1.1rem",
+                                                            }}
+                                                        >
+                                                            $
+                                                            {variant.price.toFixed(
+                                                                2
+                                                            )}
+                                                        </IonText>
+                                                        <Incrementer
+                                                            value={
+                                                                item.quantity
+                                                            }
+                                                            type="small"
+                                                            min={1}
+                                                            onChange={(value) =>
+                                                                updateCartItemQuantity(
+                                                                    {
+                                                                        productId:
+                                                                            item.productId,
+                                                                        variantId:
+                                                                            item.variantId,
+                                                                        quantity:
+                                                                            value,
+                                                                    }
+                                                                )
+                                                            }
+                                                        />
+                                                    </div>
+                                                </IonLabel>
+                                            </IonItem>
+                                            <IonItemOptions side="end">
+                                                <IonItemOption
+                                                    color="danger"
+                                                    onClick={() =>
+                                                        updateCartItemQuantity({
+                                                            productId:
+                                                                item.productId,
+                                                            variantId:
+                                                                item.variantId,
+                                                            quantity: 0,
+                                                        })
+                                                    }
+                                                >
+                                                    <IonIcon
+                                                        slot="icon-only"
+                                                        icon={trash}
+                                                    />
+                                                </IonItemOption>
+                                            </IonItemOptions>
+                                        </IonItemSliding>
+                                    );
+                                })}
+                            </IonList>
+                        </IonCard>
+                        <IonNote className="ion-text-center">
+                            <p style={{ fontSize: "0.9rem" }}>
+                                Swipe left on an item to remove it from your
+                                cart.
+                            </p>
+                        </IonNote>
+                        {/* Order Summary */}
+                        <IonCard className="ion-margin-top">
+                            <IonCardHeader>
+                                <IonCardTitle>Order Summary</IonCardTitle>
+                            </IonCardHeader>
+                            <IonCardContent>
+                                <IonItem lines="none">
+                                    <IonLabel>Items ({cart.length})</IonLabel>
+                                    <IonNote slot="end">
+                                        <strong>${cartTotal.toFixed(2)}</strong>
+                                    </IonNote>
+                                </IonItem>
+                                <div
+                                    style={{
+                                        borderTop:
+                                            "2px solid var(--ion-color-primary)",
+                                        paddingTop: "12px",
+                                        marginTop: "8px",
+                                    }}
+                                >
+                                    <IonItem lines="none">
+                                        <IonLabel>
+                                            <h2 style={{ fontWeight: "bold" }}>
+                                                Total
+                                            </h2>
+                                        </IonLabel>
+                                        <IonNote slot="end">
+                                            <h2
+                                                style={{
+                                                    color: "var(--ion-color-primary)",
+                                                    fontWeight: "bold",
+                                                    margin: 0,
+                                                }}
+                                            >
+                                                ${cartTotal.toFixed(2)}
+                                            </h2>
+                                        </IonNote>
+                                    </IonItem>
+                                </div>
+                                <IonButton
+                                    expand="block"
+                                    onClick={() =>
+                                        router.push("/shop/checkout")
+                                    }
+                                    className="ion-margin-top"
+                                >
+                                    <IonIcon slot="start" icon={cartOutline} />
+                                    Proceed to Checkout
+                                </IonButton>
+                            </IonCardContent>
+                        </IonCard>
                     </div>
-                )}
-                {cart && cart.length === 0 && (
-                    <div>
-                        <p>Your cart is empty.</p>
+                ) : (
+                    <div
+                        style={{
+                            maxWidth: "400px",
+                            margin: "0 auto",
+                            textAlign: "center",
+                            paddingTop: "60px",
+                        }}
+                    >
+                        <IonIcon
+                            icon={cartOutline}
+                            style={{
+                                fontSize: "120px",
+                                color: "var(--ion-color-medium)",
+                                marginBottom: "24px",
+                            }}
+                        />
+                        <h2>Your cart is empty</h2>
+                        <IonText color="medium">
+                            <p>
+                                Looks like you haven't added any items to your
+                                cart yet.
+                            </p>
+                        </IonText>
                         <IonButton
                             expand="block"
                             onClick={() => router.push("/shop")}
+                            className="ion-margin-top"
                         >
-                            Explore the catalog
+                            <IonIcon slot="start" icon={storefrontOutline} />
+                            Explore the Catalog
                         </IonButton>
                     </div>
                 )}
