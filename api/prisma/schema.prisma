@@ -224,13 +224,13 @@ model section {
 }
 
 model product {
-  id              Int               @id @default(autoincrement())
-  name            String            @db.VarChar(255)
-  description     String?           @db.Text
-  created_at      DateTime?         @default(now())
-  updated_at      DateTime?         @updatedAt
-  variants product_variant[]
-  order_items      order_item[]
+  id          Int               @id @default(autoincrement())
+  name        String            @db.VarChar(255)
+  description String?           @db.Text
+  created_at  DateTime?         @default(now())
+  updated_at  DateTime?         @updatedAt
+  variants    product_variant[]
+  order_items order_item[]
 }
 
 model product_variant {
@@ -254,27 +254,31 @@ model product_variant {
 }
 
 model order {
-  id          Int          @id @default(autoincrement())
-  email       String       @db.VarChar(255)
-  full_name   String       @db.VarChar(255)
-  total_price Decimal      @db.Decimal(10, 2)
-  status      String       @db.VarChar(100)
-  created_at  DateTime?    @default(now())
-  updated_at  DateTime?    @updatedAt
-  order_items order_item[]
+  id              Int          @id @default(autoincrement())
+  key             String       @unique @db.VarChar(255)
+  email           String       @db.VarChar(255)
+  first_name      String       @db.VarChar(255)
+  last_name       String       @db.VarChar(255)
+  delivery_method String       @db.VarChar(100)
+  total_price     Decimal      @db.Decimal()
+  status          String       @db.VarChar(100)
+  created_at      DateTime?    @default(now())
+  updated_at      DateTime?    @updatedAt
+  order_items     order_item[]
 }
 
 model order_item {
-  id                 Int     @id @default(autoincrement())
+  id                 Int             @id @default(autoincrement())
   order_id           Int
   product_id         Int
   product_variant_id Int
-  quantity           Int     @db.UnsignedInt
-  price              Decimal @db.Decimal(10, 2)
-
-  order           order           @relation(fields: [order_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  product         product         @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  product_variant product_variant @relation(fields: [product_variant_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  quantity           Int             @db.UnsignedInt
+  status            String          @db.VarChar(100) @default("pending")
+  created_at         DateTime?       @default(now())
+  updated_at         DateTime?       @updatedAt
+  order              order           @relation(fields: [order_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  product            product         @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  product_variant    product_variant @relation(fields: [product_variant_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
 enum product_variant_type {

@@ -10,6 +10,10 @@ export const ordersApi = createApi({
         getOrderById: builder.query({
             query: (id) => `orders/${id}`,
         }),
+        getOrderByKey: builder.query({
+            query: (key) => `orders/key/${key}`,
+
+        }),
         createOrder: builder.mutation({
             query: (newOrder) => ({
                 url: "orders",
@@ -59,6 +63,7 @@ export const ordersApi = createApi({
 export const {
     useGetOrdersQuery,
     useGetOrderByIdQuery,
+    useGetOrderByKeyQuery,
     useCreateOrderMutation,
     useUpdateOrderMutation,
     useDeleteOrderMutation,

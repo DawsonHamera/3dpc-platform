@@ -3,12 +3,15 @@ import React, { useState } from 'react';
 import ShopHeader from './ShopHeader';
 import { useShop } from './ShopContext';
 import { ProductType, useGetProductsQuery } from '../../features/products/productsApi';
+import { useCreateOrderMutation } from '../../features/orders/ordersApi';
+import { set } from 'date-fns';
 
 const CheckoutPage: React.FC = () => {
 
     const router = useIonRouter();
-    const { cart } = useShop();
+    const { cart, emptyCart } = useShop();
     const { data: products } = useGetProductsQuery();
+    const [checkout, { isError }] = useCreateOrderMutation();
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
     const [toastColor, setToastColor] = useState<'success' | 'danger'>('success');
@@ -50,24 +53,30 @@ const CheckoutPage: React.FC = () => {
     const handleSubmit = async () => {
         const totalPrice = calculateTotal();
         try {
-            // await checkout({
-            //     ...formData,
-            //     totalPrice: totalPrice
-            // }).unwrap();
+            const orderResult = await checkout({
+                ...formData,
+                totalPrice: totalPrice,
+                cart: cart,
+            }).unwrap();
             
             console.log('Checkout submitted:', {
                 ...formData,
                 totalPrice: totalPrice,
+                cart: cart
             });
-            
+            if (isError) {
+                setToastColor('danger');
+                setToastMessage('Failed to place order. Please try again.');
+            }
             // Show success toast
             setToastMessage('Order placed successfully!');
             setToastColor('success');
             setShowToast(true);
+            emptyCart();
             
             // Navigate after a short delay to let user see the toast
             setTimeout(() => {
-                router.push('/shop');
+                router.push(`/shop/order/${orderResult.key}`);
             }, 1500);
         } catch (error) {
             console.error('Checkout failed:', error);

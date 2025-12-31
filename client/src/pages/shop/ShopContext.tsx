@@ -29,6 +29,8 @@ type ShopContextType = {
         quantity: number;
     }) => void;
 
+    emptyCart: () => void;
+
     cart: any[];
 };
 
@@ -95,9 +97,13 @@ export const ShopProvider = ({ children }: { children: ReactNode }) => {
         });
     };
 
+    const emptyCart = () => {
+        setCart([]);
+    };
+
     return (
         <ShopContext.Provider
-            value={{ addItemToCart, updateCartItemQuantity, cart }}
+            value={{ addItemToCart, updateCartItemQuantity, emptyCart, cart }}
         >
             {children}
         </ShopContext.Provider>
