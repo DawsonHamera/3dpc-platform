@@ -33,6 +33,7 @@ const materials_module_1 = require("./modules/materials/materials.module");
 const tasks_module_1 = require("./modules/tasks/tasks.module");
 const printers_module_1 = require("./modules/printers/printers.module");
 const products_module_1 = require("./modules/products/products.module");
+const orders_module_1 = require("./modules/orders/orders.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -55,6 +56,7 @@ exports.AppModule = AppModule = __decorate([
             recycling_module_1.RecyclingModule,
             models_module_1.ModelsModule,
             materials_module_1.MaterialsModule,
+            orders_module_1.OrdersModule,
             tasks_module_1.TasksModule,
             printers_module_1.PrintersModule,
             products_module_1.ProductsModule,

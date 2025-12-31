@@ -10,6 +10,7 @@ import {
 import { OrdersService } from './orders.service';
 import { Public } from '../../common/decorators/public.decorator';
 import { Roles } from '../../common/decorators/roles.decorator';
+import { CreateOrderDto } from './dto/CreateOrderDto';
 
 @Controller('orders')
 export class OrdersController {
@@ -27,9 +28,15 @@ export class OrdersController {
     return this.ordersService.findOrderById(+id);
   }
 
+  @Get('key/:key')
+  @Public()
+  findByKey(@Param('key') key: string) {
+    return this.ordersService.findOrderByKey(key);
+  }
+
   @Post()
-  @Roles(['admin'])
-  create(@Body() data: any) {
+  @Public()
+  create(@Body() data: CreateOrderDto) {
     return this.ordersService.createOrder(data);
   }
 

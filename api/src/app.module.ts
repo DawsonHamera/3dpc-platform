@@ -21,6 +21,7 @@ import { MaterialsModule } from './modules/materials/materials.module';
 import { TasksModule } from './modules/tasks/tasks.module';
 import { PrintersModule } from './modules/printers/printers.module';
 import { ProductsModule } from './modules/products/products.module';
+import { OrdersModule } from './modules/orders/orders.module';
 
 @Module({
   imports: [
@@ -41,7 +42,7 @@ import { ProductsModule } from './modules/products/products.module';
 
     ModelsModule,
     MaterialsModule,
-    // OrdersModule,
+    OrdersModule,
     TasksModule,
     PrintersModule,
     ProductsModule,
