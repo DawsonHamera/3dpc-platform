@@ -6,17 +6,6 @@
     padding: 0 16px;
 }
 
-.product-list {
-    display: flex;
-    padding: 16px;
-    gap: 16px;
-    overflow-x: auto;
-    scrollbar-width: none;
-    /* For Firefox */
-    -ms-overflow-style: none;
-    /* For Internet Explorer and Edge */
-}
-
 .product-list::-webkit-scrollbar {
     display: none;
     /* For Chrome, Safari, and Opera */

@@ -49,15 +49,37 @@ export interface Section {
 export const productsApi = createApi({
     reducerPath: "productsApi",
     baseQuery: baseQuery,
+    tagTypes: ["Products", "Sections"],
     endpoints: (builder) => ({
         getProducts: builder.query<Product[], void>({
             query: () => "/products",
+            providesTags: (result) =>
+                result
+                    ? [
+                          { type: "Products", id: "LIST" },
+                          ...result.map(({ id }) => ({
+                              type: "Products" as const,
+                              id,
+                          })),
+                      ]
+                    : [{ type: "Products", id: "LIST" }],
         }),
         getSections: builder.query<Section[], void>({
             query: () => "/products/sections",
+            providesTags: (result) =>
+                result
+                    ? [
+                          { type: "Sections", id: "LIST" },
+                          ...result.map(({ id }) => ({
+                              type: "Sections" as const,
+                              id,
+                          })),
+                      ]
+                    : [{ type: "Sections", id: "LIST" }],
         }),
-        getProductById: builder.query<Product, string>({
+        getProductById: builder.query<Product, number>({
             query: (id) => `/products/${id}`,
+            providesTags: (_result, _error, id) => [{ type: "Products", id }],
         }),
         getVariantById: builder.query<
             Variant,
@@ -65,6 +87,9 @@ export const productsApi = createApi({
         >({
             query: ({ id, variantId }) =>
                 `/products/${id}/variants/${variantId}`,
+            providesTags: (_result, _error, { id }) => [
+                { type: "Products", id },
+            ],
         }),
         createProduct: builder.mutation<Product, Partial<Product>>({
             query: (data) => ({
@@ -72,6 +97,7 @@ export const productsApi = createApi({
                 method: "POST",
                 body: data,
             }),
+            invalidatesTags: [{ type: "Products", id: "LIST" }],
         }),
         createVariant: builder.mutation<
             Variant,
@@ -82,6 +108,9 @@ export const productsApi = createApi({
                 method: "POST",
                 body: data,
             }),
+            invalidatesTags: (_result, _error, { id }) => [
+                { type: "Products", id },
+            ],
         }),
         createSection: builder.mutation<Section, Partial<Section>>({
             query: (data) => ({
@@ -89,26 +118,33 @@ export const productsApi = createApi({
                 method: "POST",
                 body: data,
             }),
+            invalidatesTags: [{ type: "Sections", id: "LIST" }],
         }),
         updateSection: builder.mutation<
             Section,
-            { id: string; data: Partial<Section> }
+            { id: number; data: Partial<Section> }
         >({
             query: ({ id, data }) => ({
                 url: `/products/section/${id}`,
                 method: "PATCH",
                 body: data,
             }),
+            invalidatesTags: (_result, _error, { id }) => [
+                { type: "Sections", id },
+            ],
         }),
         updateVariant: builder.mutation<
             Variant,
-            { id: string; variantId: string; data: Partial<Variant> }
+            { id: number; variantId: number; data: Partial<Variant> }
         >({
             query: ({ id, variantId, data }) => ({
                 url: `/products/${id}/variant/${variantId}`,
                 method: "PATCH",
                 body: data,
             }),
+            invalidatesTags: (_result, _error, { id }) => [
+                { type: "Products", id },
+            ],
         }),
         updateProduct: builder.mutation<
             Product,
@@ -119,12 +155,16 @@ export const productsApi = createApi({
                 method: "PATCH",
                 body: data,
             }),
+            invalidatesTags: (_result, _error, { id }) => [
+                { type: "Products", id },
+            ],
         }),
-        deleteSection: builder.mutation<void, string>({
+        deleteSection: builder.mutation<void, number>({
             query: (id) => ({
                 url: `/products/section/${id}`,
                 method: "DELETE",
             }),
+            invalidatesTags: [{ type: "Sections", id: "LIST" }],
         }),
         deleteVariant: builder.mutation<
             void,
@@ -134,12 +174,16 @@ export const productsApi = createApi({
                 url: `/products/${id}/variant/${variantId}`,
                 method: "DELETE",
             }),
+            invalidatesTags: (_result, _error, { id }) => [
+                { type: "Products", id },
+            ],
         }),
-        deleteProduct: builder.mutation<void, string>({
+        deleteProduct: builder.mutation<void, number>({
             query: (id) => ({
                 url: `/products/${id}`,
                 method: "DELETE",
             }),
+            invalidatesTags: [{ type: "Products", id: "LIST" }],
         }),
     }),
 });

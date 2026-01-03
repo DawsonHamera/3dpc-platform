@@ -18,6 +18,7 @@ import {
     IonNote,
     IonButton,
     IonToast,
+    useIonRouter,
 } from "@ionic/react";
 import {
     checkmarkCircle,
@@ -25,6 +26,9 @@ import {
     constructOutline,
     closeCircle,
     copyOutline,
+    storefrontOutline,
+    returnUpBack,
+    returnDownBack,
 } from "ionicons/icons";
 import ShopHeader from "./ShopHeader";
 import { useParams } from "react-router";
@@ -39,19 +43,27 @@ const OrderStatusPage: React.FC = () => {
         isError,
     } = useGetOrderByKeyQuery(orderKey || "");
 
-    const [toast, setToast] = useState<{ message: string; color: string } | null>(null);
+    const router = useIonRouter();
+
+    const [toast, setToast] = useState<{
+        message: string;
+        color: string;
+    } | null>(null);
 
     const handleCopyLink = () => {
         const orderUrl = `${window.location.origin}/shop/order/${orderKey}`;
         navigator.clipboard.writeText(orderUrl).then(
             () => {
-                setToast({ message: "Order link copied to clipboard!", color: "success" });
+                setToast({
+                    message: "Order link copied to clipboard!",
+                    color: "success",
+                });
             },
             (err) => {
                 setToast({ message: "Failed to copy link.", color: "danger" });
             }
         );
-    }
+    };
 
     const getStatusColor = (status: string) => {
         switch (status?.toLowerCase()) {
@@ -154,6 +166,19 @@ const OrderStatusPage: React.FC = () => {
                                     Your order has been received and is being
                                     processed.
                                 </p>
+                                <IonButton
+                                    expand='full'
+                                    fill="solid"
+                                    color="light"
+                                    onClick={() => router.push("/shop")}
+                                    className="ion-margin-top"
+                                >
+                                    <IonIcon
+                                        slot="start"
+                                        icon={returnDownBack}
+                                    />
+                                    Keep shopping
+                                </IonButton>
                             </IonCardContent>
                         </IonCard>
 
@@ -287,13 +312,17 @@ const OrderStatusPage: React.FC = () => {
                                                             "center",
                                                     }}
                                                 >
-                                                    {item.product_variant?.image.path ? (
+                                                    {item.product_variant?.image
+                                                        .path ? (
                                                         <IonImg
                                                             src={
-                                                                item.product_variant.image.path
+                                                                item
+                                                                    .product_variant
+                                                                    .image.path
                                                             }
                                                             alt={
-                                                                item.product.name
+                                                                item.product
+                                                                    .name
                                                             }
                                                             style={{
                                                                 width: "100%",
@@ -331,13 +360,18 @@ const OrderStatusPage: React.FC = () => {
                                                             marginBottom: "8px",
                                                         }}
                                                     >
-                                                        {item.product_variant.name}
+                                                        {
+                                                            item.product_variant
+                                                                .name
+                                                        }
                                                     </IonNote>
                                                     <div
                                                         style={{
                                                             display: "flex",
-                                                            justifyContent:"space-between",
-                                                            alignItems:"center",
+                                                            justifyContent:
+                                                                "space-between",
+                                                            alignItems:
+                                                                "center",
                                                             marginBottom: "8px",
                                                         }}
                                                     >
@@ -346,13 +380,20 @@ const OrderStatusPage: React.FC = () => {
                                                                 Qty:{" "}
                                                                 {item.quantity}{" "}
                                                                 × $
-                                                                {item.product_variant.price.toFixed(2)}
+                                                                {item.product_variant.price.toFixed(
+                                                                    2
+                                                                )}
                                                             </small>
                                                         </IonText>
                                                         <IonText color="dark">
                                                             <strong>
                                                                 $
-                                                                {(item.quantity * item.product_variant.price).toFixed(2)}
+                                                                {(
+                                                                    item.quantity *
+                                                                    item
+                                                                        .product_variant
+                                                                        .price
+                                                                ).toFixed(2)}
                                                             </strong>
                                                         </IonText>
                                                     </div>
@@ -367,10 +408,14 @@ const OrderStatusPage: React.FC = () => {
                                                             }}
                                                         >
                                                             <IonIcon
-                                                                icon={getStatusIcon(item.status)}
+                                                                icon={getStatusIcon(
+                                                                    item.status
+                                                                )}
                                                                 style={{
-                                                                    marginRight:"4px",
-                                                                    fontSize:"12px",
+                                                                    marginRight:
+                                                                        "4px",
+                                                                    fontSize:
+                                                                        "12px",
                                                                 }}
                                                             />
                                                             {item.status}
@@ -402,7 +447,11 @@ const OrderStatusPage: React.FC = () => {
                                         bookmark this page to track your order.
                                     </p>
                                 </IonText>
-                                <IonButton fill='clear' style={{ marginTop: "16px" }} onClick={() => handleCopyLink()}>
+                                <IonButton
+                                    fill="clear"
+                                    style={{ marginTop: "16px" }}
+                                    onClick={() => handleCopyLink()}
+                                >
                                     <IonIcon icon={copyOutline} slot="start" />
                                     Copy to clipboard
                                 </IonButton>
