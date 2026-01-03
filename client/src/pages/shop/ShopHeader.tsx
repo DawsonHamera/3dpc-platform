@@ -15,10 +15,13 @@ import {
     chevronBack,
     cartOutline,
     searchOutline,
-    homeOutline,
     home,
+    settingsOutline,
+    person,
+    shield,
 } from "ionicons/icons";
 import { useShop } from "./ShopContext";
+import { useAuth } from "../../hooks/useAuth";
 import "./ShopHeader.css";
 
 interface ShopHeaderProps {
@@ -37,11 +40,14 @@ const ShopHeader: React.FC<ShopHeaderProps> = ({
     homeButton,
 }) => {
     const router = useIonRouter();
+    const { user } = useAuth();
 
     const [searchQuery, setSearchQuery] = React.useState("");
     const [searchExpanded, setSearchExpanded] = React.useState(false);
 
-    const { cart } = useShop();
+    const { cart, setShowUserView, showUserView, setToast } = useShop();
+
+    const isAdmin = user?.role?.name === "admin";
 
     const handleSearchChange = (value: string) => {
         setSearchQuery(value);
@@ -61,8 +67,32 @@ const ShopHeader: React.FC<ShopHeaderProps> = ({
                             </IonButtons>
                         )}
                         {homeButton && (
-                            <IonButton slot="start" onClick={() => router.push('/', "root")}>
+                            <IonButton
+                                slot="start"
+                                onClick={() => router.push("/", "root")}
+                            >
                                 <IonIcon icon={home} />
+                            </IonButton>
+                        )}
+                        {isAdmin && !backArrow && (
+                            <IonButton
+                                slot="start"
+                                onClick={() => {
+                                    setShowUserView(!showUserView);
+                                    setToast({
+                                        message: showUserView
+                                            ? "Switched to Admin View"
+                                            : "Switched to User View",
+                                        color: "primary",
+                                        duration: 1500,
+                                    });
+                                }}
+                            >
+                                {showUserView ? (
+                                    <IonIcon icon={person} />
+                                ) : (
+                                    <IonIcon icon={shield} />
+                                )}
                             </IonButton>
                         )}
                         <IonTitle
@@ -73,11 +103,17 @@ const ShopHeader: React.FC<ShopHeaderProps> = ({
                             3DPC Shop
                         </IonTitle>
 
-                        {/* <p slot='primary' className="shop-header-subtitle">
-                                {title}
-                            </p> */}
-                        <IonButtons slot="end">
+                        {isAdmin && !showUserView ? (
                             <IonButton
+                                slot="end"
+                                onClick={() => router.push("/shop/manage")}
+                                className="manage-button"
+                            >
+                                <IonIcon icon={settingsOutline} />
+                            </IonButton>
+                        ) : (
+                            <IonButton
+                                slot="end"
                                 onClick={() => router.push("/shop/cart")}
                                 className="cart-button"
                             >
@@ -86,15 +122,16 @@ const ShopHeader: React.FC<ShopHeaderProps> = ({
                                     {cart.length}
                                 </IonBadge>
                             </IonButton>
-                            {searchbar && (
-                                <IonButton
-                                    onClick={() => setSearchExpanded((s) => !s)}
-                                    className="search-button"
-                                >
-                                    <IonIcon icon={searchOutline} />
-                                </IonButton>
-                            )}
-                        </IonButtons>
+                        )}
+                        {searchbar && (
+                            <IonButton
+                                slot="end"
+                                onClick={() => setSearchExpanded((s) => !s)}
+                                className="search-button"
+                            >
+                                <IonIcon icon={searchOutline} />
+                            </IonButton>
+                        )}
                     </>
                 ) : (
                     <>

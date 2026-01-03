@@ -39,6 +39,9 @@ type ShopContextType = {
         color: string;
         duration: number;
     }>>;
+
+    showUserView: boolean;
+    setShowUserView: Dispatch<SetStateAction<boolean>>;
 };
 
 const ShopContext = createContext<ShopContextType | undefined>(undefined);
@@ -61,6 +64,8 @@ export const ShopProvider = ({ children }: { children: ReactNode }) => {
         color: "",
         duration: 1000,
     });
+
+    const [showUserView, setShowUserView] = useState(false);
 
     useEffect(() => {
         localStorage.setItem("cart", JSON.stringify(cart));
@@ -120,7 +125,7 @@ export const ShopProvider = ({ children }: { children: ReactNode }) => {
 
     return (
         <ShopContext.Provider
-            value={{ addItemToCart, updateCartItemQuantity, emptyCart, cart, setToast }}
+            value={{ addItemToCart, updateCartItemQuantity, emptyCart, cart, setToast, setShowUserView, showUserView }}
         >
             {children}
             <IonToast 
