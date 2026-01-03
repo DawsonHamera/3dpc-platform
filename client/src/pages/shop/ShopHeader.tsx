@@ -52,13 +52,13 @@ const ShopHeader: React.FC<ShopHeaderProps> = ({
                                 </IonBackButton>
                             </IonButtons>
                         )}
-                        <IonTitle slot="start" className="shop-header-title">
-                            3DPC
-                            <span className="shop-header-subtitle">
-                                {title}
-                            </span>
+                        <IonTitle slot="start" className="shop-header-title" onClick={() => router.push('/shop')}>
+                            3DPC Shop
                         </IonTitle>
 
+                        {/* <p slot='primary' className="shop-header-subtitle">
+                                {title}
+                            </p> */}
                         <IonButtons slot="end">
                             <IonButton
                                 onClick={() => router.push("/shop/cart")}

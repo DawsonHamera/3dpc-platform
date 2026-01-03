@@ -10,13 +10,11 @@ import {
     IonToolbar,
     useIonRouter,
 } from "@ionic/react";
-import { useParams } from "react-router";
-import MaterialPicker from "./components/ColorPicker";
-import { arrowBackOutline, cartOutline, close, remove } from "ionicons/icons";
+import { cartOutline, close } from "ionicons/icons";
 import { useEffect, useMemo, useState } from "react";
-import Incrementer from "./components/Incrementer";
-import { useShop } from "./ShopContext";
-import { Product, ProductType } from "../../features/products/productsApi";
+import { Product, ProductType } from "../../../../features/products/productsApi";
+import Incrementer from "../../components/Incrementer";
+import { useShop } from "../../ShopContext";
 
 const ProductModal: React.FC<{
     isOpen: boolean;

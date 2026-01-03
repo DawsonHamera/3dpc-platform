@@ -1,3 +1,4 @@
+import { IonToast } from "@ionic/react";
 import {
     createContext,
     useContext,
@@ -32,6 +33,12 @@ type ShopContextType = {
     emptyCart: () => void;
 
     cart: any[];
+
+    setToast: Dispatch<SetStateAction<{
+        message: string;
+        color: string;
+        duration: number;
+    }>>;
 };
 
 const ShopContext = createContext<ShopContextType | undefined>(undefined);
@@ -43,6 +50,16 @@ export const ShopProvider = ({ children }: { children: ReactNode }) => {
         } catch (error) {
             return [];
         }
+    });
+
+    const [toast, setToast] = useState<{
+        message: string;
+        color: string;
+        duration: number;
+    }>({
+        message: "",
+        color: "",
+        duration: 1000,
     });
 
     useEffect(() => {
@@ -103,9 +120,16 @@ export const ShopProvider = ({ children }: { children: ReactNode }) => {
 
     return (
         <ShopContext.Provider
-            value={{ addItemToCart, updateCartItemQuantity, emptyCart, cart }}
+            value={{ addItemToCart, updateCartItemQuantity, emptyCart, cart, setToast }}
         >
             {children}
+            <IonToast 
+                isOpen={toast.message !== ""}
+                message={toast.message}
+                duration={toast.duration}
+                color={toast.color}
+                onDidDismiss={() => setToast({ message: "", color: "", duration: 1000 })}
+            />
         </ShopContext.Provider>
     );
 };

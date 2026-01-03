@@ -13,20 +13,20 @@ import { Product, ProductType } from "../../../features/products/productsApi";
 type ProductCardProps = {
     product: Product;
     variantId?: number;
-    onClick?: () => void;
-    onEditClick?: () => void;
-    onRemoveClick?: () => void;
+    onButtonClick?: () => void;
+    onClick?: () => void | undefined;
     size?: number;
-    editing?: boolean;
+    active?: boolean;
+    renderButton?: ((onClick: () => void) => React.ReactNode) | undefined;
 };
 
 const ProductCard: React.FC<ProductCardProps> = ({
     product,
     onClick,
+    onButtonClick,
     size,
-    editing,
-    onEditClick,
-    onRemoveClick,
+    active,
+    renderButton,
     variantId,
 }) => {
     if (!product || !product.variants || product.variants.length === 0) {
@@ -48,10 +48,10 @@ const ProductCard: React.FC<ProductCardProps> = ({
                 width: `${size || 200}px`,
                 margin: "8px",
                 flexShrink: 0,
-                cursor: editing ? "default" : "pointer",
+                border: active ? "2px solid var(--ion-color-primary)" : undefined,
             }}
-            button={!editing}
-            onClick={editing ? undefined : onClick}
+            button={!!onClick}
+            onClick={onClick}
         >
             <div
                 style={{
@@ -107,43 +107,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
                             ${variant?.price.toFixed(2)}
                         </strong>
                     </IonText>
-                    {editing ? (
-                        <div style={{ display: "flex", gap: "4px" }}>
-                            <IonButton
-                                fill="clear"
-                                color="danger"
-                                size="small"
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    onRemoveClick?.();
-                                }}
-                            >
-                                <IonIcon slot="icon-only" icon={removeCircle} />
-                            </IonButton>
-                            <IonButton
-                                fill="solid"
-                                color="dark"
-                                size="small"
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    onEditClick?.();
-                                }}
-                            >
-                                Edit
-                            </IonButton>
-                        </div>
-                    ) : (
-                        <IonButton
-                            color="primary"
-                            size="small"
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                onClick?.();
-                            }}
-                        >
-                            View
-                        </IonButton>
-                    )}
+                    {renderButton && renderButton(onButtonClick!)}
                 </div>
             </IonCardContent>
         </IonCard>
