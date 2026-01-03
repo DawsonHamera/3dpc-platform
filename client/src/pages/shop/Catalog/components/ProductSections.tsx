@@ -113,6 +113,7 @@ const ProductSections: React.FC<ProductSectionsProps> = ({
     };
 
     const handleEditSection = (sectionId: number, newName: string) => {
+        console.log("Editing section", sectionId, newName);
         updateSection({
             id: sectionId,
             data: { name: newName },
@@ -159,7 +160,7 @@ const ProductSections: React.FC<ProductSectionsProps> = ({
                                     onIonInput={(e) =>
                                         setSectionName(e.detail.value!)
                                     }
-                                    onBlur={() => setEditingSection(null)}
+                                    onBlur={() => handleEditSection(section.id, sectionName)}
                                 />
                                 <IonButtons slot="end">
                                     <IonButton
