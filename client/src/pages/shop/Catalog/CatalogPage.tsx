@@ -14,14 +14,10 @@ import {
 import "./CatalogPage.css";
 import { useAuth } from "../../../hooks/useAuth";
 import HeroSection from "./components/HeroSection";
+import { useShop } from "../ShopContext";
 
 const CatalogPage: React.FC = () => {
     const [productFilter, setProductFilter] = useState("");
-    const [toast, setToast] = useState({
-        message: "",
-        color: "",
-        duration: 1000,
-    });
 
     const contentRef = useRef<HTMLIonContentElement>(null);
     const productsRef = useRef<HTMLDivElement>(null);
@@ -30,6 +26,7 @@ const CatalogPage: React.FC = () => {
     const { data: sections } = useGetSectionsQuery();
 
     const { user } = useAuth();
+    const { showUserView, setToast } = useShop();
 
     const location = useLocation();
     const params = new URLSearchParams(location.search);
@@ -111,7 +108,7 @@ const CatalogPage: React.FC = () => {
                                 <ProductSections
                                     sections={sections}
                                     products={products}
-                                    isAdmin={isAdmin}
+                                    isAdmin={isAdmin && !showUserView}
                                 />
                             </div>
                         </>
@@ -126,16 +123,6 @@ const CatalogPage: React.FC = () => {
                 }
                 variantId={variantId!}
                 onSave={handleProductSave}
-            />
-            <IonToast
-                isOpen={toast.message !== ""}
-                onDidDismiss={() =>
-                    setToast({ message: "", color: "", duration: 1000 })
-                }
-                message={toast.message}
-                duration={toast.duration}
-                color={toast.color}
-                position="bottom"
             />
         </IonPage>
     );

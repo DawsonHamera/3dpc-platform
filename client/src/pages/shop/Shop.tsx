@@ -6,6 +6,7 @@ import CatalogPage from "./Catalog/CatalogPage";
 import CartPage from "./CartPage";
 import CheckoutPage from "./CheckoutPage";
 import OrderStatusPage from "./OrderStatusPage";
+import ProductManagementPage from "./ProductManagement/ProductManagementPage";
 
 const Shop: React.FC = () => {
     return (
@@ -14,6 +15,11 @@ const Shop: React.FC = () => {
                 <IonRouterOutlet>
                     <Route exact path="/shop" component={CatalogPage} />
                     <Route exact path="/shop/cart" component={CartPage} />
+                    <Route
+                        exact
+                        path="/shop/manage"
+                        component={ProductManagementPage}
+                    />
                     {/* <Route path="/shop/product/:id" component={ProductPage} /> */}
                     {/* <Route path="/shop/customize" component={CustomizePage} /> */}
                     <Route
