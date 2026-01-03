@@ -44,7 +44,7 @@ const SelectProductModal: React.FC<{
             </div>
             <IonToolbar>
                 <IonButton
-                    expand="full"
+                    expand='block'
                     disabled={selectedProductId === null || selectedVariantId === null}
                     onClick={() => {
                         if (selectedProductId && selectedVariantId) {
@@ -54,6 +54,9 @@ const SelectProductModal: React.FC<{
                     }}
                 >
                     Select Product
+                </IonButton>
+                <IonButton slot="end" expand='block' onClick={onClose} color='medium'>
+                    Cancel
                 </IonButton>
             </IonToolbar>
         </IonModal>

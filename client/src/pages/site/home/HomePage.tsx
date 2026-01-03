@@ -250,6 +250,108 @@ const HomePage: React.FC = () => {
                         />
                     </div>
 
+                    <div
+                        className="fade-in"
+                        style={{
+                            background:
+                                "var(--ion-color-primary)",
+                            boxShadow: "0 8px 24px rgba(58, 128, 242, 0.25)",
+                            padding: "40px 24px",
+                            borderRadius: "16px",
+                            marginBottom: "20px",
+                            marginTop: "20px",
+                            textAlign: "center",
+                            position: "relative",
+                            overflow: "hidden",
+                        }}
+                    >
+                        <div
+                            style={{
+                                position: "absolute",
+                                top: "-50%",
+                                right: "-20%",
+                                width: "300px",
+                                height: "300px",
+                                background:
+                                    "radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%)",
+                                borderRadius: "50%",
+                            }}
+                        />
+                        <div
+                            style={{
+                                position: "relative",
+                                zIndex: 1,
+                            }}
+                        >
+                            <div
+                                style={{
+                                    display: "inline-block",
+                                    background: "#10b981",
+                                    color: "white",
+                                    padding: "6px 16px",
+                                    borderRadius: "20px",
+                                    fontSize: "0.9rem",
+                                    fontWeight: "700",
+                                    marginBottom: "16px",
+                                    boxShadow:
+                                        "0 2px 8px rgba(16, 185, 129, 0.3)",
+                                }}
+                            >
+                                Now Open!
+                            </div>
+                            <h1
+                                style={{
+                                    color: "white",
+                                    fontSize: "2.5rem",
+                                    fontWeight: "800",
+                                    margin: "16px 0",
+                                    textShadow: "0 2px 12px rgba(0, 0, 0, 0.4)",
+                                }}
+                            >
+                                Shop 3D Printed Products
+                            </h1>
+                            <p
+                                style={{
+                                    color: "rgba(255, 255, 255, 0.95)",
+                                    fontSize: "1.1rem",
+                                    lineHeight: "1.6",
+                                    maxWidth: "500px",
+                                    margin: "0 auto 24px",
+                                }}
+                            >
+                                Browse our collection of innovative 3D printed
+                                items made by club members. Order online for
+                                pickup at Del Oro High School.
+                            </p>
+                            <IonButton
+                                color="light"
+                                style={{
+                                    fontWeight: "700",
+                                    fontSize: "1.05rem",
+                                    height: "52px",
+                                    minWidth: "200px",
+                                    margin: "8px auto",
+                                    borderRadius: 16,
+                                    boxShadow:
+                                        "0 4px 16px rgba(255, 255, 255, 0.3)",
+                                }}
+                                onClick={() => router.push("/shop")}
+                            >
+                                Visit Shop
+                            </IonButton>
+                            <p
+                                style={{
+                                    color: "rgba(255, 255, 255, 0.7)",
+                                    fontSize: "0.85rem",
+                                    marginTop: "16px",
+                                    marginBottom: "0",
+                                }}
+                            >
+                                💵 Cash only • Pick up at school
+                            </p>
+                        </div>
+                    </div>
+
                     {/* <div className="fade-in">
             <h1>Upcoming Events</h1>
             <EventCarousel events={upcomingEvents || []} />

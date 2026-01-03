@@ -11,7 +11,13 @@ import {
     IonBackButton,
     IonBadge,
 } from "@ionic/react";
-import { chevronBack, cartOutline, searchOutline } from "ionicons/icons";
+import {
+    chevronBack,
+    cartOutline,
+    searchOutline,
+    homeOutline,
+    home,
+} from "ionicons/icons";
 import { useShop } from "./ShopContext";
 import "./ShopHeader.css";
 
@@ -19,6 +25,7 @@ interface ShopHeaderProps {
     title: string;
     searchbar?: boolean;
     backArrow?: boolean;
+    homeButton?: boolean;
     onSearchChange?: (value: string) => void;
 }
 
@@ -27,6 +34,7 @@ const ShopHeader: React.FC<ShopHeaderProps> = ({
     searchbar,
     onSearchChange,
     backArrow,
+    homeButton,
 }) => {
     const router = useIonRouter();
 
@@ -52,7 +60,16 @@ const ShopHeader: React.FC<ShopHeaderProps> = ({
                                 </IonBackButton>
                             </IonButtons>
                         )}
-                        <IonTitle slot="start" className="shop-header-title" onClick={() => router.push('/shop')}>
+                        {homeButton && (
+                            <IonButton slot="start" onClick={() => router.push('/', "root")}>
+                                <IonIcon icon={home} />
+                            </IonButton>
+                        )}
+                        <IonTitle
+                            slot="start"
+                            className="shop-header-title"
+                            onClick={() => router.push("/shop")}
+                        >
                             3DPC Shop
                         </IonTitle>
 
@@ -94,15 +111,8 @@ const ShopHeader: React.FC<ShopHeaderProps> = ({
                             className="search-bar"
                             inputmode="search"
                             autoFocus
+                            onBlur={() => setSearchExpanded(false)}
                         />
-                        <IonButtons slot="end">
-                            <IonButton
-                                onClick={() => setSearchExpanded((s) => !s)}
-                                className="search-close-button"
-                            >
-                                <IonIcon icon={searchOutline} />
-                            </IonButton>
-                        </IonButtons>
                     </>
                 )}
             </IonToolbar>
