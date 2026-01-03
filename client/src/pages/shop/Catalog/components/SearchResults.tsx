@@ -1,17 +1,8 @@
 import React from "react";
-import {
-    IonCard,
-    IonCardHeader,
-    IonCardTitle,
-    IonCardContent,
-    IonGrid,
-    IonRow,
-    IonCol,
-    IonText,
-    useIonRouter,
-} from "@ionic/react";
+import { IonText, IonToolbar, useIonRouter } from "@ionic/react";
 import ProductCard from "../../components/ProductCard";
 import { Product } from "../../../../features/products/productsApi";
+import "./SearchResults.css";
 
 interface SearchResultsProps {
     filteredProducts: Product[];
@@ -22,49 +13,40 @@ const SearchResults: React.FC<SearchResultsProps> = ({ filteredProducts }) => {
 
     if (filteredProducts.length === 0) {
         return (
-            <IonCard>
-                <IonCardContent className="ion-text-center">
-                    <IonText color="medium">
-                        <h3>No products found</h3>
-                        <p>Try adjusting your search terms</p>
-                    </IonText>
-                </IonCardContent>
-            </IonCard>
+            <div className="search-results-empty">
+                <IonText color="medium">
+                    <h3>No products found</h3>
+                    <p>Try adjusting your search terms</p>
+                </IonText>
+            </div>
         );
     }
 
     return (
-        <IonCard>
-            <IonCardHeader>
-                <IonCardTitle>
-                    Search Results ({filteredProducts.length})
-                </IonCardTitle>
-            </IonCardHeader>
-            <IonCardContent>
-                <IonGrid>
-                    <IonRow>
-                        {filteredProducts.map((product) => (
-                            <IonCol
-                                key={product.id}
-                                size="6"
-                                sizeMd="4"
-                                sizeLg="3"
-                            >
-                                <ProductCard
-                                    product={product}
-                                    onClick={() =>
-                                        router.push(
-                                            `/shop/?productId=${product.id}`,
-                                            "none"
-                                        )
-                                    }
-                                />
-                            </IonCol>
-                        ))}
-                    </IonRow>
-                </IonGrid>
-            </IonCardContent>
-        </IonCard>
+        <div className="search-results-section">
+            <IonToolbar>
+                <IonText>
+                    <h2 className="section-title">
+                        Search Results ({filteredProducts.length})
+                    </h2>
+                </IonText>
+            </IonToolbar>
+
+            <div className="product-list">
+                {filteredProducts.map((product) => (
+                    <ProductCard
+                        key={product.id}
+                        product={product}
+                        onClick={() =>
+                            router.push(
+                                `/shop/?productId=${product.id}`,
+                                "none"
+                            )
+                        }
+                    />
+                ))}
+            </div>
+        </div>
     );
 };
 

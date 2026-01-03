@@ -159,6 +159,7 @@ const ProductSections: React.FC<ProductSectionsProps> = ({
                                     onIonInput={(e) =>
                                         setSectionName(e.detail.value!)
                                     }
+                                    onBlur={() => setEditingSection(null)}
                                 />
                                 <IonButtons slot="end">
                                     <IonButton

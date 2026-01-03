@@ -91,19 +91,30 @@ const CatalogPage: React.FC = () => {
             <ShopHeader
                 title="Shop"
                 searchbar
+                homeButton
                 onSearchChange={setProductFilter}
             />
             <IonContent ref={contentRef}>
-                <HeroSection onStartShopping={handleStartShopping} />
-                <div className="ion-padding" ref={productsRef}>
+                <div >
                     {productFilter ? (
-                        <SearchResults filteredProducts={filteredProducts} />
+                        <div className="ion-padding">
+                            <SearchResults
+                                filteredProducts={filteredProducts}
+                            />
+                        </div>
                     ) : (
-                        <ProductSections
-                            sections={sections}
-                            products={products}
-                            isAdmin={isAdmin}
-                        />
+                        <>
+                            <HeroSection
+                                onStartShopping={handleStartShopping}
+                            />
+                            <div ref={productsRef} className="ion-padding">
+                                <ProductSections
+                                    sections={sections}
+                                    products={products}
+                                    isAdmin={isAdmin}
+                                />
+                            </div>
+                        </>
                     )}
                 </div>
             </IonContent>
