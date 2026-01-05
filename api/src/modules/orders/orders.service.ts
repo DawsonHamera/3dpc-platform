@@ -6,9 +6,7 @@ export class OrdersService {
   constructor(private readonly prisma: PrismaService) {}
 
   findAllOrders() {
-    return this.prisma.order.findMany({
-      include: { order_items: true },
-    });
+    return this.prisma.order.findMany();
   }
 
   findOrderById(id: number) {
@@ -50,10 +48,10 @@ export class OrdersService {
   async createOrder(data: any) {
     const orderData = {
       email: data.email,
-      first_name: data.firstName,
-      last_name: data.lastName,
-      delivery_method: data.deliveryMethod,
-      total_price: data.totalPrice,
+      first_name: data.first_name,
+      last_name: data.last_name,
+      delivery_method: data.delivery_method,
+      total_price: data.total_price,
       status: 'pending',
       key: `order_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
     };
@@ -96,7 +94,13 @@ export class OrdersService {
   }
 
   findOrderItems(orderId: number) {
-    return this.prisma.order_item.findMany({ where: { order_id: orderId } });
+    return this.prisma.order_item.findMany({
+      where: { order_id: orderId },
+      include: {
+        product: true,
+        product_variant: { include: { image: true } },
+      },
+    });
   }
 
   addOrderItem(orderId: number, data: any) {

@@ -1,0 +1,130 @@
+.order-card {
+    margin: 16px 0;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.order-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.order-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+}
+
+.order-header-left {
+    flex: 1;
+}
+
+.order-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: var(--ion-color-dark);
+}
+
+.order-key {
+    font-size: 0.875rem;
+    font-family: monospace;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.order-status-badge {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    font-size: 0.75rem;
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.order-details {
+    margin-top: 16px;
+}
+
+.order-detail-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 12px;
+    padding: 8px;
+    border-radius: 8px;
+    background: var(--ion-color-light);
+}
+
+.detail-icon {
+    font-size: 1.5rem;
+    color: var(--ion-color-primary);
+    margin-right: 12px;
+    margin-top: 2px;
+}
+
+.detail-content {
+    flex: 1;
+}
+
+.detail-label {
+    font-size: 0.75rem;
+    color: var(--ion-color-medium);
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.detail-value {
+    font-size: 0.95rem;
+    color: var(--ion-color-dark);
+    font-weight: 500;
+}
+
+.email-link {
+    color: var(--ion-color-primary);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.email-link:hover {
+    color: var(--ion-color-primary-shade);
+    text-decoration: underline;
+}
+
+.order-info-chips {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+}
+
+.price-label {
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.order-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.action-button {
+    flex: 1;
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .order-actions {
+        flex-direction: column;
+    }
+
+    .action-button {
+        width: 100%;
+    }
+}

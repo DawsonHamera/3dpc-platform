@@ -17,13 +17,13 @@ export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
   @Get()
-  @Public()
+  @Roles(['admin'])
   findAll() {
     return this.ordersService.findAllOrders();
   }
 
   @Get(':id')
-  @Public()
+  @Roles(['admin'])
   findOne(@Param('id') id: string) {
     return this.ordersService.findOrderById(+id);
   }
@@ -58,6 +58,7 @@ export class OrdersController {
   }
 
   @Post(':id/items')
+  @Public()
   addItem(@Param('id') orderId: string, @Body() data: any) {
     return this.ordersService.addOrderItem(+orderId, data);
   }
