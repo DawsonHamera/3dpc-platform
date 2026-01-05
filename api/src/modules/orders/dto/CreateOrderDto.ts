@@ -5,16 +5,16 @@ export class CreateOrderDto {
   email: string;
 
   @IsNotEmpty()
-  firstName: string;
+  first_name: string;
 
   @IsNotEmpty()
-  lastName: string;
+  last_name: string;
 
   @IsNotEmpty()
-  deliveryMethod: string;
+  delivery_method: string;
 
   @IsNotEmpty()
-  totalPrice: number;
+  total_price: number;
 
   cart: {
     productId: number;
