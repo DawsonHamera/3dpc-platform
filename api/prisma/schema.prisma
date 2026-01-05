@@ -3,11 +3,6 @@ generator client {
   binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
 
-generator zod {
-  provider = "prisma-zod-generator"
-  output   = "../../client/src/shared/types/zod"
-}
-
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL") //needed for prod generate???
