@@ -10,6 +10,7 @@ generator zod {
 
 datasource db {
   provider = "mysql"
+  url      = env("DATABASE_URL") //needed for prod generate???
 }
 
 model user {
