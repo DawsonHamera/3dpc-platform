@@ -58,11 +58,11 @@ const Header: React.FC<HeaderProps> = ({ title, type, onBack, color }) => {
                         <IonButton
                             onClick={() => (onBack ? onBack() : history.back())}
                         >
-                            <IonIcon slot="icon-only" icon={arrowBack} />
+                            <IonIcon slot="icon-only" color='light' icon={arrowBack} />
                         </IonButton>
                     </IonButtons>
 
-                    <IonTitle style={{ textAlign: "center" }}>{title}</IonTitle>
+                    <IonTitle style={{ textAlign: "center" }} color='light'>{title}</IonTitle>
 
                     <IonButtons slot="end">
                         <div style={{ width: "48px" }} />
@@ -136,10 +136,10 @@ const Header: React.FC<HeaderProps> = ({ title, type, onBack, color }) => {
             >
                 <IonButtons slot="end">
                     <IonButton onClick={openPopover}>
-                        <IonIcon icon={personCircleOutline} />
+                        <IonIcon color="light" icon={personCircleOutline} />
                     </IonButton>
                 </IonButtons>
-                <IonTitle>{title}</IonTitle>
+                <IonTitle color="light">{title}</IonTitle>
             </IonToolbar>
         </IonHeader>
     );

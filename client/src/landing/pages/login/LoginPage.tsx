@@ -1,10 +1,10 @@
 import { IonAlert, IonPage, useIonRouter } from "@ionic/react";
 import { useState } from "react";
-import SignInForm from "./SignInForm";
-import { LoginRequest } from "../../../member-app/features/auth/authTypes";
+import { useDispatch } from "react-redux";
 import { useLoginMutation } from "../../../member-app/features/auth/authApi";
 import { setCredentials } from "../../../member-app/features/auth/authSlice";
-import { useDispatch } from "react-redux";
+import { LoginRequest } from "../../../member-app/features/auth/authTypes";
+import SignInForm from "./SignInForm";
 import SignUpForm from "./SignUpForm";
 
 const LoginPage: React.FC = () => {
@@ -29,9 +29,9 @@ const LoginPage: React.FC = () => {
                     stream_token: response.data.stream_token,
                 })
             );
-            router.push("/dashboard");
+            router.push("/dashboard", "root");
         } catch (error: any) {
-            console.log('ERROR', error);
+            console.log("ERROR", error);
             setAlert({
                 isOpen: true,
                 title: error.data?.error || "Login Failed",
