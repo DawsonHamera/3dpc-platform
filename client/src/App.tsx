@@ -4,8 +4,8 @@ import { IonReactRouter } from "@ionic/react-router";
 import { store } from "./shared/redux/store";
 import { OneSignalProvider } from "./shared/services/OneSignalProvider";
 
-import { Provider } from "react-redux";
-import { Route } from "react-router";
+import { Provider, useSelector } from "react-redux";
+import { Redirect, Route } from "react-router";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -27,11 +27,17 @@ import "@ionic/react/css/text-transformation.css";
 import HomePage from "./landing/pages/home/HomePage";
 import LoginPage from "./landing/pages/login/LoginPage";
 import Dashboard from "./member-app/Dashboard";
+import { selectCurrentUser } from "./member-app/features/auth/authSlice";
 import "./shared/theme/variables.css";
 import Shop from "./shop/pages/Shop";
 import WorkstationPage from "./workstation/pages/main/WorkstationPage";
 
 setupIonicReact();
+
+const HomeRoute: React.FC = () => {
+    const currentUser = useSelector(selectCurrentUser);
+    return currentUser ? <Redirect to="/dashboard" /> : <HomePage />;
+};
 
 const App: React.FC = () => {
     return (
@@ -40,7 +46,7 @@ const App: React.FC = () => {
                 <Provider store={store}>
                     <IonReactRouter>
                         <IonRouterOutlet>
-                            <Route exact path="/" component={HomePage} />
+                            <Route exact path="/" component={HomeRoute} />
                             <Route exact path="/login" component={LoginPage} />
                             <Route
                                 exact

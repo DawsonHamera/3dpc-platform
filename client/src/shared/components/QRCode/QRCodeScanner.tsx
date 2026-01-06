@@ -42,7 +42,7 @@ const QRCodeScanner: React.FC<QRCodeScannerProps> = ({ onScan }) => {
                         Scan QR Code
                 </IonButton>
                 <h1>or</h1>
-                <IonItem>
+                <IonItem lines="none">
                     <IonInput
                         type="text"
                         fill='outline'
