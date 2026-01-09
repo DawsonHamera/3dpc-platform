@@ -52,6 +52,8 @@ const HeroDisplay: React.FC = () => {
             updateHero("install");
         } else if (!isSubscribed && !loadingOneSignal) {
             updateHero("subscribe");
+        } else {
+            updateHero("default");
         }
     }, [currentEvent, isPWAInstalled(), isSubscribed, loadingOneSignal]);
 
