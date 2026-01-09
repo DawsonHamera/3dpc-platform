@@ -30,7 +30,7 @@ export const useOneSignal = () => {
 export const OneSignalProvider: React.FC<{ children: React.ReactNode }> = ({
     children,
 }) => {
-    const [isSubscribed, setIsSubscribed] = useState(false);
+    const [isSubscribed, setIsSubscribed] = useState(true);
     const [loading, setLoading] = useState(false);
     const [initialized, setInitialized] = useState(false);
     const OneSignalAppId = "eac957b4-4bc6-4ee1-9ff1-bf1678ccea3a";
