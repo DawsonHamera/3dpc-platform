@@ -1,12 +1,12 @@
 import gsap from "gsap";
 import { useEffect, useRef, useState } from "react";
+import { isPWAInstalled } from "../../../shared/hooks/useUtils";
+import { useOneSignal } from "../../../shared/services/OneSignalProvider";
 import { useGetEventsQuery } from "../../features/events/eventsApi";
 import DefaultHero from "./heroes/DefaultHero";
 import EventHero from "./heroes/EventHero";
 import InstallHero from "./heroes/InstallHero";
-import { useOneSignal } from "../../../shared/services/OneSignalProvider";
 import SubscribeHero from "./heroes/SubscribeHero";
-import { isPWAInstalled } from "../../../shared/hooks/useUtils";
 
 type HeroType = "default" | "event" | "install" | "subscribe";
 
@@ -17,7 +17,6 @@ const HeroDisplay: React.FC = () => {
     });
 
     const { isSubscribed, loading: loadingOneSignal } = useOneSignal();
-
 
     const currentEvent = eventData?.[0];
 
