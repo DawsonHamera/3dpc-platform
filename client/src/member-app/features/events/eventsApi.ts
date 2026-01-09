@@ -20,11 +20,17 @@ export const eventsApi = createApi({
     baseQuery: baseQuery,
     tagTypes: ["Event", "Attendance"],
     endpoints: (builder) => ({
-        getEvents: builder.query<Event[], void>({
-            query: () => ({
-                url: "/events",
-                method: "GET",
-            }),
+        getEvents: builder.query<Event[], { filter?: string; sort?: string; limit?: number } | void>({
+            query: (args) => {
+                const params = new URLSearchParams();
+                if (args?.filter) params.append("filter", args.filter);
+                if (args?.sort) params.append("sort", args.sort);
+                if (args?.limit) params.append("limit", args.limit.toString());
+                return {
+                    url: `/events?${params.toString()}`,
+                    method: "GET",
+                };
+            },
             providesTags: ["Event"],
         }),
         getEvent: builder.query<Event, number>({

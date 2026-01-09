@@ -14,6 +14,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useGetEventsQuery } from "../../../member-app/features/events/eventsApi";
 import { useScrollAnimation, slideInLeft, slideInRight } from "../../../shared/hooks";
+import { isPWAInstalled } from "../../../shared/hooks/useUtils";
 
 const HomePage: React.FC = () => {
     const contentRef = useRef<HTMLIonContentElement>(null);
@@ -74,7 +75,7 @@ const HomePage: React.FC = () => {
     const handleScrollToContent = () => {
         containerRef.current?.scrollIntoView({ behavior: "smooth" });
     };
-
+    
     return (
         <IonPage>
             <IonContent ref={contentRef}>

@@ -31,12 +31,14 @@ import { selectCurrentUser } from "./member-app/features/auth/authSlice";
 import "./shared/theme/variables.css";
 import Shop from "./shop/pages/Shop";
 import WorkstationPage from "./workstation/pages/main/WorkstationPage";
+import { isPWAInstalled } from "./shared/hooks/useUtils";
 
 setupIonicReact();
 
 const HomeRoute: React.FC = () => {
     const currentUser = useSelector(selectCurrentUser);
-    return currentUser ? <Redirect to="/dashboard" /> : <HomePage />;
+    const isInstalled = isPWAInstalled();
+    return currentUser || isInstalled ? <Redirect to="/dashboard" /> : <HomePage />;
 };
 
 const App: React.FC = () => {

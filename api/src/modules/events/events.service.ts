@@ -11,14 +11,43 @@ export class EventsService {
     private readonly usersService: UsersService,
   ) {}
 
-  findAll() {
-    return this.prisma.event.findMany({
+  async findAll(filter?: string, sort?: string, limit?: number) {
+    const events = await this.prisma.event.findMany({
       orderBy: { start_time: 'desc' },
       include: {
         image_file: true,
         attendances: { include: { user: true } },
       },
     });
+
+    switch (sort) {
+      case 'start_time_asc':
+        events.sort((a, b) => a.start_time.getTime() - b.start_time.getTime());
+        break;
+      case 'start_time_desc':
+        events.sort((a, b) => b.start_time.getTime() - a.start_time.getTime());
+        break;
+      // Add more sorting options as needed
+    }
+
+    switch (filter) {
+      case 'upcoming':
+        return events.filter((event) => event.start_time > new Date());
+      case 'past':
+        return events.filter((event) => event.end_time < new Date());
+      case 'current':
+        return events.filter(
+          (event) =>
+            event.start_time <= new Date() && event.end_time >= new Date(),
+        );
+      // Add more filtering options as needed
+    }
+
+    if (limit && limit > 0) {
+      return events.slice(0, limit);
+    }
+
+    return events;
   }
 
   findOne(id: number) {
