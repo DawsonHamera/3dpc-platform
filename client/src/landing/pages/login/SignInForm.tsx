@@ -8,6 +8,7 @@ import {
 } from "@ionic/react";
 import { useState } from "react";
 import { LoginRequest } from "../../../member-app/features/auth/authTypes";
+import { isPWAInstalled } from "../../../shared/hooks/useUtils";
 
 type SignInFormProps = {
     switchToSignUp: () => void;
@@ -106,9 +107,11 @@ const SignInForm: React.FC<SignInFormProps> = ({
                     Don&apos;t have an account?{" "}
                     <a onClick={switchToSignUp}>Sign up</a>
                 </p>
-                <p style={{ textAlign: "center", marginTop: "20px" }}>
-                    Back to <a href="/">home</a>
-                </p>
+                {!isPWAInstalled() && (
+                    <p style={{ textAlign: "center", marginTop: "20px" }}>
+                        Back to <a href="/">home</a>
+                    </p>
+                )}
             </IonText>
         </div>
     );

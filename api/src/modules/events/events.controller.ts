@@ -19,8 +19,12 @@ export class EventsController {
 
   @Get()
   @Public()
-  findAll() {
-    return this.eventsService.findAll();
+  findAll(
+    @Query('filter') filter?: string,
+    @Query('sort') sort?: string,
+    @Query('limit') limit?: number,
+  ) {
+    return this.eventsService.findAll(filter, sort, limit);
   }
 
   @Get('current')

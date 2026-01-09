@@ -20,6 +20,7 @@ import {
     IonAlert,
     IonNote,
 } from "@ionic/react";
+import { isPWAInstalled } from "../../../shared/hooks/useUtils";
 
 type SignUpFormProps = {
     switchToSignIn: () => void;
@@ -194,9 +195,11 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
                     Already have an account?{" "}
                     <a onClick={switchToSignIn}>Sign in</a>
                 </p>
-                <p style={{ textAlign: "center", marginTop: "20px" }}>
-                    Back to <a href="/">home</a>
-                </p>
+                {!isPWAInstalled() && (
+                    <p style={{ textAlign: "center", marginTop: "20px" }}>
+                        Back to <a href="/">home</a>
+                    </p>
+                )}
             </IonText>
         </div>
     );

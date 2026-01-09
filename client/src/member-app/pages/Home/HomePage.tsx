@@ -16,14 +16,18 @@ import LeaderboardWidget from "./widgets/LeaderBoardWidget";
 import DevWidget from "./widgets/DevWidget";
 import Card from "../../../shared/components/Card/Card";
 import QuickLinksWidget from "./widgets/QuickLinksWidget";
+import DefaultHero from "./heroes/DefaultHero";
+import HeroDisplay from "./HeroDisplay";
 
 const HomePage: React.FC = () => {
+
     return (
         <IonPage>
-            <Header title="3D Printing Club" />
+            <Header title="3D Printing Club"/>
             <IonContent>
+                <HeroDisplay />
                 <div className="home-page-content">
-                    <EventSlider filter="upcoming"  title="Upcoming Events" />
+                    
                     <LeaderboardWidget />
                     <Card title="Earn Points">
                         <IonList>

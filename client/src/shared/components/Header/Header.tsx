@@ -72,7 +72,7 @@ const Header: React.FC<HeaderProps> = ({ title, type, onBack, color }) => {
         );
     }
     return (
-        <IonHeader>
+        <IonHeader className="ion-header-no-border">
             <IonPopover
                 isOpen={isPopoverOpen}
                 event={popoverEvent}

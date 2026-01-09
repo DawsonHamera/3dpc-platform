@@ -6,7 +6,7 @@ import React, {
     useState,
 } from "react";
 import OneSignal from "react-onesignal";
-import { User } from "stream-chat";
+import { User } from "../types";
 
 interface OneSignalContextType {
     isSubscribed: boolean;
@@ -97,6 +97,7 @@ export const OneSignalProvider: React.FC<{ children: React.ReactNode }> = ({
 
     const subscribe = useCallback(async (user: User) => {
         setLoading(true);
+        console.log("Subscribing user to OneSignal:");
         try {
             await OneSignal.User.PushSubscription.optIn();
             await OneSignal.login(String(user.id));

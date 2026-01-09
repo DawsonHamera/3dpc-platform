@@ -22,23 +22,15 @@ const InstallHero: FC = () => {
     };
 
     return (
-        <div style={{ position: "relative", height: "100vh", width: "100vw", overflow: "hidden" }}>
-            <h1 style={{
-                position: 'absolute',
-                top: 24,
-                left: 0,
-                right: 0,
-                textAlign: 'center',
-                fontSize: '2.2rem',
-                fontWeight: 800,
-                letterSpacing: '0.04em',
-                fontFamily: "'Outfit', sans-serif",
-                zIndex: 10,
-                color: '#fff',
-                pointerEvents: 'none'
-            }}>
-                3D Printing Club
-            </h1>
+        <div
+            style={{
+                position: "relative",
+                height: "100vh",
+                width: "100vw",
+                overflow: "hidden",
+                backgroundColor: "var(--ion-color-primary-tint)",
+            }}
+        >
             {/* Starting Text and Button */}
             {!showVideo && !videoEnded && (
                 <div
@@ -50,14 +42,20 @@ const InstallHero: FC = () => {
                         zIndex: 3,
                         background: "rgba(0,0,0,0.6)",
                         padding: "2rem 3rem",
-                        width: '80%',
+                        width: "80%",
                         borderRadius: "1rem",
                         color: "#fff",
                         textAlign: "center",
                     }}
                 >
-                    <h2>Install the app to get club alerts anytime and a homescreen icon. </h2>
-                    <p>If you need help installing on IOS follow the instructions in a video walkthrough by clicking below.</p>
+                    <h2>
+                        Install the app to get club alerts anytime and a
+                        homescreen icon.{" "}
+                    </h2>
+                    <p>
+                        If you need help installing on IOS follow the
+                        instructions in a video walkthrough by clicking below.
+                    </p>
                     <IonButton
                         color="primary"
                         style={{
@@ -115,7 +113,7 @@ const InstallHero: FC = () => {
                 >
                     <IonButton
                         color="primary"
-                        size='large'
+                        size="large"
                         style={{
                             marginTop: "2rem",
                             fontSize: "1.2rem",
