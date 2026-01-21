@@ -1,1 +1,3 @@
-Setup the shop, but still need to setup api. Create product module, revise old order modules, and then swap out dummy data client side for rtk queries.
+NEED to bring back button to disable push notifcations for privacy reasons
+
+Update install instructions (has old app, may be confusing and need android as well)

@@ -134,11 +134,18 @@ export class AuthService {
     );
   }
 
-  async loginWorkstation(passkey: LoginDto) {
-    if (passkey.password !== process.env.WORKSTATION_PASSKEY) {
+  loginWorkstation(passkey: string) {
+    if (passkey !== process.env.WORKSTATION_PASSKEY) {
       throw new UnauthorizedException('Invalid workstation passkey');
     }
-    return 
+    const payload = { sub: 'workstation', roleId: 3 };
+    const accessToken = this.jwtService.sign(payload);
+    return success(
+      {
+        access_token: accessToken,
+      },
+      'Workstation login successful',
+    );
   }
 
   private createStreamToken(userId: string): string {
