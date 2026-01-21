@@ -14,6 +14,7 @@ import {
 import EventCard from "../../../shared/components/EventSlider/EventCard/EventCard";
 import Header from "../../../shared/components/Header/Header";
 import { useAuth } from "../../../shared/hooks/useAuth";
+import EventCardSmall from "./EventCardSmall";
 import EventSettingsModal from "./EventSettingsModel";
 import EventsCreateModal from "./EventsCreateModal";
 import "./EventsPage.css";
@@ -37,12 +38,12 @@ const EventsPage: React.FC = () => {
         setShowEventSettings(true);
     };
 
-    const currentEvents = events?.filter((event: eventResultType) => {
+    const currentEvents = events?.filter((event: Event) => {
         const eventEndDate = new Date(event.end_time);
         return eventEndDate >= new Date();
     });
 
-    const pastEvents = events?.filter((event: eventResultType) => {
+    const pastEvents = events?.filter((event: Event) => {
         const eventEndDate = new Date(event.end_time);
         return eventEndDate < new Date();
     });
@@ -79,7 +80,8 @@ const EventsPage: React.FC = () => {
                             <h1 style={{ margin: 0 }}> New event</h1>
                         </div>
                     )}
-                    {currentEvents?.map((event: eventResultType) => (
+                    <EventCardSmall event={events?.[0]} />
+                    {currentEvents?.map((event: Event) => (
                         <div key={event.id}>
                             <EventCard
                                 key={event.id}
@@ -92,7 +94,7 @@ const EventsPage: React.FC = () => {
                     {pastEvents && pastEvents.length > 0 && (
                         <span className="section-divider">Past Events</span>
                     )}
-                    {pastEvents?.map((event: eventResultType) => (
+                    {pastEvents?.map((event: Event) => (
                         <div key={event.id}>
                             <EventCard
                                 key={event.id}

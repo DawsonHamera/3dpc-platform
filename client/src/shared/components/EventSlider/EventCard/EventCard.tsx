@@ -96,15 +96,7 @@ const EventCard: React.FC<EventCardProps> = ({
                     <div className="edit-badge">
                         <IonIcon
                             onClick={() =>
-                                editEvent?.({
-                                    title: event.title,
-                                    description: event.description,
-                                    id: event.id,
-                                    start_time: event.start_time,
-                                    end_time: event.end_time,
-                                    location: event.location,
-                                    image_file_id: event.image_file?.id,
-                                })
+                                editEvent?.(event)
                             }
                             color="primary"
                             icon={settingsOutline}

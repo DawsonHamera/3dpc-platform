@@ -36,14 +36,14 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
         email: "",
         password: "",
         confirm_password: "",
-        grade: 0,
+        grade_id: 0,
     });
     const [errors, setErrors] = useState({
         name: "",
         email: "",
         password: "",
         confirm_password: "",
-        grade: "",
+        grade_id: "",
     });
 
     const [register] = useRegisterMutation();
@@ -86,8 +86,8 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
             isValid = false;
         }
 
-        if (!formState.grade) {
-            newErrors.grade = "Grade selection is required.";
+        if (!formState.grade_id) {
+            newErrors.grade_id = "Grade selection is required.";
             isValid = false;
         }
 
@@ -170,10 +170,10 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
             <IonItem>
                 <IonLabel position="stacked">Grade</IonLabel>
                 <IonSelect
-                    value={formState.grade}
+                    value={formState.grade_id}
                     placeholder="Select your grade"
                     onIonChange={(e) =>
-                        handleInputChange("grade", e.detail.value)
+                        handleInputChange("grade_id", e.detail.value)
                     }
                 >
                     <IonSelectOption value={1}>Freshman</IonSelectOption>
@@ -181,8 +181,8 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
                     <IonSelectOption value={3}>Junior</IonSelectOption>
                     <IonSelectOption value={4}>Senior</IonSelectOption>
                 </IonSelect>
-                {errors.grade && (
-                    <IonNote color="danger">{errors.grade}</IonNote>
+                {errors.grade_id && (
+                    <IonNote color="danger">{errors.grade_id}</IonNote>
                 )}
             </IonItem>
 
