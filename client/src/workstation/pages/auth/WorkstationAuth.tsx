@@ -1,88 +1,52 @@
 import { IonIcon } from "@ionic/react";
 import { logOut } from "ionicons/icons";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useHistory } from "react-router";
-import { useLoginMutation } from "../../../member-app/features/auth/authApi";
+import { useWorkstationLoginMutation } from "../../../member-app/features/auth/authApi";
+import {
+    logout,
+    selectIsWorkstationAuth,
+} from "../../../member-app/features/auth/authSlice";
+import { useAppDispatch, useAppSelector } from "../../../shared/redux/hooks";
 import "./WorkstationAuth.css";
-
-const WORKSTATION_AUTH_KEY = "workstation_authenticated";
-const WORKSTATION_AUTH_TIMESTAMP = "workstation_auth_timestamp";
-const AUTH_EXPIRY_HOURS = 24;
 
 const WorkstationAuth: React.FC<{ children: React.ReactNode }> = ({
     children,
 }) => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [passkey, setPasskey] = useState("");
     const [error, setError] = useState("");
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
-    const [login, { isLoading }] = useLoginMutation();
+    const isAuthenticated = useAppSelector(selectIsWorkstationAuth);
+    const [workstationLogin, { isLoading }] = useWorkstationLoginMutation();
+    const dispatch = useAppDispatch();
     const history = useHistory();
-
-    // Check for existing authentication on mount
-    useEffect(() => {
-        const checkExistingAuth = () => {
-            const isAuth = localStorage.getItem(WORKSTATION_AUTH_KEY);
-            const timestamp = localStorage.getItem(WORKSTATION_AUTH_TIMESTAMP);
-
-            if (isAuth === "true" && timestamp) {
-                const authTime = parseInt(timestamp, 10);
-                const currentTime = Date.now();
-                const hoursPassed = (currentTime - authTime) / (1000 * 60 * 60);
-
-                if (hoursPassed < AUTH_EXPIRY_HOURS) {
-                    setIsAuthenticated(true);
-                } else {
-                    // Auth expired, clear storage
-                    localStorage.removeItem(WORKSTATION_AUTH_KEY);
-                    localStorage.removeItem(WORKSTATION_AUTH_TIMESTAMP);
-                }
-            }
-            setIsCheckingAuth(false);
-        };
-
-        checkExistingAuth();
-    }, []);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError("");
 
-        try {
-            const data = await login({ email, password }).unwrap();
-            // if (data.user.role.name !== "admin")
-            //     throw new Error("Unauthorized: Admin access required");
-            // Store authentication state
-            localStorage.setItem(WORKSTATION_AUTH_KEY, "true");
-            localStorage.setItem(
-                WORKSTATION_AUTH_TIMESTAMP,
-                Date.now().toString()
-            );
+        if (!passkey.trim()) {
+            setError("Please enter a passkey");
+            return;
+        }
 
-            setIsAuthenticated(true);
+        try {
+            await workstationLogin({ passkey }).unwrap();
+            // Auth state is automatically set by the mutation's onQueryStarted
+            setPasskey("");
         } catch (err: any) {
-            setError(err?.data?.message || "Authentication failed");
+            setError(
+                err?.data?.message || "Invalid passkey. Please try again.",
+            );
+            setPasskey(""); // Clear passkey on error
         }
     };
 
     const handleLogout = () => {
-        localStorage.removeItem(WORKSTATION_AUTH_KEY);
-        localStorage.removeItem(WORKSTATION_AUTH_TIMESTAMP);
-        setIsAuthenticated(false);
+        dispatch(logout());
+        setPasskey("");
+        setError("");
     };
-
-    if (isCheckingAuth) {
-        return (
-            <div className="workstation-auth">
-                <div className="workstation-auth-loading">
-                    <div className="workstation-auth-spinner"></div>
-                    <p>Checking authentication...</p>
-                </div>
-            </div>
-        );
-    }
 
     if (isAuthenticated) {
         return (
@@ -116,28 +80,16 @@ const WorkstationAuth: React.FC<{ children: React.ReactNode }> = ({
                     )}
 
                     <div className="workstation-auth-field">
-                        <label htmlFor="email">Email</label>
+                        <label htmlFor="passkey">Passkey</label>
                         <input
-                            id="email"
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            placeholder="Enter your email"
-                            required
-                            autoComplete="email"
-                        />
-                    </div>
-
-                    <div className="workstation-auth-field">
-                        <label htmlFor="password">Password</label>
-                        <input
-                            id="password"
+                            id="passkey"
                             type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            placeholder="Enter your password"
+                            value={passkey}
+                            onChange={(e) => setPasskey(e.target.value)}
+                            placeholder="Enter workstation passkey"
                             required
-                            autoComplete="current-password"
+                            autoComplete="off"
+                            autoFocus
                         />
                     </div>
 
@@ -146,7 +98,7 @@ const WorkstationAuth: React.FC<{ children: React.ReactNode }> = ({
                         className="workstation-auth-button"
                         disabled={isLoading}
                     >
-                        {isLoading ? "Signing in..." : "Sign In"}
+                        {isLoading ? "Verifying..." : "Access Workstation"}
                     </button>
 
                     <button

@@ -24,14 +24,6 @@ const EventHeader: React.FC<EventHeaderProps> = ({ event, children }) => {
                 return (
                     <IonChip className="opaque">
                         <IonIcon icon={construct} color="light" />
-                        <b
-                            style={{
-                                margin: " 0 5px 0 -5px",
-                                fontSize: "1rem",
-                            }}
-                        >
-                            20
-                        </b>
                         <IonLabel>Workshop</IonLabel>
                     </IonChip>
                 );
@@ -39,14 +31,6 @@ const EventHeader: React.FC<EventHeaderProps> = ({ event, children }) => {
                 return (
                     <IonChip className="opaque">
                         <IonIcon icon={trophy} color="light" />
-                        <b
-                            style={{
-                                margin: " 0 5px 0 -5px",
-                                fontSize: "1rem",
-                            }}
-                        >
-                            20
-                        </b>
                         <IonLabel>Competition</IonLabel>
                     </IonChip>
                 );
@@ -54,14 +38,6 @@ const EventHeader: React.FC<EventHeaderProps> = ({ event, children }) => {
                 return (
                     <IonChip className="opaque">
                         <IonIcon icon={pricetags} color="light" />
-                        <b
-                            style={{
-                                margin: " 0 5px 0 -5px",
-                                fontSize: "1rem",
-                            }}
-                        >
-                            50
-                        </b>
                         <IonLabel>Fundraiser</IonLabel>
                     </IonChip>
                 );
@@ -69,14 +45,6 @@ const EventHeader: React.FC<EventHeaderProps> = ({ event, children }) => {
                 return (
                     <IonChip className="opaque">
                         <IonIcon icon={hammer} color="light" />
-                        <b
-                            style={{
-                                margin: " 0 5px 0 -5px",
-                                fontSize: "1rem",
-                            }}
-                        >
-                            25
-                        </b>
                         <IonLabel>Work Day</IonLabel>
                     </IonChip>
                 );
@@ -84,14 +52,6 @@ const EventHeader: React.FC<EventHeaderProps> = ({ event, children }) => {
                 return (
                     <IonChip className="opaque">
                         <IonIcon icon={calendar} color="light" />
-                        <b
-                            style={{
-                                margin: " 0 5px 0 -5px",
-                                fontSize: "1rem",
-                            }}
-                        >
-                            10
-                        </b>
                         <IonLabel>Meeting</IonLabel>
                     </IonChip>
                 );

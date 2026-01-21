@@ -1,16 +1,20 @@
 import { IonAlert, IonPage, useIonRouter } from "@ionic/react";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { useLoginMutation } from "../../../member-app/features/auth/authApi";
-import { setCredentials } from "../../../member-app/features/auth/authSlice";
-import { LoginRequest } from "../../../member-app/features/auth/authTypes";
+import {
+    useLoginMutation,
+    useRegisterMutation,
+} from "../../../member-app/features/auth/authApi";
+import {
+    LoginRequest,
+    RegisterRequest,
+} from "../../../member-app/features/auth/authTypes";
 import SignInForm from "./SignInForm";
 import SignUpForm from "./SignUpForm";
 
 const LoginPage: React.FC = () => {
     const [mode, setMode] = useState<"signin" | "signup">("signin");
     const [login] = useLoginMutation();
-    const dispatch = useDispatch();
+    const [signup] = useRegisterMutation();
     const router = useIonRouter();
     const [alert, setAlert] = useState({
         isOpen: false,
@@ -20,15 +24,8 @@ const LoginPage: React.FC = () => {
 
     const handleSignIn = async (credentials: LoginRequest) => {
         try {
-            const response = await login(credentials).unwrap();
-            dispatch(
-                setCredentials({
-                    user: response.data.user,
-                    expires_at: response.data.expires_at,
-                    access_token: response.data.access_token,
-                    stream_token: response.data.stream_token,
-                })
-            );
+            await login(credentials).unwrap();
+            // Credentials are automatically set by the mutation's onQueryStarted
             router.push("/dashboard", "root");
         } catch (error: any) {
             console.log("ERROR", error);
@@ -40,13 +37,23 @@ const LoginPage: React.FC = () => {
         }
     };
 
-    const handleSignUp = async (credentials: LoginRequest) => {
-        // Placeholder for sign-up logic
-        setAlert({
-            isOpen: true,
-            title: "Sign-Up Not Implemented",
-            message: "Sign-up functionality is not yet available.",
-        });
+    const handleSignUp = async (credentials: RegisterRequest) => {
+        try {
+            await signup(credentials).unwrap();
+            await login({
+                email: credentials.email,
+                password: credentials.password,
+            }).unwrap();
+            // Credentials are automatically set by the mutation's onQueryStarted
+            router.push("/dashboard", "root");
+        } catch (error: any) {
+            console.log("ERROR", error);
+            setAlert({
+                isOpen: true,
+                title: error.data?.error || "Sign-Up Failed",
+                message: error.data?.message || "An unexpected error occurred.",
+            });
+        }
     };
 
     return (

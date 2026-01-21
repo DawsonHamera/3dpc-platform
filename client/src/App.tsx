@@ -38,7 +38,7 @@ setupIonicReact();
 const HomeRoute: React.FC = () => {
     const currentUser = useSelector(selectCurrentUser);
     const isInstalled = isPWAInstalled();
-    return currentUser || isInstalled ? <Redirect to="/dashboard" /> : <HomePage />;
+    return currentUser && isInstalled ? <Redirect to="/dashboard" /> : <HomePage />;
 };
 
 const App: React.FC = () => {

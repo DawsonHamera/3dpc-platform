@@ -1,28 +1,26 @@
 import {
-    IonModal,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
+    IonButton,
     IonContent,
+    IonDatetime,
+    IonFooter,
+    IonHeader,
+    IonInput,
     IonItem,
     IonLabel,
-    IonInput,
-    IonTextarea,
-    IonDatetime,
-    IonRadioGroup,
-    IonRadio,
-    IonFooter,
-    IonButton,
-    IonIcon,
-    IonAlert,
+    IonModal,
     IonSelect,
     IonSelectOption,
+    IonTextarea,
+    IonTitle,
+    IonToolbar,
 } from "@ionic/react";
 import { useEffect, useState } from "react";
+import {
+    CreateEvent,
+    UpdateEvent,
+    useUpdateEventMutation,
+} from "../../../member-app/features/events/eventsApi";
 import FileSelector from "../../../shared/components/FileSelector/FileSelector";
-import QRCode from "react-qr-code";
-import { close, remove, trash } from "ionicons/icons";
-import { Event, useDeleteEventMutation, useUpdateEventMutation } from "../../../member-app/features/events/eventsApi";
 
 type EventsEditModelProps = {
     activeEvent: any;
@@ -36,44 +34,60 @@ const EventsEditModel: React.FC<EventsEditModelProps> = ({
     onClose,
 }) => {
     const [updateEvent] = useUpdateEventMutation();
-    const [formData, setFormData] = useState<any>(activeEvent || {});
+    const [formData, setFormData] = useState<CreateEvent>(activeEvent || {});
 
     useEffect(() => {
-        setFormData(activeEvent || {});
+        if (activeEvent) {
+            // Only include the fields needed for editing
+            setFormData({
+                title: activeEvent.title,
+                description: activeEvent.description,
+                event_type: activeEvent.event_type,
+                location: activeEvent.location,
+                start_time: activeEvent.start_time,
+                end_time: activeEvent.end_time,
+                image_file_id: activeEvent.image_file_id,
+            });
+        } else {
+            setFormData({});
+        }
     }, [activeEvent]);
 
-    // Convert UTC time to local time for display in IonDatetime
-    const getLocalTimeForDatetime = (utcString: string) => {
-        if (!utcString) return "";
-        const date = new Date(utcString);
+    // Convert datetime object to local time for display in IonDatetime
+    const getLocalTimeForDatetime = (
+        datetime: Date | string | null | undefined
+    ) => {
+        if (!datetime) return "";
+        const date = datetime instanceof Date ? datetime : new Date(datetime);
         // Format as ISO string but treat as local time by removing the Z
         const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        const hours = String(date.getHours()).padStart(2, '0');
-        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        const hours = String(date.getHours()).padStart(2, "0");
+        const minutes = String(date.getMinutes()).padStart(2, "0");
         return `${year}-${month}-${day}T${hours}:${minutes}`;
     };
 
-    // Convert local time from IonDatetime back to UTC for API
-    const convertLocalToUTC = (localString: string) => {
-        if (!localString) return "";
-        const date = new Date(localString);
-        return date.toISOString();
-    };
-
     const handleSubmit = async () => {
-        // Convert local times back to UTC before submitting
-        const dataToSubmit = {
-            ...formData,
-            start_time: convertLocalToUTC(formData.start_time),
-            end_time: convertLocalToUTC(formData.end_time),
+        // Only send the fields that can be updated
+        const dataToSubmit: UpdateEvent = {
+            title: formData.title,
+            description: formData.description,
+            event_type: formData.event_type,
+            location: formData.location,
+            start_time:
+                formData.start_time instanceof Date
+                    ? formData.start_time.toISOString()
+                    : new Date(formData.start_time).toISOString(),
+            end_time:
+                formData.end_time instanceof Date
+                    ? formData.end_time.toISOString()
+                    : new Date(formData.end_time).toISOString(),
+            image_file_id: formData.image_file_id,
         };
 
-        delete dataToSubmit.id;
-
         await updateEvent({
-            id: formData?.id,
+            id: activeEvent?.id,
             data: dataToSubmit,
         });
 
