@@ -11,7 +11,12 @@ export class EventsService {
     private readonly usersService: UsersService,
   ) {}
 
-  async findAll(filter?: string, sort?: string, limit?: number) {
+  async findAll(
+    filter?: string,
+    sort?: string,
+    limit?: number,
+    groupBy?: string,
+  ) {
     const events = await this.prisma.event.findMany({
       orderBy: { start_time: 'desc' },
       include: {
@@ -20,31 +25,51 @@ export class EventsService {
       },
     });
 
+    let mutatedEvents = [...events];
+
     switch (sort) {
       case 'start_time_asc':
-        events.sort((a, b) => a.start_time.getTime() - b.start_time.getTime());
+        mutatedEvents.sort(
+          (a, b) => a.start_time.getTime() - b.start_time.getTime(),
+        );
         break;
       case 'start_time_desc':
-        events.sort((a, b) => b.start_time.getTime() - a.start_time.getTime());
+        mutatedEvents.sort(
+          (a, b) => b.start_time.getTime() - a.start_time.getTime(),
+        );
         break;
       // Add more sorting options as needed
     }
 
+    if (limit && limit > 0) {
+      mutatedEvents = mutatedEvents.slice(0, limit);
+    }
+
     switch (filter) {
       case 'upcoming':
-        return events.filter((event) => event.start_time > new Date());
+        return mutatedEvents.filter((event) => event.start_time > new Date());
       case 'past':
-        return events.filter((event) => event.end_time < new Date());
+        return mutatedEvents.filter((event) => event.end_time < new Date());
       case 'current':
-        return events.filter(
+        return mutatedEvents.filter(
           (event) =>
             event.start_time <= new Date() && event.end_time >= new Date(),
         );
       // Add more filtering options as needed
     }
 
-    if (limit && limit > 0) {
-      return events.slice(0, limit);
+    switch (groupBy) {
+      case 'time-relative':
+        return {
+          upcoming: mutatedEvents.filter(
+            (event) => event.start_time > new Date(),
+          ),
+          current: mutatedEvents.filter(
+            (event) =>
+              event.start_time <= new Date() && event.end_time >= new Date(),
+          ),
+          past: mutatedEvents.filter((event) => event.end_time < new Date()),
+        };
     }
 
     return events;
