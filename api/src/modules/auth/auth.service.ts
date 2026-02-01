@@ -67,10 +67,23 @@ export class AuthService {
       name: user.name,
     });
 
+    //Log the new user in the activity log
+    await this.prisma.activity_log.create({
+      data: {
+        user: { connect: { id: user.id } },
+        action_type: 'register',
+        details: {
+          message: 'New user registered',
+          email: user.email,
+          name: user.name,
+        },
+      },
+    });
+
     return user;
   }
 
-  async login(loginDto: LoginDto) {
+  async login(loginDto: LoginDto, ipAddress: string) {
     const { email, password } = loginDto;
 
     // Find user
@@ -87,12 +100,31 @@ export class AuthService {
       },
     });
     if (!user) {
+      await this.prisma.activity_log.create({
+        data: {
+          action_type: 'failed_login',
+          details: {
+            message: 'Failed login attempt - user not found',
+            email: email,
+          },
+        },
+      });
       throw new UnauthorizedException('Invalid credentials');
     }
 
     // Verify password
     const isPasswordValid = await bcrypt.compare(password, user.password_hash);
     if (!isPasswordValid) {
+      await this.prisma.activity_log.create({
+        data: {
+          action_type: 'failed_login',
+          details: {
+            message: 'Failed login attempt - incorrect password',
+            user: user,
+            ip_address: ipAddress
+          },
+        },
+      });
       throw new UnauthorizedException('Invalid credentials');
     }
 
@@ -117,6 +149,19 @@ export class AuthService {
       decoded && decoded.exp
         ? new Date(decoded.exp * 1000).toISOString()
         : null;
+
+    await this.prisma.activity_log.create({
+      data: {
+        user: { connect: { id: user.id } },
+        action_type: 'login',
+        details: {
+          message: 'User logged in',
+          email: user.email,
+          name: user.name,
+        },
+      },
+    });
+
     return success(
       {
         access_token: accessToken,
@@ -134,12 +179,23 @@ export class AuthService {
     );
   }
 
-  loginWorkstation(passkey: string) {
+  async loginWorkstation(passkey: string, ipAddress: string) {
     if (passkey !== process.env.WORKSTATION_PASSKEY) {
       throw new UnauthorizedException('Invalid workstation passkey');
     }
     const payload = { sub: 'workstation', roleId: 3 };
     const accessToken = this.jwtService.sign(payload);
+
+    await this.prisma.activity_log.create({
+      data: {
+        action_type: 'workstation_login',
+        details: {
+          message: 'Workstation logged in',
+          ip_address: ipAddress,
+        },
+      },
+    });
+
     return success(
       {
         access_token: accessToken,

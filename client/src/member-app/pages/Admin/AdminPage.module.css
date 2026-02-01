@@ -1,0 +1,39 @@
+.content {
+    --padding-top: 20px;
+    --padding-bottom: 20px;
+    --padding-start: 16px;
+    --padding-end: 16px;
+}
+
+.header {
+    padding: 24px 16px 16px;
+}
+
+.headerTitle {
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+    color: var(--ion-color-primary);
+}
+
+.headerSubtitle {
+    font-size: 14px;
+    color: var(--ion-text-color-step-600);
+    margin: 0;
+}
+
+.section {
+    margin-bottom: 32px;
+}
+
+.sectionTitle {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 16px 0;
+    padding: 0 16px;
+    color: var(--ion-text-color);
+}
+
+.widgetsContainer {
+    padding: 0 16px;
+}

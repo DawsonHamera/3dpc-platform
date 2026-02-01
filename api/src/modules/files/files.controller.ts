@@ -1,21 +1,21 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
-  UseInterceptors,
+  Get,
+  Param,
+  Patch,
+  Post,
   UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { FilesService } from './files.service';
-import { CurrentUser } from 'src/common/decorators/current-user.decorator';
-import { diskStorage } from 'multer';
-import { Roles } from 'src/common/decorators/roles.decorator';
-import { Public } from 'src/common/decorators/public.decorator';
 import { file_type, Prisma } from '@prisma/client';
+import { diskStorage } from 'multer';
+import { CurrentUser } from 'src/common/decorators/current-user.decorator';
+import { Public } from 'src/common/decorators/public.decorator';
+import { Roles } from 'src/common/decorators/roles.decorator';
+import { FilesService } from './files.service';
 
 @Controller('files')
 export class FilesController {
@@ -78,9 +78,11 @@ export class FilesController {
       size: file.size,
       path: filePath,
       type: fileType,
-      uploader: {
-        connect: { id: user?.id || null },
-      },
+      ...(user?.id > 0 && {
+        uploader: {
+          connect: { id: user.id },
+        },
+      }),
     };
 
     return this.filesService.create(fileData);

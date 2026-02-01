@@ -27,6 +27,7 @@ const PrinterModal: React.FC<PrinterModalProps> = ({
         location: "",
         loaded_material_id: undefined as number | undefined,
         image_file_id: undefined as number | undefined,
+        control_interface_url: undefined as string | undefined,
     });
 
     const [errors, setErrors] = useState({ name: "", model: "" });
@@ -49,6 +50,7 @@ const PrinterModal: React.FC<PrinterModalProps> = ({
                 location: printer.location || "",
                 loaded_material_id: printer.loaded_material_id || undefined,
                 image_file_id: printer.image_file_id || undefined,
+                control_interface_url: printer.control_interface_url || undefined,
             });
         } else {
             setFormData({
@@ -58,6 +60,7 @@ const PrinterModal: React.FC<PrinterModalProps> = ({
                 location: "",
                 loaded_material_id: undefined,
                 image_file_id: undefined,
+                control_interface_url: undefined,
             });
         }
     }, [printer, isOpen]);
@@ -177,6 +180,23 @@ const PrinterModal: React.FC<PrinterModalProps> = ({
                     </div>
 
                     <div className="modal-field">
+                        <label>
+                            Control Interface URL
+                        </label>
+                        <input
+                            type="text"
+                            value={formData.control_interface_url}
+                            onChange={(e) =>
+                                setFormData({
+                                    ...formData,
+                                    control_interface_url: e.target.value,
+                                })
+                            }
+                            placeholder="Enter control interface URL"
+                        />
+                    </div>
+
+                    <div className="modal-field">
                         <label>Status</label>
                         <select
                             value={formData.status}
@@ -251,8 +271,8 @@ const PrinterModal: React.FC<PrinterModalProps> = ({
                             {isAdding || isUpdating
                                 ? "Saving..."
                                 : printer
-                                ? "Update"
-                                : "Add"}{" "}
+                                  ? "Update"
+                                  : "Add"}{" "}
                             Printer
                         </button>
                         {printer && (

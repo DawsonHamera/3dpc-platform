@@ -14,6 +14,7 @@ import {
     productsApi,
 } from "../../member-app";
 import authReducer  from "../../member-app/features/auth/authSlice";
+import { activityApi } from "../../member-app/features/activity/activityApi";
 
 const rootReducer = combineReducers({
     [authApi.reducerPath]: authApi.reducer,
@@ -27,6 +28,7 @@ const rootReducer = combineReducers({
     [ordersApi.reducerPath]: ordersApi.reducer,
     [printersApi.reducerPath]: printersApi.reducer,
     [productsApi.reducerPath]: productsApi.reducer,
+    [activityApi.reducerPath]: activityApi.reducer,
     auth: authReducer,
 });
 
@@ -46,7 +48,8 @@ export const store = configureStore({
             materialsApi.middleware,
             ordersApi.middleware,
             printersApi.middleware,
-            productsApi.middleware
+            productsApi.middleware,
+            activityApi.middleware
         ),
 });
 

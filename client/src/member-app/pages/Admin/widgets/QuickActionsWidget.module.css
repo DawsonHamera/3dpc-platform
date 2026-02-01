@@ -1,0 +1,42 @@
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.card {
+    background: var(--ion-card-background, #fff);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.iconWrapper {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--ion-color-primary);
+    color: white;
+    flex-shrink: 0;
+}
+
+.icon {
+    font-size: 24px;
+}
+
+.title {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0;
+    color: var(--ion-text-color);
+}

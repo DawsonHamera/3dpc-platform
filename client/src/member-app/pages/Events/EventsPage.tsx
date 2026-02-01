@@ -20,7 +20,12 @@ import EventsCreateModal from "./EventsCreateModal";
 import "./EventsPage.css";
 
 const EventsPage: React.FC = () => {
-    const { data: events, isLoading, isError, refetch } = useGetEventsQuery();
+    const {
+        data: events,
+        isLoading,
+        isError,
+        refetch,
+    } = useGetEventsQuery({ groupBy: "time-relative", sort: "start_time:asc" });
 
     const user = useAuth().user;
     const [activeEvent, setActiveEvent] = useState<Event | null>(null);
@@ -37,16 +42,6 @@ const EventsPage: React.FC = () => {
         setActiveEvent(event);
         setShowEventSettings(true);
     };
-
-    const currentEvents = events?.filter((event: Event) => {
-        const eventEndDate = new Date(event.end_time);
-        return eventEndDate >= new Date();
-    });
-
-    const pastEvents = events?.filter((event: Event) => {
-        const eventEndDate = new Date(event.end_time);
-        return eventEndDate < new Date();
-    });
 
     if (isLoading) {
         return (
@@ -80,8 +75,7 @@ const EventsPage: React.FC = () => {
                             <h1 style={{ margin: 0 }}> New event</h1>
                         </div>
                     )}
-                    <EventCardSmall event={events?.[0]} />
-                    {currentEvents?.map((event: Event) => (
+                    {events?.upcoming?.map((event: Event) => (
                         <div key={event.id}>
                             <EventCard
                                 key={event.id}
@@ -91,10 +85,10 @@ const EventsPage: React.FC = () => {
                             />
                         </div>
                     ))}
-                    {pastEvents && pastEvents.length > 0 && (
+                    {events?.past && events.past.length > 0 && (
                         <span className="section-divider">Past Events</span>
                     )}
-                    {pastEvents?.map((event: Event) => (
+                    {events?.past?.map((event: Event) => (
                         <div key={event.id}>
                             <EventCard
                                 key={event.id}

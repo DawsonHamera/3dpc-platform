@@ -75,7 +75,7 @@ const OrderManagementPage: React.FC = () => {
 
     return (
         <IonPage>
-            <Header title="Order Management" />
+            <Header title="Order Management" type='back' />
             <IonContent className="order-management-content">
                 <IonRefresher slot="fixed" onIonRefresh={handleRefresh}>
                     <IonRefresherContent />

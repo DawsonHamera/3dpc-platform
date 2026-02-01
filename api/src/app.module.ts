@@ -1,27 +1,28 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { APP_GUARD } from '@nestjs/core';
 import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UsersModule } from './modules/users/users.module';
-import { PrismaModule } from './prisma/prisma.module';
+import { RolesGuard } from './common/guards/roles.guards';
 import appConfig from './config/app.config';
 import databaseConfig from './config/database.config';
 import jwtConfig from './config/jwt.config';
-import { join } from 'path';
-import { APP_GUARD } from '@nestjs/core';
-import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard';
-import { RolesGuard } from './common/guards/roles.guards';
+import { ActivityModule } from './modules/activity/activity.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard';
 import { EventsModule } from './modules/events/events.module';
 import { FilesModule } from './modules/files/files.module';
-import { RecyclingModule } from './modules/recycling/recycling.module';
-import { ModelsModule } from './modules/models/models.module';
 import { MaterialsModule } from './modules/materials/materials.module';
-import { TasksModule } from './modules/tasks/tasks.module';
+import { ModelsModule } from './modules/models/models.module';
+import { OrdersModule } from './modules/orders/orders.module';
 import { PrintersModule } from './modules/printers/printers.module';
 import { ProductsModule } from './modules/products/products.module';
-import { OrdersModule } from './modules/orders/orders.module';
+import { RecyclingModule } from './modules/recycling/recycling.module';
+import { TasksModule } from './modules/tasks/tasks.module';
+import { UsersModule } from './modules/users/users.module';
+import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
   imports: [
@@ -46,6 +47,8 @@ import { OrdersModule } from './modules/orders/orders.module';
     TasksModule,
     PrintersModule,
     ProductsModule,
+
+    ActivityModule,
   ],
   controllers: [AppController],
   providers: [

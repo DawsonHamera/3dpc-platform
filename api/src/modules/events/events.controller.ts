@@ -23,8 +23,9 @@ export class EventsController {
     @Query('filter') filter?: string,
     @Query('sort') sort?: string,
     @Query('limit') limit?: number,
+    @Query('groupBy') groupBy?: string,
   ) {
-    return this.eventsService.findAll(filter, sort, limit);
+    return this.eventsService.findAll(filter, sort, limit, groupBy);
   }
 
   @Get('current')

@@ -1,20 +1,8 @@
 import { useState } from "react";
 import "./PrinterHeroSection.css";
-
-interface Printer {
-    id: number;
-    name: string;
-    model: string;
-    status: string;
-    location?: string;
-    image_file?: {
-        path: string;
-    };
-    loaded_material?: {
-        name: string;
-        color: string;
-    };
-}
+import { IonButton, IonIcon } from "@ionic/react";
+import { Printer } from "../../../../member-app";
+import { cloudOutline } from "ionicons/icons";
 
 interface PrinterHeroSectionProps {
     printers: Printer[];
@@ -82,7 +70,7 @@ const PrinterHeroSection: React.FC<PrinterHeroSectionProps> = ({
                                 className="printer-list-status"
                                 style={{
                                     backgroundColor: getStatusColor(
-                                        printer.status
+                                        printer.status,
                                     ),
                                 }}
                             />
@@ -131,6 +119,17 @@ const PrinterHeroSection: React.FC<PrinterHeroSectionProps> = ({
                                 ✏️ Edit
                             </button>
                         </div>
+
+                        {activePrinter.control_interface_url && (
+                            <IonButton
+                                // fill="clear"
+                                className="printer-hero-control-button"
+                                href={activePrinter.control_interface_url}
+                            >
+                                <IonIcon slot="start" icon={cloudOutline} />
+                                Open Control Interface
+                            </IonButton>
+                        )}
 
                         {activePrinter.location && (
                             <div className="printer-hero-location">
@@ -192,7 +191,7 @@ const PrinterHeroSection: React.FC<PrinterHeroSectionProps> = ({
                                         onClick={() =>
                                             onStatusUpdate(
                                                 activePrinter.id,
-                                                option.value
+                                                option.value,
                                             )
                                         }
                                     >
@@ -207,7 +206,7 @@ const PrinterHeroSection: React.FC<PrinterHeroSectionProps> = ({
                                 className="printer-hero-stat"
                                 style={{
                                     backgroundColor: getStatusColor(
-                                        activePrinter.status
+                                        activePrinter.status,
                                     ),
                                 }}
                             >
