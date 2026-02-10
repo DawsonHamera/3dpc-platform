@@ -3,7 +3,7 @@ import {
     useCreateMaterialMutation,
     useDeleteMaterialMutation,
     useUpdateMaterialMutation,
-} from "../../../../member-app/features/materials/materialsApi";
+} from "../../../../shared/features";
 import { MaterialType } from "../../../../shared/types";
 import WorkstationFileSelector from "../components/WorkstationFileSelector";
 import "./Modal.css";
@@ -276,8 +276,8 @@ const MaterialModal: React.FC<MaterialModalProps> = ({
                             {isAdding || isUpdating
                                 ? "Saving..."
                                 : material
-                                ? "Update"
-                                : "Add"}{" "}
+                                  ? "Update"
+                                  : "Add"}{" "}
                             Material
                         </button>
                         {material && (

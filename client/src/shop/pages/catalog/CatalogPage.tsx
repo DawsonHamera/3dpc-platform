@@ -1,19 +1,19 @@
-import React, { useState, useRef } from "react";
-import { IonPage, IonContent, useIonRouter, IonToast } from "@ionic/react";
+import { IonContent, IonPage, useIonRouter } from "@ionic/react";
 import { gsap } from "gsap";
-import { ShopHeader, useShop } from "../shared";
-import { ProductModal } from "./product";
-import { CatalogSkeletonLoader } from "./ui";
-import { SearchResults } from "./search";
-import { ProductSections } from "./sections";
+import React, { useRef, useState } from "react";
 import { useLocation } from "react-router";
 import {
     useGetProductsQuery,
     useGetSectionsQuery,
-} from "../../../member-app/features/products/productsApi";
-import "./CatalogPage.css";
+} from "../../../shared/features";
 import { useAuth } from "../../../shared/hooks/useAuth";
+import { ShopHeader, useShop } from "../shared";
+import "./CatalogPage.css";
 import { HeroSection } from "./hero";
+import { ProductModal } from "./product";
+import { SearchResults } from "./search";
+import { ProductSections } from "./sections";
+import { CatalogSkeletonLoader } from "./ui";
 
 const CatalogPage: React.FC = () => {
     const [productFilter, setProductFilter] = useState("");
@@ -60,7 +60,7 @@ const CatalogPage: React.FC = () => {
             ? products.filter((product) =>
                   product.name
                       .toLowerCase()
-                      .includes(productFilter.toLowerCase())
+                      .includes(productFilter.toLowerCase()),
               )
             : [];
 

@@ -1,0 +1,18 @@
+.emptyState {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.emptyState h3 {
+    margin: 0 0 8px 0;
+}
+
+.emptyState p {
+    margin: 0 0 24px 0;
+}
+
+@media (max-width: 768px) {
+    .emptyState {
+        padding: 40px 12px;
+    }
+}

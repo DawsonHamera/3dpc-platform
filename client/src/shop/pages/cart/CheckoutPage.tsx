@@ -1,4 +1,5 @@
 import {
+    IonButton,
     IonContent,
     IonInput,
     IonItem,
@@ -7,17 +8,15 @@ import {
     IonPage,
     IonRadio,
     IonRadioGroup,
-    IonButton,
-    useIonRouter,
     IonToast,
+    useIonRouter,
 } from "@ionic/react";
 import React, { useState } from "react";
-import { ShopHeader, useShop } from "../shared";
 import {
+    useCreateOrderMutation,
     useGetProductsQuery,
-} from "../../../member-app/features/products/productsApi";
-import { useCreateOrderMutation } from "../../../member-app/features/orders/ordersApi";
-import { set } from "date-fns";
+} from "../../../shared/features";
+import { ShopHeader, useShop } from "../shared";
 
 const CheckoutPage: React.FC = () => {
     const router = useIonRouter();
@@ -27,7 +26,7 @@ const CheckoutPage: React.FC = () => {
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState("");
     const [toastColor, setToastColor] = useState<"success" | "danger">(
-        "success"
+        "success",
     );
 
     const [formData, setFormData] = useState({
@@ -59,7 +58,7 @@ const CheckoutPage: React.FC = () => {
         return cart.reduce((total: number, item: any) => {
             const product = products?.find((p) => p.id === item.productId);
             const variant = product?.variants?.find(
-                (v) => v.id === item.variantId
+                (v) => v.id === item.variantId,
             );
             if (!product || !variant) return total;
             return total + variant.price * item.quantity;
@@ -82,7 +81,7 @@ const CheckoutPage: React.FC = () => {
             });
             if (isError) {
                 setToastColor("danger");
-                setToastMessage("Failed to place order. Please try again.");
+                setToastMessage("Failed to place order. Please check that you filled all required fields and try again.");
             }
             // Show success toast
             setToastMessage("Order placed successfully!");
@@ -98,7 +97,9 @@ const CheckoutPage: React.FC = () => {
             console.error("Checkout failed:", error);
 
             // Show error toast
-            setToastMessage("Failed to place order. Please try again.");
+            setToastMessage(
+                "Failed to place order. Please check that you filled all required fields and try again.",
+            );
             setToastColor("danger");
             setShowToast(true);
         }
@@ -136,10 +137,10 @@ const CheckoutPage: React.FC = () => {
                     {cart &&
                         cart.map((item: any) => {
                             const product = products?.find(
-                                (p) => p.id === item.productId
+                                (p) => p.id === item.productId,
                             );
                             const variant = product?.variants?.find(
-                                (v) => v.id === item.variantId
+                                (v) => v.id === item.variantId,
                             );
                             if (!product || !variant) return null;
                             const subtotal = variant.price * item.quantity;
@@ -148,8 +149,7 @@ const CheckoutPage: React.FC = () => {
                                     <IonLabel>
                                         <h3>
                                             {item.quantity}x{" "}
-                                            {variant.type ===
-                                            "DEFAULT"
+                                            {variant.type === "DEFAULT"
                                                 ? ""
                                                 : variant.name}{" "}
                                             {product.name}
@@ -294,7 +294,7 @@ const CheckoutPage: React.FC = () => {
                                 onIonInput={(e) =>
                                     handleInputChange(
                                         "location",
-                                        e.detail.value!
+                                        e.detail.value!,
                                     )
                                 }
                             />

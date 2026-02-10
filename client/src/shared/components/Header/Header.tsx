@@ -14,7 +14,7 @@ import { arrowBack, personCircleOutline } from "ionicons/icons";
 import React, { useEffect, useState } from "react";
 import OneSignal from "react-onesignal";
 import { useDispatch, useSelector } from "react-redux";
-import { selectCurrentUser, logout } from "../../../member-app";
+import { selectCurrentUser, logout } from "../../features/auth/authSlice";
 
 interface HeaderProps {
     title: string;
@@ -27,7 +27,7 @@ const Header: React.FC<HeaderProps> = ({ title, type, onBack, color }) => {
     const dispatch = useDispatch();
     const [isPopoverOpen, setIsPopoverOpen] = useState(false);
     const [popoverEvent, setPopoverEvent] = useState<MouseEvent | undefined>(
-        undefined
+        undefined,
     );
     const [isSubscribed, setIsSubscribed] = useState(false);
     const user = useSelector(selectCurrentUser);
@@ -58,11 +58,17 @@ const Header: React.FC<HeaderProps> = ({ title, type, onBack, color }) => {
                         <IonButton
                             onClick={() => (onBack ? onBack() : history.back())}
                         >
-                            <IonIcon slot="icon-only" color='light' icon={arrowBack} />
+                            <IonIcon
+                                slot="icon-only"
+                                color="light"
+                                icon={arrowBack}
+                            />
                         </IonButton>
                     </IonButtons>
 
-                    <IonTitle style={{ textAlign: "center" }} color='light'>{title}</IonTitle>
+                    <IonTitle style={{ textAlign: "center" }} color="light">
+                        {title}
+                    </IonTitle>
 
                     <IonButtons slot="end">
                         <div style={{ width: "48px" }} />
@@ -100,7 +106,7 @@ const Header: React.FC<HeaderProps> = ({ title, type, onBack, color }) => {
                                 onClick={async () => {
                                     await OneSignal.User.PushSubscription.optOut();
                                     console.log(
-                                        "unsubscribed from push notifications"
+                                        "unsubscribed from push notifications",
                                     );
                                     await OneSignal.logout();
                                     console.log("logged out");
@@ -115,7 +121,7 @@ const Header: React.FC<HeaderProps> = ({ title, type, onBack, color }) => {
                                 onClick={async () => {
                                     await OneSignal.User.PushSubscription.optIn();
                                     console.log(
-                                        "subscribed to push notifications"
+                                        "subscribed to push notifications",
                                     );
                                     await OneSignal.login(String(user?.id));
                                     console.log("subscribed and logged in");

@@ -1,6 +1,6 @@
 import { useState } from "react";
+import { Material, Model } from "../../../../member-app/App";
 import "./InventoryGrid.css";
-import { Material, Model } from "../../../../member-app";
 
 interface InventoryGridProps {
     materials: Material[];
@@ -20,7 +20,7 @@ const InventoryGrid: React.FC<InventoryGridProps> = ({
     onAddModel,
 }) => {
     const [activeTab, setActiveTab] = useState<"materials" | "models">(
-        "materials"
+        "materials",
     );
 
     return (

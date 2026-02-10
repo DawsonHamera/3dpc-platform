@@ -15,12 +15,12 @@ import {
     IonToolbar,
 } from "@ionic/react";
 import { useEffect, useState } from "react";
+import FileSelector from "../../../shared/components/FileSelector/FileSelector";
 import {
     CreateEvent,
     UpdateEvent,
     useUpdateEventMutation,
-} from "../../../member-app/features/events/eventsApi";
-import FileSelector from "../../../shared/components/FileSelector/FileSelector";
+} from "../../../shared/features";
 
 type EventsEditModelProps = {
     activeEvent: any;
@@ -55,7 +55,7 @@ const EventsEditModel: React.FC<EventsEditModelProps> = ({
 
     // Convert datetime object to local time for display in IonDatetime
     const getLocalTimeForDatetime = (
-        datetime: Date | string | null | undefined
+        datetime: Date | string | null | undefined,
     ) => {
         if (!datetime) return "";
         const date = datetime instanceof Date ? datetime : new Date(datetime);
@@ -175,14 +175,14 @@ const EventsEditModel: React.FC<EventsEditModelProps> = ({
                             showAdjacentDays
                             presentation="date-time"
                             value={getLocalTimeForDatetime(
-                                formData?.start_time
+                                formData?.start_time,
                             )}
                             onIonChange={(e) =>
                                 setFormData?.((f: any) => ({
                                     ...f,
                                     start_time: Array.isArray(e.detail.value)
-                                        ? e.detail.value[0] ?? ""
-                                        : e.detail.value ?? "",
+                                        ? (e.detail.value[0] ?? "")
+                                        : (e.detail.value ?? ""),
                                 }))
                             }
                         />
@@ -197,8 +197,8 @@ const EventsEditModel: React.FC<EventsEditModelProps> = ({
                                 setFormData?.((f: any) => ({
                                     ...f,
                                     end_time: Array.isArray(e.detail.value)
-                                        ? e.detail.value[0] ?? ""
-                                        : e.detail.value ?? "",
+                                        ? (e.detail.value[0] ?? "")
+                                        : (e.detail.value ?? ""),
                                 }))
                             }
                         />

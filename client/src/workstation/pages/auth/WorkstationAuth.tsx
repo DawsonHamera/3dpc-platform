@@ -2,11 +2,11 @@ import { IonIcon } from "@ionic/react";
 import { logOut } from "ionicons/icons";
 import { useState } from "react";
 import { useHistory } from "react-router";
-import { useWorkstationLoginMutation } from "../../../member-app/features/auth/authApi";
 import {
     logout,
     selectIsWorkstationAuth,
-} from "../../../member-app/features/auth/authSlice";
+    useWorkstationLoginMutation,
+} from "../../../shared/features";
 import { useAppDispatch, useAppSelector } from "../../../shared/redux/hooks";
 import "./WorkstationAuth.css";
 

@@ -1,8 +1,7 @@
-import { useState } from "react";
-import "./PrinterHeroSection.css";
 import { IonButton, IonIcon } from "@ionic/react";
-import { Printer } from "../../../../member-app";
 import { cloudOutline } from "ionicons/icons";
+import { Printer } from "../../../../member-app/App";
+import "./PrinterHeroSection.css";
 
 interface PrinterHeroSectionProps {
     printers: Printer[];

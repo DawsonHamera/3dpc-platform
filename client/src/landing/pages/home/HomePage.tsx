@@ -9,12 +9,15 @@ import React, { useRef } from "react";
 
 import { chevronDown, leaf } from "ionicons/icons";
 // import EventCarousel from "../app/Events/EventCarousel";
-import { endOfDay } from "date-fns";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { useGetEventsQuery } from "../../../member-app/features/events/eventsApi";
-import { useScrollAnimation, slideInLeft, slideInRight } from "../../../shared/hooks";
-import { isPWAInstalled } from "../../../shared/hooks/useUtils";
+import {
+    slideInLeft,
+    slideInRight,
+    useScrollAnimation,
+} from "../../../shared/hooks";
+import { useGetEventsQuery } from "../../../shared/features";
+import styles from "./HomePage.module.css";
 
 const HomePage: React.FC = () => {
     const contentRef = useRef<HTMLIonContentElement>(null);
@@ -28,7 +31,7 @@ const HomePage: React.FC = () => {
         .sort(
             (a, b) =>
                 new Date(a.start_time).getTime() -
-                new Date(b.start_time).getTime()
+                new Date(b.start_time).getTime(),
         );
 
     const router = useIonRouter();
@@ -62,20 +65,20 @@ const HomePage: React.FC = () => {
                     onUpdate: () => {
                         if (recycledStatsRef.current) {
                             recycledStatsRef.current.textContent = Math.floor(
-                                obj.val
+                                obj.val,
                             ).toLocaleString();
                         }
                     },
                 });
             });
         },
-        { dependencies: [] }
+        { dependencies: [] },
     );
 
     const handleScrollToContent = () => {
         containerRef.current?.scrollIntoView({ behavior: "smooth" });
     };
-    
+
     return (
         <IonPage>
             <IonContent ref={contentRef}>
@@ -126,39 +129,16 @@ const HomePage: React.FC = () => {
 
                     <IonButton
                         color="light"
-                        style={{
-                            marginTop: "20px",
-                            fontWeight: "bold",
-                            width: "300px",
-                            margin: "4px",
-                        }}
+                        className={styles.heroButton}
                         onClick={() => router.push("/dashboard")}
                     >
                         Members
                     </IonButton>
                     <IonButton
-                        color="light"
-                        fill="outline"
-                        style={{
-                            marginTop: "20px",
-                            fontWeight: "bold",
-                            width: "300px",
-                            margin: "4px",
-                        }}
-                        onClick={() => router.push("/workstation")}
-                    >
-                        Workstation
-                    </IonButton>
-                    <IonButton
                         disabled
                         color="light"
                         fill="outline"
-                        style={{
-                            marginTop: "20px",
-                            fontWeight: "bold",
-                            width: "300px",
-                            margin: "4px",
-                        }}
+                        className={styles.heroButton}
                         onClick={() => router.push("/shop")}
                     >
                         Teachers
@@ -166,12 +146,7 @@ const HomePage: React.FC = () => {
                     <IonButton
                         color="light"
                         fill="outline"
-                        style={{
-                            marginTop: "20px",
-                            fontWeight: "bold",
-                            width: "300px",
-                            margin: "4px",
-                        }}
+                        className={styles.heroButton}
                         onClick={() => router.push("/shop")}
                     >
                         Customers
@@ -179,11 +154,7 @@ const HomePage: React.FC = () => {
                     <IonButton
                         fill="clear"
                         color="light"
-                        style={{
-                            marginTop: "20px",
-                            fontWeight: "bold",
-                            margin: "4px",
-                        }}
+                        className={styles.heroButton}
                         onClick={handleScrollToContent}
                     >
                         Learn more
@@ -231,8 +202,7 @@ const HomePage: React.FC = () => {
                     <div
                         className="fade-in"
                         style={{
-                            background:
-                                "var(--ion-color-primary)",
+                            background: "var(--ion-color-primary)",
                             boxShadow: "0 8px 24px rgba(58, 128, 242, 0.25)",
                             padding: "40px 24px",
                             borderRadius: "16px",

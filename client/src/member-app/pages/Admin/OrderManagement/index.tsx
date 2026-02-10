@@ -1,5 +1,7 @@
 import {
+    IonButton,
     IonContent,
+    IonIcon,
     IonPage,
     IonRefresher,
     IonRefresherContent,
@@ -7,52 +9,49 @@ import {
     IonText,
     RefresherEventDetail,
 } from "@ionic/react";
+import { storefrontOutline } from "ionicons/icons";
 import React, { useMemo, useState } from "react";
-import { Order, useGetOrdersQuery } from "../../../../member-app/features/orders/ordersApi";
+import { useHistory } from "react-router-dom";
 import Header from "../../../../shared/components/Header/Header";
-import CreateTaskModal from "./CreateTaskModal";
-import OrderCard from "./OrderCard";
-import OrderDetailsModal from "./OrderDetailsModal";
-import OrderFilters from "./OrderFilters";
+import { Order, useGetOrdersQuery } from "../../../../shared/features";
+import { OrderCard, OrderFilters, OrderStatisticsCard } from "./components";
+import { OrderDetailsModal } from "./modals";
 import "./OrderManagementPage.css";
-import OrderStatisticsCard from "./OrderStatisticsCard";
-import { calculateStatistics, filterOrders, sortOrders } from "./utils";
+import { calculateStatistics, filterOrders } from "./utils";
 
 const OrderManagementPage: React.FC = () => {
+    const history = useHistory();
+
+    // Filter and sort states
+    const [searchQuery, setSearchQuery] = useState("");
+    const [statusFilter, setStatusFilter] = useState<string | undefined>(
+        undefined,
+    );
+    const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
+
+    // Modal states
+    const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
+    const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+
     const {
         data: orders = [],
         isLoading,
         error,
         refetch,
-    } = useGetOrdersQuery(undefined);
-
-    // Filter and sort states
-    const [searchQuery, setSearchQuery] = useState("");
-    const [statusFilter, setStatusFilter] = useState("all");
-    const [sortBy, setSortBy] = useState<
-        "created_at" | "total_price" | "status"
-    >("created_at");
-    const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
-
-    // Modal states
-    const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
-    const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
-    const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+    } = useGetOrdersQuery({
+        status: statusFilter,
+        order: sortOrder,
+    });
 
     // Memoized computed values
     const statistics = useMemo(() => calculateStatistics(orders), [orders]);
 
-    const filteredAndSortedOrders = useMemo(() => {
-        const filtered = filterOrders(orders, searchQuery, statusFilter);
-        return sortOrders(filtered, sortBy, sortOrder);
-    }, [orders, searchQuery, statusFilter, sortBy, sortOrder]);
+    const filteredOrders = useMemo(() => {
+        // Backend handles sorting by created_at, frontend only filters by search
+        return filterOrders(orders, searchQuery);
+    }, [orders, searchQuery]);
 
     // Handlers
-    const handleCreateTask = (order: Order) => {
-        setSelectedOrder(order);
-        setIsTaskModalOpen(true);
-    };
-
     const handleViewDetails = (order: Order) => {
         setSelectedOrder(order);
         setIsDetailsModalOpen(true);
@@ -63,19 +62,18 @@ const OrderManagementPage: React.FC = () => {
         event.detail.complete();
     };
 
-    const handleCloseTaskModal = () => {
-        setIsTaskModalOpen(false);
-        setSelectedOrder(null);
-    };
-
     const handleCloseDetailsModal = () => {
         setIsDetailsModalOpen(false);
         setSelectedOrder(null);
     };
 
+    const handleGoToShop = () => {
+        history.push("/shop");
+    };
+
     return (
         <IonPage>
-            <Header title="Order Management" type='back' />
+            <Header title="Order Management" type="back" />
             <IonContent className="order-management-content">
                 <IonRefresher slot="fixed" onIonRefresh={handleRefresh}>
                     <IonRefresherContent />
@@ -83,10 +81,24 @@ const OrderManagementPage: React.FC = () => {
 
                 <div className="page-container">
                     <div className="page-header">
-                        <h1 className="page-title">Order Management</h1>
-                        <p className="page-subtitle">
-                            View, manage, and track all customer orders
-                        </p>
+                        <div className="page-header-content">
+                            <div className="page-header-text">
+                                <h1 className="page-title">Order Management</h1>
+                                <p className="page-subtitle">
+                                    View, manage, and track all customer orders
+                                </p>
+                            </div>
+                            <IonButton
+                                onClick={handleGoToShop}
+                                className="shop-link-button"
+                            >
+                                <IonIcon
+                                    slot="start"
+                                    icon={storefrontOutline}
+                                />
+                                Go to Shop
+                            </IonButton>
+                        </div>
                     </div>
 
                     {error && (
@@ -114,8 +126,6 @@ const OrderManagementPage: React.FC = () => {
                                 onSearchChange={setSearchQuery}
                                 statusFilter={statusFilter}
                                 onStatusFilterChange={setStatusFilter}
-                                sortBy={sortBy}
-                                onSortByChange={setSortBy}
                                 sortOrder={sortOrder}
                                 onSortOrderChange={setSortOrder}
                             />
@@ -123,12 +133,11 @@ const OrderManagementPage: React.FC = () => {
                             <div className="orders-section">
                                 <div className="section-header">
                                     <h2 className="section-title">
-                                        Orders ({filteredAndSortedOrders.length}
-                                        )
+                                        Orders ({filteredOrders.length})
                                     </h2>
                                 </div>
 
-                                {filteredAndSortedOrders.length === 0 ? (
+                                {filteredOrders.length === 0 ? (
                                     <div className="empty-state">
                                         <IonText color="medium">
                                             <p>
@@ -139,32 +148,21 @@ const OrderManagementPage: React.FC = () => {
                                     </div>
                                 ) : (
                                     <div className="orders-grid">
-                                        {filteredAndSortedOrders.map(
-                                            (order) => (
-                                                <OrderCard
-                                                    key={order.id}
-                                                    order={order}
-                                                    onCreateTask={
-                                                        handleCreateTask
-                                                    }
-                                                    onViewDetails={
-                                                        handleViewDetails
-                                                    }
-                                                />
-                                            )
-                                        )}
+                                        {filteredOrders.map((order) => (
+                                            <OrderCard
+                                                key={order.id}
+                                                order={order}
+                                                onViewDetails={
+                                                    handleViewDetails
+                                                }
+                                            />
+                                        ))}
                                     </div>
                                 )}
                             </div>
                         </>
                     )}
                 </div>
-
-                <CreateTaskModal
-                    isOpen={isTaskModalOpen}
-                    onClose={handleCloseTaskModal}
-                    order={selectedOrder}
-                />
 
                 <OrderDetailsModal
                     isOpen={isDetailsModalOpen}

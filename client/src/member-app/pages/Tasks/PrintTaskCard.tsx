@@ -1,7 +1,5 @@
-import { useState } from "react";
 import {
     IonAccordion,
-    IonBadge,
     IonButton,
     IonChip,
     IonIcon,
@@ -10,24 +8,25 @@ import {
     IonSpinner,
 } from "@ionic/react";
 import {
+    addCircleOutline,
     checkmarkCircle,
     construct,
     cube,
     lockClosed,
     print,
-    warning,
     timeOutline,
-    addCircleOutline,
+    warning,
 } from "ionicons/icons";
-import { useGetPrinterByIdQuery } from "../../../member-app/features/printers/printersApi";
-import { useGetMaterialByIdQuery } from "../../../member-app/features/materials/materialsApi";
-import { useGetModelByIdQuery } from "../../../member-app/features/models/modelsApi";
+import { useState } from "react";
+import Avatar from "../../../shared/components/Avatar/Avatar";
 import {
     useClaimTaskMutation,
+    useGetMaterialByIdQuery,
+    useGetModelByIdQuery,
+    useGetPrinterByIdQuery,
     useReleaseTaskMutation,
     useUpdateTaskStatusMutation,
-} from "../../../member-app/features/tasks/tasksApi";
-import Avatar from "../../../shared/components/Avatar/Avatar";
+} from "../../../shared/features";
 import ErrorReportModal from "./ErrorReportModal";
 import "./PrintTaskCard.css";
 
@@ -202,10 +201,10 @@ const PrintTaskCard: React.FC<{
                                     {
                                         day: "numeric",
                                         month: "long",
-                                    }
+                                    },
                                 )}{" "}
                                 {getCustomTimeLabel(
-                                    new Date(task.scheduled_date)
+                                    new Date(task.scheduled_date),
                                 )}
                             </p>
                         </div>
@@ -326,7 +325,11 @@ const PrintTaskCard: React.FC<{
                             <IonIcon icon={checkmarkCircle} slot="start" />
                             Complete
                         </IonButton>
-                        <IonButton color="danger" disabled onClick={handleError}>
+                        <IonButton
+                            color="danger"
+                            disabled
+                            onClick={handleError}
+                        >
                             <IonIcon icon={warning} slot="start" />
                             Report Issue
                         </IonButton>

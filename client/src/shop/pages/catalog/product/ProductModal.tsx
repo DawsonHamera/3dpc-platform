@@ -4,17 +4,15 @@ import {
     IonHeader,
     IonIcon,
     IonModal,
-    IonPage,
     IonTitle,
-    IonToast,
     IonToolbar,
     useIonRouter,
 } from "@ionic/react";
 import { cartOutline, close } from "ionicons/icons";
 import { useEffect, useMemo, useState } from "react";
-import { Product } from "../../../../member-app";
 import { Incrementer } from "../../cart";
 import { useShop } from "../../shared";
+import { Product } from "../../../../shared/features";
 
 const ProductModal: React.FC<{
     isOpen: boolean;
@@ -29,7 +27,7 @@ const ProductModal: React.FC<{
     }
 
     const [selectedVariantId, setSelectedVariantId] = useState<number | null>(
-        variantId ? parseInt(variantId) : null
+        variantId ? parseInt(variantId) : null,
     );
     const [quantity, setQuantity] = useState(1);
 
@@ -41,9 +39,7 @@ const ProductModal: React.FC<{
             !selectedVariantId
         ) {
             setSelectedVariantId(
-                product.variants.find(
-                    (v) => v.type === "DEFAULT"
-                )?.id ?? null
+                product.variants.find((v) => v.type === "DEFAULT")?.id ?? null,
             );
         }
     }, [product]);
@@ -52,7 +48,7 @@ const ProductModal: React.FC<{
 
     const selectedVariant = useMemo(() => {
         return product?.variants?.find(
-            (variant) => variant.id === selectedVariantId
+            (variant: any) => variant.id === selectedVariantId,
         );
     }, [product, selectedVariantId]);
 
@@ -143,7 +139,8 @@ const ProductModal: React.FC<{
                                                         ? "2px solid var(--ion-color-primary)"
                                                         : "1px solid #ccc",
                                                 borderRadius: "50%",
-                                                backgroundColor: variant.color || "#f0f0f0",
+                                                backgroundColor:
+                                                    variant.color || "#f0f0f0",
                                                 cursor: "pointer",
                                             }}
                                         ></button>

@@ -1,9 +1,15 @@
-import React, { useRef, useState, Suspense } from "react";
+import { IonButton, IonImg, IonProgressBar } from "@ionic/react";
+import {
+    Billboard,
+    Environment,
+    Html,
+    SpotLight,
+    useGLTF,
+} from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { OrbitControls, Html, useGLTF, Environment, SpotLight, Billboard } from "@react-three/drei";
+import React, { Suspense, useRef, useState } from "react";
 import * as THREE from "three";
-import { Printer } from "../../../../member-app/features/crud/printersApi";
-import { IonButton, IonImg, IonLoading, IonProgressBar } from "@ionic/react";
+import { Printer } from "../../../../shared/features";
 
 type Props = {
     printers: Printer[];
@@ -22,69 +28,85 @@ type POI = {
 
 const printerPOIs: POI[] = [
     {
-        name: 'Extruder',
+        name: "Extruder",
         position: [-0.28, 0.7, -0.09],
         radius: 0.007,
-        description: 'The extruder is a critical component responsible for feeding filament into the hotend. It uses a motor-driven gear system to grip and push the filament through a tube and into the nozzle, ensuring consistent flow and pressure. Proper extruder tension and maintenance are essential for reliable prints, as any slippage or clogging can lead to under-extrusion or failed prints.',
+        description:
+            "The extruder is a critical component responsible for feeding filament into the hotend. It uses a motor-driven gear system to grip and push the filament through a tube and into the nozzle, ensuring consistent flow and pressure. Proper extruder tension and maintenance are essential for reliable prints, as any slippage or clogging can lead to under-extrusion or failed prints.",
         cameraView: {
             position: [-0.15, 1.1, -0.03],
             zoom: 1.1,
         },
     },
     {
-        name: 'Nozzle',
+        name: "Nozzle",
         position: [0.017, 0.43, 0.19],
         radius: 0.003,
-        description: 'The nozzle is the tip of the hotend where melted filament is precisely deposited onto the print bed. It is made of brass or hardened steel and comes in various diameters, affecting print resolution and speed. The nozzle must be kept clean and free of obstructions, as blockages can disrupt extrusion and compromise print quality.',
+        description:
+            "The nozzle is the tip of the hotend where melted filament is precisely deposited onto the print bed. It is made of brass or hardened steel and comes in various diameters, affecting print resolution and speed. The nozzle must be kept clean and free of obstructions, as blockages can disrupt extrusion and compromise print quality.",
         cameraView: {
             position: [0, 0.3, 0.4],
             zoom: 1.2,
         },
     },
     {
-        name: 'Bed',
+        name: "Bed",
         position: [0, 0.3, 0.3],
         radius: 0.02,
-        description: 'The heated bed provides a stable, warm surface for the first layers of a print, helping filament adhere and preventing warping. It is often covered with glass, PEI, or other materials to improve adhesion. Proper bed leveling and temperature control are crucial for successful prints, as uneven or cold beds can cause prints to detach or deform.',
+        description:
+            "The heated bed provides a stable, warm surface for the first layers of a print, helping filament adhere and preventing warping. It is often covered with glass, PEI, or other materials to improve adhesion. Proper bed leveling and temperature control are crucial for successful prints, as uneven or cold beds can cause prints to detach or deform.",
         cameraView: {
             position: [0.7, 1, 1.4],
             zoom: 1.1,
         },
     },
     {
-        name: 'Control Panel',
+        name: "Control Panel",
         position: [0.49, 0.21, 0.28],
         radius: 0.02,
-        description: 'The control panel is the user interface for the printer, allowing you to start, pause, and monitor prints, adjust settings, and view status information. It typically features a display and a rotary knob or touchscreen.',
+        description:
+            "The control panel is the user interface for the printer, allowing you to start, pause, and monitor prints, adjust settings, and view status information. It typically features a display and a rotary knob or touchscreen.",
         cameraView: {
             position: [0.5, 1.2, 1.2],
             zoom: 1.1,
         },
     },
     {
-        name: 'Frame',
+        name: "Frame",
         position: [0.4, 1, 0.1],
         radius: 0.02,
-        description: 'The frame provides the structural support for the printer, ensuring stability and precision during printing. A rigid frame minimizes vibrations and movements that can affect print quality. Common materials for frames include aluminum and steel extrusions.',
+        description:
+            "The frame provides the structural support for the printer, ensuring stability and precision during printing. A rigid frame minimizes vibrations and movements that can affect print quality. Common materials for frames include aluminum and steel extrusions.",
         cameraView: {
             position: [0.4, 1.5, 1],
             zoom: 1,
         },
     },
     {
-        name: 'Power Supply',
+        name: "Power Supply",
         position: [0.32, 0.55, -0.15],
         radius: 0.02,
-        description: 'The power supply provides the necessary electrical power for the printer’s components, including the hotend, heated bed, and motors. It is crucial for stable and reliable operation, and must be properly rated for the printer’s power requirements.',
+        description:
+            "The power supply provides the necessary electrical power for the printer’s components, including the hotend, heated bed, and motors. It is crucial for stable and reliable operation, and must be properly rated for the printer’s power requirements.",
         cameraView: {
             position: [-1, 1, -0.8],
             zoom: 1,
         },
-    }
+    },
 ];
 
 // Billboarded dot
-function POIParticle({ poi, active, hidden, onClick }: { poi: POI; active: boolean; hidden: boolean; onClick: () => void }) {
+function POIParticle({
+    poi,
+    active,
+    hidden,
+    onClick,
+}: {
+    poi: POI;
+    active: boolean;
+    hidden: boolean;
+    onClick: () => void;
+}) {
     if (hidden) return null;
     return (
         <Billboard position={poi.position}>
@@ -93,94 +115,110 @@ function POIParticle({ poi, active, hidden, onClick }: { poi: POI; active: boole
                 <Html
                     position={[0.01, 0, 0]}
                     style={{
-                        background: 'rgba(30,30,40,0.85)',
-                        color: 'white',
-                        padding: '2px 8px',
+                        background: "rgba(30,30,40,0.85)",
+                        color: "white",
+                        padding: "2px 8px",
                         borderRadius: 6,
                         fontSize: 13,
-                        fontFamily: 'Outfit, sans-serif',
-                        whiteSpace: 'nowrap',
-                        boxShadow: '0 2px 8px #0006',
-                        border: active ? '1px solid orange' : '1px solid #00eaff',
+                        fontFamily: "Outfit, sans-serif",
+                        whiteSpace: "nowrap",
+                        boxShadow: "0 2px 8px #0006",
+                        border: active
+                            ? "1px solid orange"
+                            : "1px solid #00eaff",
                         marginLeft: 6,
-                        pointerEvents: 'none',
-                        userSelect: 'none',
-                        transform: 'translateY(-50%)',
+                        pointerEvents: "none",
+                        userSelect: "none",
+                        transform: "translateY(-50%)",
                     }}
                 >
                     {poi.name}
                 </Html>
-                <meshBasicMaterial
-                    color={active ? 'orange' : '#00eaff'}
-                />
+                <meshBasicMaterial color={active ? "orange" : "#00eaff"} />
             </mesh>
         </Billboard>
     );
 }
 
 function POIText({ poi, onClose }: { poi: POI | null; onClose: () => void }) {
-    if (!poi) return (
-        <div
-            style={{
-            position: 'absolute',
-            bottom: 30,
-            left: '50%',
-            transform: 'translateX(-50%)',
-            background: 'rgba(30,30,40,0.97)',
-            color: 'white',
-            padding: '14px 22px',
-            borderRadius: 16,
-            boxShadow: '0 4px 24px #000a',
-            fontFamily: 'Outfit, sans-serif',
-            fontSize: 17,
-            zIndex: 30,
-            border: '2px solid var(--ion-color-primary)',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 8,
-            alignItems: 'center',
-            maxWidth: 340,
-            width: 'calc(100vw - 60px)',
-            }}
-        >
-            <strong style={{ color: 'var(--ion-color-primary)', fontWeight: 700, marginBottom: 6 }}>
-            Tip
-            </strong>
-            <span>
-            Click any of the glowing dots on the printer to learn more about its parts.
-            </span>
-        </div>
-    )
+    if (!poi)
+        return (
+            <div
+                style={{
+                    position: "absolute",
+                    bottom: 30,
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    background: "rgba(30,30,40,0.97)",
+                    color: "white",
+                    padding: "14px 22px",
+                    borderRadius: 16,
+                    boxShadow: "0 4px 24px #000a",
+                    fontFamily: "Outfit, sans-serif",
+                    fontSize: 17,
+                    zIndex: 30,
+                    border: "2px solid var(--ion-color-primary)",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 8,
+                    alignItems: "center",
+                    maxWidth: 340,
+                    width: "calc(100vw - 60px)",
+                }}
+            >
+                <strong
+                    style={{
+                        color: "var(--ion-color-primary)",
+                        fontWeight: 700,
+                        marginBottom: 6,
+                    }}
+                >
+                    Tip
+                </strong>
+                <span>
+                    Click any of the glowing dots on the printer to learn more
+                    about its parts.
+                </span>
+            </div>
+        );
     return (
         <div
             style={{
-                position: 'absolute',
+                position: "absolute",
                 bottom: 0,
-                background: 'rgba(30,30,40,0.97)',
-                color: 'white',
-                padding: '14px 22px',
+                background: "rgba(30,30,40,0.97)",
+                color: "white",
+                padding: "14px 22px",
                 margin: 30,
                 borderRadius: 16,
-                boxShadow: '0 4px 24px #000a',
-                fontFamily: 'Outfit, sans-serif',
+                boxShadow: "0 4px 24px #000a",
+                fontFamily: "Outfit, sans-serif",
                 fontSize: 17,
                 zIndex: 30,
-                border: '2px solid orange',
-                display: 'flex',
-                flexDirection: 'column',
+                border: "2px solid orange",
+                display: "flex",
+                flexDirection: "column",
                 gap: 8,
             }}
         >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <strong style={{ color: 'orange', fontWeight: 700 }}>{poi.name}</strong>
+            <div
+                style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                }}
+            >
+                <strong style={{ color: "orange", fontWeight: 700 }}>
+                    {poi.name}
+                </strong>
                 <button
                     onClick={onClose}
                     style={{
-                        background: 'none',
-                        border: 'none',
-                        color: 'white',
+                        background: "none",
+                        border: "none",
+                        color: "white",
                         fontSize: 18,
-                        cursor: 'pointer',
+                        cursor: "pointer",
                         marginLeft: 8,
                         fontWeight: 700,
                     }}
@@ -194,7 +232,17 @@ function POIText({ poi, onClose }: { poi: POI | null; onClose: () => void }) {
     );
 }
 
-function PrinterModel({ url, activePOI, setActivePOI, onLoad }: { url: string; activePOI: string | null; setActivePOI: (name: string | null) => void; onLoad: () => void }) {
+function PrinterModel({
+    url,
+    activePOI,
+    setActivePOI,
+    onLoad,
+}: {
+    url: string;
+    activePOI: string | null;
+    setActivePOI: (name: string | null) => void;
+    onLoad: () => void;
+}) {
     const group = useRef<any>();
     const { scene } = useGLTF(url);
 
@@ -206,10 +254,7 @@ function PrinterModel({ url, activePOI, setActivePOI, onLoad }: { url: string; a
 
     return (
         <group ref={group}>
-            <primitive
-                object={scene}
-                onPointerOver={undefined}
-            />
+            <primitive object={scene} onPointerOver={undefined} />
             {printerPOIs.map((poi) => (
                 <POIParticle
                     key={poi.name}
@@ -239,7 +284,7 @@ function AnimatedCamera({ targetPOI }: { targetPOI: POI | null }) {
             const targetPos = targetPOI.cameraView.position;
             camera.position.lerp(
                 new THREE.Vector3(targetPos[0], targetPos[1], targetPos[2]),
-                0.03
+                0.03,
             );
             // Animate camera lookAt
             // const lookAt = targetPOI.cameraView.target;
@@ -268,40 +313,53 @@ const PrinterHero: React.FC<Props> = ({ printers }) => {
     const [modelLoaded, setModelLoaded] = useState(false);
     const [showCanvas, setShowCanvas] = useState(false);
 
-    const printerModelUrl = '/models/printer.glb';
-    const activePOIObj = printerPOIs.find(p => p.name === activePOI) || null;
+    const printerModelUrl = "/models/printer.glb";
+    const activePOIObj = printerPOIs.find((p) => p.name === activePOI) || null;
     const [cameraObj, setCameraObj] = useState<any>(null);
 
     return (
         <div
             style={{
-                width: '100%',
-                height: '100%',
-                background: 'linear-gradient(135deg, #1a237e 0%, #283593 50%, #3949ab 100%)',
-                boxShadow: '0 8px 32px #0008',
-                position: 'relative',
-                overflow: 'hidden',
+                width: "100%",
+                height: "100%",
+                background:
+                    "linear-gradient(135deg, #1a237e 0%, #283593 50%, #3949ab 100%)",
+                boxShadow: "0 8px 32px #0008",
+                position: "relative",
+                overflow: "hidden",
             }}
         >
             <IonImg
                 src="/images/printerPlaceholder.png"
                 style={{
-                    position: 'absolute',
+                    position: "absolute",
                     top: -70,
                     left: 0,
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'contain',
-                    background: 'transparent',
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "contain",
+                    background: "transparent",
                     zIndex: 20,
-                    pointerEvents: 'none',
-                    transition: 'opacity 0.3s',
+                    pointerEvents: "none",
+                    transition: "opacity 0.3s",
                     opacity: showCanvas && modelLoaded ? 0 : 1,
                 }}
             />
 
             {!modelLoaded && (
-                <div style={{ position: 'absolute', width: '100%', left: 0, bottom: 30, zIndex: 30, display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+                <div
+                    style={{
+                        position: "absolute",
+                        width: "100%",
+                        left: 0,
+                        bottom: 30,
+                        zIndex: 30,
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        flexDirection: "column",
+                    }}
+                >
                     <IonButton
                         onClick={() => {
                             setShowCanvas(true);
@@ -310,7 +368,7 @@ const PrinterHero: React.FC<Props> = ({ printers }) => {
                         expand="block"
                         shape="round"
                         style={{
-                            width: '90%',
+                            width: "90%",
                         }}
                         disabled={showCanvas}
                     >
@@ -324,28 +382,34 @@ const PrinterHero: React.FC<Props> = ({ printers }) => {
                     </IonButton>
                     <div
                         style={{
-                            background: 'rgba(30,30,40,0.97)',
-                            margin: '8px 16px 16px 16px',
-                            color: 'white',
-                            padding: '18px 28px',
+                            background: "rgba(30,30,40,0.97)",
+                            margin: "8px 16px 16px 16px",
+                            color: "white",
+                            padding: "18px 28px",
                             borderRadius: 32,
-                            boxShadow: '0 4px 24px #000a',
-                            fontFamily: 'Outfit, sans-serif',
+                            boxShadow: "0 4px 24px #000a",
+                            fontFamily: "Outfit, sans-serif",
                             fontSize: 18,
-                            border: '2px solid var(--ion-color-primary)',
-                            textAlign: 'center',
+                            border: "2px solid var(--ion-color-primary)",
+                            textAlign: "center",
                         }}
                     >
-                        <strong style={{ color: 'var(--ion-color-primary)', fontWeight: 700, fontSize: 20 }}>
+                        <strong
+                            style={{
+                                color: "var(--ion-color-primary)",
+                                fontWeight: 700,
+                                fontSize: 20,
+                            }}
+                        >
                             New Immersive 3D Experience!
                         </strong>
                         <div style={{ marginTop: 10 }}>
-                            Interact with the Ender-3 printer in an interactive 3D experience. Learn more about each part and its function.
+                            Interact with the Ender-3 printer in an interactive
+                            3D experience. Learn more about each part and its
+                            function.
                         </div>
                     </div>
-
                 </div>
-
             )}
 
             {showCanvas && (
@@ -354,8 +418,8 @@ const PrinterHero: React.FC<Props> = ({ printers }) => {
                     {!modelLoaded && <IonProgressBar type="indeterminate" />}
                     <Canvas
                         style={{
-                            position: 'absolute',
-                            height: 'calc(100% + 70px)',
+                            position: "absolute",
+                            height: "calc(100% + 70px)",
                             top: -70,
                             left: 0,
                             right: 0,
@@ -392,13 +456,15 @@ const PrinterHero: React.FC<Props> = ({ printers }) => {
                     </Canvas>
                     {/* Overlay POI text and line */}
                     {cameraObj && modelLoaded && (
-                        <div style={{
-                            position: 'absolute',
-                            bottom: 70,
-                            left: 0,
-                            right: 0,
-                            zIndex: 20,
-                        }}>
+                        <div
+                            style={{
+                                position: "absolute",
+                                bottom: 70,
+                                left: 0,
+                                right: 0,
+                                zIndex: 20,
+                            }}
+                        >
                             <POIText
                                 poi={activePOIObj}
                                 onClose={() => setActivePOI(null)}
@@ -407,21 +473,23 @@ const PrinterHero: React.FC<Props> = ({ printers }) => {
                     )}
                 </>
             )}
-            <h1 style={{
-                position: 'absolute',
-                top: 24,
-                left: 0,
-                right: 0,
-                textAlign: 'center',
-                color: 'white',
-                fontSize: '2.2rem',
-                fontWeight: 800,
-                textShadow: '0 4px 16px #000a',
-                letterSpacing: '0.04em',
-                fontFamily: "'Outfit', sans-serif",
-                zIndex: 10,
-                pointerEvents: 'none'
-            }}>
+            <h1
+                style={{
+                    position: "absolute",
+                    top: 24,
+                    left: 0,
+                    right: 0,
+                    textAlign: "center",
+                    color: "white",
+                    fontSize: "2.2rem",
+                    fontWeight: 800,
+                    textShadow: "0 4px 16px #000a",
+                    letterSpacing: "0.04em",
+                    fontFamily: "'Outfit', sans-serif",
+                    zIndex: 10,
+                    pointerEvents: "none",
+                }}
+            >
                 3D Printing Club
             </h1>
         </div>

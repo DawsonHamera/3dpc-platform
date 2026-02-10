@@ -1,39 +1,36 @@
 import {
-    IonContent,
-    IonPage,
+    IonBadge,
+    IonButton,
     IonCard,
     IonCardContent,
     IonCardHeader,
     IonCardTitle,
-    IonItem,
-    IonLabel,
-    IonBadge,
-    IonGrid,
-    IonRow,
     IonCol,
-    IonSkeletonText,
-    IonImg,
-    IonText,
+    IonContent,
+    IonGrid,
     IonIcon,
+    IonImg,
+    IonItem,
     IonNote,
-    IonButton,
+    IonPage,
+    IonRow,
+    IonSkeletonText,
+    IonText,
     IonToast,
     useIonRouter,
 } from "@ionic/react";
 import {
     checkmarkCircle,
-    timeOutline,
-    constructOutline,
     closeCircle,
+    constructOutline,
     copyOutline,
-    storefrontOutline,
-    returnUpBack,
     returnDownBack,
+    timeOutline,
 } from "ionicons/icons";
-import { ShopHeader } from "../shared";
-import { useParams } from "react-router";
-import { useGetOrderByKeyQuery } from "../../../member-app/features/orders/ordersApi";
 import { useState } from "react";
+import { useParams } from "react-router";
+import { useGetOrderByKeyQuery } from "../../../shared/features";
+import { ShopHeader } from "../shared";
 
 const OrderStatusPage: React.FC = () => {
     const { orderKey } = useParams<{ orderKey: string }>();
@@ -61,7 +58,7 @@ const OrderStatusPage: React.FC = () => {
             },
             (err) => {
                 setToast({ message: "Failed to copy link.", color: "danger" });
-            }
+            },
         );
     };
 
@@ -210,12 +207,12 @@ const OrderStatusPage: React.FC = () => {
                                             <div style={{ marginTop: "4px" }}>
                                                 <IonBadge
                                                     color={getStatusColor(
-                                                        order.status
+                                                        order.status,
                                                     )}
                                                 >
                                                     <IonIcon
                                                         icon={getStatusIcon(
-                                                            order.status
+                                                            order.status,
                                                         )}
                                                         style={{
                                                             marginRight: "4px",
@@ -260,7 +257,7 @@ const OrderStatusPage: React.FC = () => {
                                             >
                                                 $
                                                 {parseFloat(
-                                                    order.total_price
+                                                    order.total_price,
                                                 ).toFixed(2)}
                                             </h2>
                                         </IonCol>
@@ -381,7 +378,7 @@ const OrderStatusPage: React.FC = () => {
                                                                 {item.quantity}{" "}
                                                                 × $
                                                                 {item.product_variant.price.toFixed(
-                                                                    2
+                                                                    2,
                                                                 )}
                                                             </small>
                                                         </IonText>
@@ -400,7 +397,7 @@ const OrderStatusPage: React.FC = () => {
                                                     {item.status && (
                                                         <IonBadge
                                                             color={getStatusColor(
-                                                                item.status
+                                                                item.status,
                                                             )}
                                                             style={{
                                                                 fontSize:
@@ -409,7 +406,7 @@ const OrderStatusPage: React.FC = () => {
                                                         >
                                                             <IonIcon
                                                                 icon={getStatusIcon(
-                                                                    item.status
+                                                                    item.status,
                                                                 )}
                                                                 style={{
                                                                     marginRight:
@@ -424,7 +421,7 @@ const OrderStatusPage: React.FC = () => {
                                                 </div>
                                             </div>
                                         </IonItem>
-                                    )
+                                    ),
                                 )}
                             </IonCardContent>
                         </IonCard>

@@ -3,8 +3,7 @@ import { add } from "ionicons/icons";
 import React, { useMemo, useRef, useState } from "react";
 import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/react";
-
-import { useAddFileMutation, useGetFilesQuery, File } from "../../../member-app";
+import { File, useAddFileMutation, useGetFilesQuery } from "../../features";
 import ModelFilePreview from "../ModelFilePreview/ModelFilePreview";
 
 const IMAGE_SIZE = 64;
@@ -28,10 +27,10 @@ const FileSelector: React.FC<Props> = ({ filter = () => true, onChange }) => {
                       .sort(
                           (a, b) =>
                               new Date(b.created_at || "").getTime() -
-                              new Date(a.created_at || "").getTime()
+                              new Date(a.created_at || "").getTime(),
                       )
                 : [],
-        [files, filter]
+        [files, filter],
     );
 
     const handleChange = (file: File) => {

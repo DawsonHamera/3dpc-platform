@@ -1,37 +1,37 @@
+import {
+    IonContent,
+    IonIcon,
+    IonLabel,
+    IonLoading,
+    IonPage,
+    useIonRouter,
+} from "@ionic/react";
+import { chevronDownOutline, warningOutline } from "ionicons/icons";
 import React, {
     useEffect,
+    useLayoutEffect,
     useMemo,
     useRef,
     useState,
-    useLayoutEffect,
 } from "react";
-import {
-    IonPage,
-    IonContent,
-    IonLabel,
-    useIonRouter,
-    IonIcon,
-    IonLoading,
-} from "@ionic/react";
-import { useHistory } from "react-router";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router";
+import "swiper/css"; // core Swiper styles
+import "swiper/css/free-mode";
+import Header from "../../../shared/components/Header/Header";
+import Card from "../../../shared/components/UI/Card/Card";
+import {
+    useGetEventsQuery,
+    useGetPrintersQuery,
+} from "../../../shared/features";
 import { useAuth } from "../../../shared/hooks/useAuth";
 import { useSimpleGSAP } from "../../../shared/hooks/useSimpleGSAP";
-import { useGetPrintersQuery } from "../../../member-app/features/crud/printersApi";
-import "swiper/css/free-mode";
-import "swiper/css"; // core Swiper styles
-import { warningOutline, chevronDownOutline } from "ionicons/icons";
-import Card from "../../../shared/components/UI/Card/Card";
-import "./HomePage.css";
-import EventHero from "./heroes/EventHero";
-import { LeaderboardWidget, TipsWidget } from "./widgets/LeaderBoardWidget";
-import { useGetEventsQuery } from "../../../member-app/features/crud/events/eventsApi";
-import Header from "../../../shared/components/Header/Header";
 import { useOneSignal } from "../../../shared/services/OneSignalProvider";
-import PrinterHero from "./heroes/PrinterHero";
-import SubscribeHero from "./heroes/SubscribeHero";
+import "./HomePage.css";
 import DefaultHero from "./heroes/DefaultHero";
+import EventHero from "./heroes/EventHero";
 import InstallHero from "./heroes/InstallHero";
+import { LeaderboardWidget, TipsWidget } from "./widgets/LeaderBoardWidget";
 
 const HomePage: React.FC = () => {
     const { user } = useAuth();
@@ -89,7 +89,7 @@ const HomePage: React.FC = () => {
                 {
                     root: null,
                     threshold: 0.01,
-                }
+                },
             );
             observer.observe(sentinelEl);
         } else {
@@ -111,7 +111,7 @@ const HomePage: React.FC = () => {
             if (contentRef.current && scrollListener) {
                 contentRef.current.removeEventListener(
                     "ionScroll",
-                    scrollListener
+                    scrollListener,
                 );
             } else if (scrollListener) {
                 window.removeEventListener("scroll", scrollListener);

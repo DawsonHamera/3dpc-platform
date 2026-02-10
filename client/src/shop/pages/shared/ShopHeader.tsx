@@ -45,7 +45,7 @@ const ShopHeader: React.FC<ShopHeaderProps> = ({
     const [searchQuery, setSearchQuery] = React.useState("");
     const [searchExpanded, setSearchExpanded] = React.useState(false);
 
-    const { cart, setShowUserView, showUserView, setToast } = useShop();
+    const { cart, setViewMode, viewMode, setToast } = useShop();
 
     const isAdmin = user?.role?.name === "admin";
 
@@ -78,17 +78,17 @@ const ShopHeader: React.FC<ShopHeaderProps> = ({
                             <IonButton
                                 slot="start"
                                 onClick={() => {
-                                    setShowUserView(!showUserView);
+                                    setViewMode(viewMode === 'admin' ? 'user' : 'admin');
                                     setToast({
-                                        message: showUserView
-                                            ? "Switched to Admin View"
-                                            : "Switched to User View",
+                                        message: viewMode === 'admin'
+                                            ? "Switched to User View"
+                                            : "Switched to Admin View",
                                         color: "primary",
                                         duration: 1500,
                                     });
                                 }}
                             >
-                                {showUserView ? (
+                                {viewMode === 'user' ? (
                                     <IonIcon icon={person} />
                                 ) : (
                                     <IonIcon icon={shield} />
@@ -103,7 +103,7 @@ const ShopHeader: React.FC<ShopHeaderProps> = ({
                             3DPC Shop
                         </IonTitle>
 
-                        {isAdmin && !showUserView ? (
+                        {isAdmin && viewMode == 'admin' ? (
                             <IonButton
                                 slot="end"
                                 onClick={() => router.push("/shop/manage")}

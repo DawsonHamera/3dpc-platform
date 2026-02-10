@@ -1,20 +1,20 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
 import {
+    activityApi,
     authApi,
-    usersApi,
+    authReducer,
     eventsApi,
     filesApi,
-    recyclingLogsApi,
-    tasksApi,
-    modelsApi,
     materialsApi,
+    modelsApi,
     ordersApi,
     printersApi,
     productsApi,
-} from "../../member-app";
-import authReducer  from "../../member-app/features/auth/authSlice";
-import { activityApi } from "../../member-app/features/activity/activityApi";
+    recyclingLogsApi,
+    tasksApi,
+    usersApi,
+} from "../features";
 
 const rootReducer = combineReducers({
     [authApi.reducerPath]: authApi.reducer,
@@ -49,7 +49,7 @@ export const store = configureStore({
             ordersApi.middleware,
             printersApi.middleware,
             productsApi.middleware,
-            activityApi.middleware
+            activityApi.middleware,
         ),
 });
 

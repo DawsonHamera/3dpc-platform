@@ -1,14 +1,13 @@
 import { useState } from "react";
 import WorkstationAuth from "../auth/WorkstationAuth";
-
 import { IonContent, IonPage } from "@ionic/react";
-import { useGetMaterialsQuery } from "../../../member-app/features/materials/materialsApi";
-import { useGetModelsQuery } from "../../../member-app/features/models/modelsApi";
 import {
     PrinterStatus,
+    useGetMaterialsQuery,
+    useGetModelsQuery,
     useGetPrintersQuery,
     useUpdatePrinterMutation,
-} from "../../../member-app";
+} from "../../../shared/features";
 import InventoryGrid from "./components/InventoryGrid";
 import PrinterHeroSection from "./components/PrinterHeroSection";
 import QuickActionsBar from "./components/QuickActionsBar";
@@ -19,7 +18,7 @@ import "./WorkstationPage.css";
 
 const WorkstationPage: React.FC = () => {
     const [selectedPrinterId, setSelectedPrinterId] = useState<number | null>(
-        null
+        null,
     );
     const [activePrinter, setActivePrinter] = useState<any>(null);
     const [activeModal, setActiveModal] = useState<
@@ -53,7 +52,7 @@ const WorkstationPage: React.FC = () => {
 
     const handleOpenModal = (
         type: "printer" | "material" | "model",
-        item?: any
+        item?: any,
     ) => {
         setActiveModal(type);
         setEditingItem(item || null);

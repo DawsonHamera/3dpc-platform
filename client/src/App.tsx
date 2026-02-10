@@ -26,19 +26,23 @@ import "@ionic/react/css/text-transformation.css";
 /* Theme variables */
 import HomePage from "./landing/pages/home/HomePage";
 import LoginPage from "./landing/pages/login/LoginPage";
-import Dashboard from "./member-app/Dashboard";
-import { selectCurrentUser } from "./member-app/features/auth/authSlice";
+import Dashboard from "./member-app/App";
+import { selectCurrentUser } from "./shared/features";
+import { isPWAInstalled } from "./shared/hooks/useUtils";
 import "./shared/theme/variables.css";
 import Shop from "./shop/pages/Shop";
 import WorkstationPage from "./workstation/pages/main/WorkstationPage";
-import { isPWAInstalled } from "./shared/hooks/useUtils";
 
 setupIonicReact();
 
 const HomeRoute: React.FC = () => {
     const currentUser = useSelector(selectCurrentUser);
     const isInstalled = isPWAInstalled();
-    return currentUser && isInstalled ? <Redirect to="/dashboard" /> : <HomePage />;
+    return currentUser && isInstalled ? (
+        <Redirect to="/dashboard" />
+    ) : (
+        <HomePage />
+    );
 };
 
 const App: React.FC = () => {

@@ -1,24 +1,17 @@
-import React, { useState, useRef } from "react";
+import { IonButton, IonCard, IonIcon, IonSpinner } from "@ionic/react";
 import {
-    IonButton,
-    IonIcon,
-    IonSpinner,
-    IonChip,
-    IonLabel,
-    IonCard,
-} from "@ionic/react";
-import {
-    imageOutline,
-    documentOutline,
     addOutline,
     checkmarkCircle,
     closeCircle,
+    documentOutline,
+    imageOutline,
 } from "ionicons/icons";
+import React, { useRef, useState } from "react";
 import {
-    useGetFilesQuery,
     useAddFileMutation,
+    useGetFilesQuery,
     type File,
-} from "../../../../member-app/features/files/filesApi";
+} from "../../../../shared/features";
 import "./FileSelector.css";
 
 export interface FileSelectorProps {
@@ -48,7 +41,7 @@ const FileSelector: React.FC<FileSelectorProps> = ({
     });
 
     const handleFileUpload = async (
-        event: React.ChangeEvent<HTMLInputElement>
+        event: React.ChangeEvent<HTMLInputElement>,
     ) => {
         const file = event.target.files?.[0];
         if (!file) return;
@@ -121,8 +114,8 @@ const FileSelector: React.FC<FileSelectorProps> = ({
                                         fileType === "image"
                                             ? "image/*"
                                             : fileType === "model"
-                                            ? ".stl,.obj,.gcode,.3mf,.glb"
-                                            : "*"
+                                              ? ".stl,.obj,.gcode,.3mf,.glb"
+                                              : "*"
                                     }
                                 />
                                 <IonCard
@@ -190,7 +183,7 @@ const FileSelector: React.FC<FileSelectorProps> = ({
                                                 {file.original_name.length > 15
                                                     ? `${file.original_name.substring(
                                                           0,
-                                                          15
+                                                          15,
                                                       )}...`
                                                     : file.original_name}
                                             </span>

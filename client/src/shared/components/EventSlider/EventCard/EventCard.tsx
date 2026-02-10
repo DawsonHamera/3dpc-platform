@@ -5,24 +5,21 @@ import {
     IonHeader,
     IonIcon,
     IonModal,
-    IonText,
     IonTitle,
     IonToast,
     IonToolbar,
     useIonRouter,
 } from "@ionic/react";
-import { checkmarkDone, settingsOutline } from "ionicons/icons";
+import { settingsOutline } from "ionicons/icons";
 import { useState } from "react";
-import {
-    Attendance,
-    Event,
-    useAttendEventMutation,
-} from "../../../../member-app";
+import { useAttendEventMutation } from "../../../features";
 import { useAuth } from "../../../hooks/useAuth";
+import { Attendance } from "../../../types";
 import AvatarStack from "../../AvatarStack/AvatarStack";
 import QRCodeScanner from "../../QRCode/QRCodeScanner";
 import "./EventCard.css";
 import EventHeader from "./EventHeader";
+import { Event } from "../../../features"
 
 // Extend the type to include "rsvp" if it's a valid status
 type ExtendedAttendanceStatus =
@@ -60,7 +57,7 @@ const EventCard: React.FC<EventCardProps> = ({
         (attendance: Attendance) => {
             const attendanceUser = attendance.user as { id: number } | null;
             return attendanceUser?.id === user?.id;
-        }
+        },
     );
     const [attendEvent] = useAttendEventMutation();
 
@@ -84,7 +81,7 @@ const EventCard: React.FC<EventCardProps> = ({
         } catch (error: any) {
             setIsError(true);
             setToastMessage(
-                error?.data?.message || "Failed to record attendance."
+                error?.data?.message || "Failed to record attendance.",
             );
         }
     };
@@ -95,9 +92,7 @@ const EventCard: React.FC<EventCardProps> = ({
                 {editMode && (
                     <div className="edit-badge">
                         <IonIcon
-                            onClick={() =>
-                                editEvent?.(event)
-                            }
+                            onClick={() => editEvent?.(event)}
                             color="primary"
                             icon={settingsOutline}
                             size="large"
@@ -108,7 +103,10 @@ const EventCard: React.FC<EventCardProps> = ({
             <div className="event-card-content">
                 <div className="footer">
                     <AvatarStack
-                        avatars={event.attendances.map((attendance: any) => ({id: attendance.user.id, name: attendance.user.name}))}
+                        avatars={event.attendances.map((attendance: any) => ({
+                            id: attendance.user.id,
+                            name: attendance.user.name,
+                        }))}
                     />
                     <IonButton
                         fill="clear"

@@ -1,6 +1,13 @@
-import { IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonIcon, IonItem, IonList } from "@ionic/react";
-import { useGetRecycleLogsQuery } from "../../../member-app/features/recycling/recyclingApi";
-import { shield, shieldHalfOutline, shieldOutline } from "ionicons/icons";
+import {
+    IonCard,
+    IonCardContent,
+    IonCardHeader,
+    IonIcon,
+    IonItem,
+    IonList,
+} from "@ionic/react";
+import { shieldHalfOutline } from "ionicons/icons";
+import { useGetRecycleLogsQuery } from "../../../shared/features";
 
 const RecycleLogs: React.FC = () => {
     const { data: recycleLogs, isLoading } = useGetRecycleLogsQuery();
@@ -14,9 +21,18 @@ const RecycleLogs: React.FC = () => {
     return (
         <IonCard>
             <IonCardHeader>
-                <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                    <IonIcon icon={shieldHalfOutline} style={{ fontSize: "1.8rem", marginRight: "0.5rem" }} />
-                    <h1 style={{ margin: '0px'}}>Recycling Logs</h1>
+                <div
+                    style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                    }}
+                >
+                    <IonIcon
+                        icon={shieldHalfOutline}
+                        style={{ fontSize: "1.8rem", marginRight: "0.5rem" }}
+                    />
+                    <h1 style={{ margin: "0px" }}>Recycling Logs</h1>
                 </div>
             </IonCardHeader>
             <IonCardContent>

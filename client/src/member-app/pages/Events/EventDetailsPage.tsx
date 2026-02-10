@@ -1,14 +1,33 @@
-import { IonContent, IonItem, IonLabel, IonList, IonPage, IonChip, IonSegmentButton, IonSegment, IonToolbar, IonToast, IonText, IonButton, IonButtons, IonHeader, IonModal, IonTitle } from "@ionic/react";
-import Header from "../../../shared/components/Header/Header";
-import { useAttendEventMutation, useGetEventQuery, useGetUserAttendanceQuery } from "../../../member-app/features/events/eventsApi";
-import { useParams } from "react-router";
-import EventCard from "../../../shared/components/EventSlider/EventCard/EventCard";
-import EventHeader from "../../../shared/components/EventSlider/EventCard/EventHeader";
+import {
+    IonButton,
+    IonButtons,
+    IonChip,
+    IonContent,
+    IonHeader,
+    IonItem,
+    IonLabel,
+    IonList,
+    IonModal,
+    IonPage,
+    IonSegment,
+    IonSegmentButton,
+    IonText,
+    IonTitle,
+    IonToast,
+    IonToolbar,
+} from "@ionic/react";
 import { useState } from "react";
+import { useParams } from "react-router";
+import EventHeader from "../../../shared/components/EventSlider/EventCard/EventHeader";
+import Header from "../../../shared/components/Header/Header";
 import QRCodeScanner from "../../../shared/components/QRCode/QRCodeScanner";
+import {
+    useAttendEventMutation,
+    useGetEventQuery,
+    useGetUserAttendanceQuery,
+} from "../../../shared/features";
 
 const EventDetailsPage: React.FC = () => {
-
     const { eventId } = useParams<{ eventId: string }>();
 
     const { data: event } = useGetEventQuery(parseInt(eventId));
@@ -21,60 +40,70 @@ const EventDetailsPage: React.FC = () => {
 
     const handleUpdateStatus = (status: string) => {
         if (status && event) {
-            console.log("Update attendance event " + eventId + 'status' + status)
-            updateAttendance({ eventId: event.id, status })
+            console.log(
+                "Update attendance event " + eventId + "status" + status,
+            );
+            updateAttendance({ eventId: event.id, status });
             setToastMessage("Attendance status updated");
         }
-    }
+    };
 
     const handleScan = (text: string) => {
-        verifyCode(text)
+        verifyCode(text);
     };
 
     const verifyCode = async (data: string) => {
         try {
-            const verified = await updateAttendance({ eventId: event.id, code: data }).unwrap();
+            const verified = await updateAttendance({
+                eventId: event.id,
+                code: data,
+            }).unwrap();
             if (verified.data) {
-            setIsError(false);
-            setToastMessage(verified.data);
-            setScannerOpen(false);
+                setIsError(false);
+                setToastMessage(verified.data);
+                setScannerOpen(false);
             } else {
-            setToastMessage("An unexpected error occurred.");
-            setIsError(true);
+                setToastMessage("An unexpected error occurred.");
+                setIsError(true);
             }
         } catch (error: any) {
             console.error("Error verifying code:", error);
-            setToastMessage(error?.data?.message || "Failed to verify the code. Please try again.");
+            setToastMessage(
+                error?.data?.message ||
+                    "Failed to verify the code. Please try again.",
+            );
             setIsError(true);
         }
     };
 
     if (!event) {
-        return <IonPage>
-            <IonContent>Loading attendance...</IonContent>
-        </IonPage>
+        return (
+            <IonPage>
+                <IonContent>Loading attendance...</IonContent>
+            </IonPage>
+        );
     }
 
     const renderAttendanceStatus = (status: string, eventEnd: string) => {
         switch (status) {
-            case 'going':
+            case "going":
                 if (new Date() > new Date(eventEnd)) {
                     return <IonChip color="danger">Absent</IonChip>;
                 }
                 return <IonChip color="success">Going</IonChip>;
-            case 'maybe':
+            case "maybe":
                 if (new Date() > new Date(eventEnd)) {
                     return <IonChip color="danger">Absent</IonChip>;
                 }
                 return <IonChip color="warning">Maybe</IonChip>;
-            case 'not_going':
+            case "not_going":
                 if (new Date() > new Date(eventEnd)) {
                     return <IonChip color="danger">Absent</IonChip>;
                 }
                 return <IonChip color="danger">Not going</IonChip>;
-            case 'unknown':
-                return <IonChip color="medium">Unknown</IonChip>;               
-            case 'attended':
+            case "unknown":
+                return <IonChip color="medium">Unknown</IonChip>;
+            case "attended":
                 if (new Date() > new Date(eventEnd)) {
                     return <IonChip color="success">Attended</IonChip>;
                 }
@@ -82,19 +111,26 @@ const EventDetailsPage: React.FC = () => {
             default:
                 return <IonChip color="danger">Error</IonChip>;
         }
-    }
+    };
 
     return (
         <IonPage>
-            <Header title='Event Overview' type="back" />
+            <Header title="Event Overview" type="back" />
             <IonContent>
                 <EventHeader event={event} />
-                <div style={{ padding: '0 20px' }}>
-                    <IonText><p>{event.description}</p></IonText>
+                <div style={{ padding: "0 20px" }}>
+                    <IonText>
+                        <p>{event.description}</p>
+                    </IonText>
                 </div>
-                {new Date() < new Date(event.start_time) &&
+                {new Date() < new Date(event.start_time) && (
                     <IonToolbar>
-                        <IonSegment value={attendance?.status} onIonChange={(e) => handleUpdateStatus(e.detail.value)}>
+                        <IonSegment
+                            value={attendance?.status}
+                            onIonChange={(e) =>
+                                handleUpdateStatus(e.detail.value)
+                            }
+                        >
                             <IonSegmentButton value="not_going">
                                 <IonLabel>Not Going</IonLabel>
                             </IonSegmentButton>
@@ -106,29 +142,51 @@ const EventDetailsPage: React.FC = () => {
                             </IonSegmentButton>
                         </IonSegment>
                     </IonToolbar>
-                }
-                {new Date() >= new Date(event.start_time) && new Date() <= new Date(event.end_time) && attendance?.status != 'attended' &&
-                    <IonButton expand="block" style={{ margin: '20px' }} onClick={() => setScannerOpen(true)}>
-                        Mark as Attended
-                    </IonButton>
-                }
-                <IonList style={{ border: '1px solid var(--ion-color-light-shade)', borderRadius: '20px', margin: '20px' }}>
+                )}
+                {new Date() >= new Date(event.start_time) &&
+                    new Date() <= new Date(event.end_time) &&
+                    attendance?.status != "attended" && (
+                        <IonButton
+                            expand="block"
+                            style={{ margin: "20px" }}
+                            onClick={() => setScannerOpen(true)}
+                        >
+                            Mark as Attended
+                        </IonButton>
+                    )}
+                <IonList
+                    style={{
+                        border: "1px solid var(--ion-color-light-shade)",
+                        borderRadius: "20px",
+                        margin: "20px",
+                    }}
+                >
                     {event.attendances.map((attendance: any) => (
                         <IonItem key={attendance.id}>
                             <IonLabel>
                                 <b>{attendance.user.name}</b>
                             </IonLabel>
-                            <IonLabel slot='end'>{renderAttendanceStatus(attendance.status, event.end_time)}</IonLabel>
+                            <IonLabel slot="end">
+                                {renderAttendanceStatus(
+                                    attendance.status,
+                                    event.end_time,
+                                )}
+                            </IonLabel>
                         </IonItem>
                     ))}
                 </IonList>
             </IonContent>
-            <IonModal isOpen={scannerOpen} onDidDismiss={() => setScannerOpen(false)}>
+            <IonModal
+                isOpen={scannerOpen}
+                onDidDismiss={() => setScannerOpen(false)}
+            >
                 <IonHeader>
                     <IonToolbar>
                         <IonTitle>Check In</IonTitle>
                         <IonButtons slot="end">
-                            <IonButton onClick={() => setScannerOpen(false)}>Close</IonButton>
+                            <IonButton onClick={() => setScannerOpen(false)}>
+                                Close
+                            </IonButton>
                         </IonButtons>
                     </IonToolbar>
                 </IonHeader>
@@ -144,7 +202,7 @@ const EventDetailsPage: React.FC = () => {
                 color={isError ? "danger" : "success"}
             />
         </IonPage>
-    )
+    );
 };
 
 export default EventDetailsPage;

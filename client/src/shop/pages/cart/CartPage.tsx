@@ -1,32 +1,30 @@
-import React, { useMemo } from "react";
 import {
-    IonPage,
-    IonContent,
     IonButton,
-    useIonRouter,
-    IonIcon,
-    IonImg,
-    IonText,
     IonCard,
     IonCardContent,
     IonCardHeader,
     IonCardTitle,
-    IonList,
+    IonContent,
+    IonIcon,
+    IonImg,
     IonItem,
-    IonThumbnail,
-    IonLabel,
-    IonNote,
-    IonItemSliding,
-    IonItemOptions,
     IonItemOption,
+    IonItemOptions,
+    IonItemSliding,
+    IonLabel,
+    IonList,
+    IonNote,
+    IonPage,
     IonSkeletonText,
+    IonText,
+    IonThumbnail,
+    useIonRouter,
 } from "@ionic/react";
-import { useShop, ShopHeader } from "../shared";
+import { cartOutline, storefrontOutline, trash } from "ionicons/icons";
+import React, { useMemo } from "react";
+import { useGetProductsQuery } from "../../../shared/features";
+import { ShopHeader, useShop } from "../shared";
 import Incrementer from "./Incrementer";
-import { trash, cartOutline, storefrontOutline } from "ionicons/icons";
-import {
-    useGetProductsQuery,
-} from "../../../member-app/features/products/productsApi";
 
 const CartPage: React.FC = () => {
     const { cart, updateCartItemQuantity } = useShop();
@@ -38,7 +36,7 @@ const CartPage: React.FC = () => {
         return cart.reduce((total, item) => {
             const product = products.find((p) => p.id === item.productId);
             const variant = product?.variants.find(
-                (v) => v.id === item.variantId
+                (v) => v.id === item.variantId,
             );
             return total + (variant?.price || 0) * item.quantity;
         }, 0);
@@ -104,10 +102,10 @@ const CartPage: React.FC = () => {
                             <IonList>
                                 {cart.map((item) => {
                                     const product = products.find(
-                                        (p) => p.id === item.productId
+                                        (p) => p.id === item.productId,
                                     );
                                     const variant = product?.variants.find(
-                                        (v) => v.id === item.variantId
+                                        (v) => v.id === item.variantId,
                                     );
                                     if (!product) return null;
                                     if (!variant) {
@@ -214,7 +212,7 @@ const CartPage: React.FC = () => {
                                                         >
                                                             $
                                                             {variant.price.toFixed(
-                                                                2
+                                                                2,
                                                             )}
                                                         </IonText>
                                                         <Incrementer
@@ -232,7 +230,7 @@ const CartPage: React.FC = () => {
                                                                             item.variantId,
                                                                         quantity:
                                                                             value,
-                                                                    }
+                                                                    },
                                                                 )
                                                             }
                                                         />

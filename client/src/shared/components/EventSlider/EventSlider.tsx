@@ -3,10 +3,9 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Autoplay, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Event, useGetEventsQuery } from "../../../member-app";
+import { Event, useGetEventsQuery } from "../../features";
 import EventCard from "./EventCard/EventCard";
 import "./EventSlider.css";
-
 
 type EventSliderProps = {
     filter?: "upcoming" | "ongoing" | "past";
@@ -23,17 +22,17 @@ const EventSlider: React.FC<EventSliderProps> = ({ filter, title }) => {
         switch (filter) {
             case "upcoming":
                 return events.filter(
-                    (event: Event) => new Date(event.end_time) > now
+                    (event: Event) => new Date(event.end_time) > now,
                 );
             case "ongoing":
                 return events.filter(
                     (event: Event) =>
                         new Date(event.start_time) <= now &&
-                        new Date(event.end_time) >= now
+                        new Date(event.end_time) >= now,
                 );
             case "past":
                 return events.filter(
-                    (event: Event) => new Date(event.end_time) < now
+                    (event: Event) => new Date(event.end_time) < now,
                 );
             default:
                 return events;
