@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { Public } from '../../common/decorators/public.decorator';
@@ -18,8 +19,13 @@ export class OrdersController {
 
   @Get()
   @Roles(['admin'])
-  findAll() {
-    return this.ordersService.findAllOrders();
+  findAll(
+    @Query('status') status?: string,
+    @Query('filter') filter?: string,
+    @Query('limit') limit?: number,
+    @Query('order') order?: string,
+  ) {
+    return this.ordersService.findAllOrders(status, limit, order);
   }
 
   @Get(':id')

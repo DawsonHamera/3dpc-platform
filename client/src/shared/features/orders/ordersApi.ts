@@ -34,9 +34,9 @@ export const ordersApi = createApi({
         >({
             query: (args) => {
                 const params = new URLSearchParams();
-                if (args?.status) params.append('status', args.status);
-                if (args?.limit) params.append('limit', args.limit.toString());
-                if (args?.order) params.append('order', args.order);
+                if (args?.status) params.append("status", args.status);
+                if (args?.limit) params.append("limit", args.limit.toString());
+                if (args?.order) params.append("order", args.order);
                 return `orders?${params.toString()}`;
             },
             providesTags: ["Orders"],

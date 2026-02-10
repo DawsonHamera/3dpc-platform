@@ -35,10 +35,7 @@ export const calculateStatistics = (orders: Order[]): OrderStatistics => {
     };
 };
 
-export const filterOrders = (
-    orders: Order[],
-    searchQuery: string,
-): Order[] => {
+export const filterOrders = (orders: Order[], searchQuery: string): Order[] => {
     let filtered = [...orders];
 
     // Filter by search query (backend handles status filtering)
@@ -67,7 +64,9 @@ export const sortOrders = (
 
         switch (sortBy) {
             case "created_at":
-                comparison = new Date(a.created_at!).getTime() - new Date(b.created_at!).getTime();
+                comparison =
+                    new Date(a.created_at!).getTime() -
+                    new Date(b.created_at!).getTime();
                 break;
             case "total_price":
                 comparison = Number(a.total_price) - Number(b.total_price);
