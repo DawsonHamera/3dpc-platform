@@ -1,36 +1,27 @@
+import { useGSAP } from "@gsap/react";
 import {
-    IonAccordion,
-    IonAccordionGroup,
     IonAlert,
     IonButton,
-    IonButtons,
     IonCard,
     IonCardContent,
     IonCardHeader,
     IonContent,
-    IonHeader,
     IonIcon,
-    IonItem,
-    IonLabel,
-    IonModal,
     IonPage,
     IonTitle,
-    IonToolbar,
 } from "@ionic/react";
-import Header from "../../../shared/components/Header/Header";
-import { leaf } from "ionicons/icons";
-import { useGSAP } from "@gsap/react";
-import { useRef, useState } from "react";
-import Card from "../../../shared/components/Card/Card";
 import gsap from "gsap";
-import "./RecyclePage.css";
+import { leaf } from "ionicons/icons";
+import { useRef, useState } from "react";
+import Header from "../../../shared/components/Header/Header";
 import {
     useCreateRecyclingLogMutation,
     useGetRecyclingStatsQuery,
-} from "../../../member-app/features/recycling/recyclingApi";
-import RecycleJobs from "./RecycleJobs";
+} from "../../../shared/features";
 import { useAuth } from "../../../shared/hooks/useAuth";
+import RecycleJobs from "./RecycleJobs";
 import RecycleLogs from "./RecycleLogs";
+import "./RecyclePage.css";
 
 const RecyclePage: React.FC = () => {
     const [isAddBottleAlertOpen, setIsAddBottleAlertOpen] = useState(false);
@@ -56,10 +47,10 @@ const RecyclePage: React.FC = () => {
             if (!isLoading && !isFetching && isSuccess) {
                 const start = {
                     bottles: parseInt(
-                        recycledBottlesRef.current?.textContent || "0"
+                        recycledBottlesRef.current?.textContent || "0",
                     ),
                     grams: parseInt(
-                        recycledGramsRef.current?.textContent || "0"
+                        recycledGramsRef.current?.textContent || "0",
                     ),
                 };
 
@@ -71,7 +62,7 @@ const RecyclePage: React.FC = () => {
                     onUpdate: () => {
                         if (recycledBottlesRef.current) {
                             recycledBottlesRef.current.textContent = Math.floor(
-                                start.bottles
+                                start.bottles,
                             ).toLocaleString();
                         }
                     },
@@ -82,14 +73,14 @@ const RecyclePage: React.FC = () => {
                     onUpdate: () => {
                         if (recycledGramsRef.current) {
                             recycledGramsRef.current.textContent = Math.floor(
-                                start.grams
+                                start.grams,
                             ).toLocaleString();
                         }
                     },
                 });
             }
         },
-        { dependencies: [isLoading, isFetching, isSuccess] }
+        { dependencies: [isLoading, isFetching, isSuccess] },
     );
 
     return (
@@ -97,10 +88,14 @@ const RecyclePage: React.FC = () => {
             <Header title="Recycle" color="success" />
             <IonContent>
                 <div className="hero-container">
-                    <img src="/images/recycling_symbol.svg" alt="Recycle Hero" className="hero-image" />
+                    <img
+                        src="/images/recycling_symbol.svg"
+                        alt="Recycle Hero"
+                        className="hero-image"
+                    />
                     <h1 className="hero-text">Recreator</h1>
                     <p className="hero-subtitle">Recycling Project</p>
-                    <div className='stat-box'>
+                    <div className="stat-box">
                         <h1 ref={recycledBottlesRef} className="hero-text">
                             0
                         </h1>
@@ -115,7 +110,7 @@ const RecyclePage: React.FC = () => {
                             <IonIcon icon={leaf} /> Bottles Recycled
                         </h2>
                     </div>
-                    <div className='stat-box'>
+                    <div className="stat-box">
                         <h1 ref={recycledGramsRef} className="hero-text">
                             0
                         </h1>

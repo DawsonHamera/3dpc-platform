@@ -1,22 +1,22 @@
 import {
-    IonModal,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
+    IonButton,
     IonContent,
-    IonItem,
-    IonLabel,
-    IonInput,
-    IonTextarea,
     IonDatetime,
     IonFooter,
-    IonButton,
+    IonHeader,
+    IonInput,
+    IonItem,
+    IonLabel,
+    IonModal,
     IonSelect,
     IonSelectOption,
+    IonTextarea,
+    IonTitle,
+    IonToolbar,
 } from "@ionic/react";
 import { useState } from "react";
 import FileSelector from "../../../shared/components/FileSelector/FileSelector";
-import { useCreateEventMutation } from "../../../member-app/features/events/eventsApi";
+import { useCreateEventMutation } from "../../../shared/features";
 
 type EventsCreateModalProps = {
     isOpen: boolean;
@@ -91,12 +91,23 @@ const EventsCreateModal: React.FC<EventsCreateModalProps> = ({
                                     event_type: e.detail.value!,
                                 }))
                             }
-                            placeholder="Select Event Type">
-                            <IonSelectOption value="meeting">Meeting</IonSelectOption>
-                            <IonSelectOption value="workshop">Workshop</IonSelectOption>
-                            <IonSelectOption value="fundraiser">Fundraiser</IonSelectOption>
-                            <IonSelectOption value="workday">Work Day</IonSelectOption>
-                            <IonSelectOption value="other">Other</IonSelectOption>
+                            placeholder="Select Event Type"
+                        >
+                            <IonSelectOption value="meeting">
+                                Meeting
+                            </IonSelectOption>
+                            <IonSelectOption value="workshop">
+                                Workshop
+                            </IonSelectOption>
+                            <IonSelectOption value="fundraiser">
+                                Fundraiser
+                            </IonSelectOption>
+                            <IonSelectOption value="workday">
+                                Work Day
+                            </IonSelectOption>
+                            <IonSelectOption value="other">
+                                Other
+                            </IonSelectOption>
                         </IonSelect>
                     </IonItem>
                     <IonItem>
@@ -121,8 +132,8 @@ const EventsCreateModal: React.FC<EventsCreateModalProps> = ({
                                 setFormData((f: any) => ({
                                     ...f,
                                     start_time: Array.isArray(e.detail.value)
-                                        ? e.detail.value[0] ?? ""
-                                        : e.detail.value ?? "",
+                                        ? (e.detail.value[0] ?? "")
+                                        : (e.detail.value ?? ""),
                                 }))
                             }
                         />
@@ -137,8 +148,8 @@ const EventsCreateModal: React.FC<EventsCreateModalProps> = ({
                                 setFormData((f: any) => ({
                                     ...f,
                                     end_time: Array.isArray(e.detail.value)
-                                        ? e.detail.value[0] ?? ""
-                                        : e.detail.value ?? "",
+                                        ? (e.detail.value[0] ?? "")
+                                        : (e.detail.value ?? ""),
                                 }))
                             }
                         />

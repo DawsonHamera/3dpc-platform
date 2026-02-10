@@ -1,63 +1,61 @@
 import {
+    IonBadge,
     IonButton,
-    IonContent,
-    IonItem,
-    IonLabel,
-    IonList,
-    IonLoading,
-    IonModal,
-    IonPage,
-    IonSelect,
-    IonSelectOption,
-    IonTextarea,
+    IonButtons,
     IonCard,
     IonCardContent,
     IonCardHeader,
     IonCardTitle,
+    IonChip,
+    IonCol,
+    IonContent,
+    IonGrid,
+    IonHeader,
+    IonIcon,
+    IonItem,
+    IonLabel,
+    IonList,
+    IonModal,
+    IonPage,
+    IonProgressBar,
+    IonRow,
     IonSearchbar,
     IonSegment,
     IonSegmentButton,
-    IonIcon,
-    IonChip,
-    IonBadge,
+    IonSelect,
+    IonSelectOption,
     IonText,
-    IonHeader,
-    IonToolbar,
+    IonTextarea,
     IonTitle,
-    IonButtons,
     IonToast,
-    IonGrid,
-    IonRow,
-    IonCol,
-    IonProgressBar,
+    IonToolbar,
 } from "@ionic/react";
-import React, { useEffect, useState, useMemo, useRef } from "react";
 import { gsap } from "gsap";
 import {
-    trophyOutline,
-    createOutline,
-    timeOutline,
     addCircleOutline,
-    removeCircleOutline,
-    personOutline,
-    checkmarkCircleOutline,
-    closeOutline,
-    saveOutline,
-    listOutline,
-    searchOutline,
-    medalOutline,
     calendarOutline,
+    closeOutline,
+    createOutline,
     documentTextOutline,
+    listOutline,
+    medalOutline,
+    personOutline,
+    removeCircleOutline,
+    saveOutline,
+    searchOutline,
+    timeOutline,
+    trophyOutline,
 } from "ionicons/icons";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { buildStyles, CircularProgressbar } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 import Header from "../../../shared/components/Header/Header";
 import {
     useGetUserPointsLogsQuery,
     useGetUsersQuery,
     User,
     useUpdateUserPointsMutation,
-} from "../../../member-app/features/users/usersApi";
-import { buildStyles, CircularProgressbar } from "react-circular-progressbar";
-import "react-circular-progressbar/dist/styles.css";
+} from "../../../shared/features";
 
 const POINT_REASONS = [
     { value: "meeting", label: "Meeting", icon: personOutline },
@@ -125,7 +123,7 @@ const PointsPage: React.FC = () => {
         if (searchText.trim()) {
             const searchLower = searchText.toLowerCase();
             filtered = filtered.filter((user) =>
-                user.name.toLowerCase().includes(searchLower)
+                user.name.toLowerCase().includes(searchLower),
             );
         }
 
@@ -146,7 +144,7 @@ const PointsPage: React.FC = () => {
         return [...userPointsLogs].sort(
             (a, b) =>
                 new Date(b.logged_at).getTime() -
-                new Date(a.logged_at).getTime()
+                new Date(a.logged_at).getTime(),
         );
     }, [userPointsLogs]);
 
@@ -261,7 +259,7 @@ const PointsPage: React.FC = () => {
                                 <IonCardTitle>{selectedUser.name}</IonCardTitle>
                                 <IonBadge
                                     color={getRankColor(
-                                        getUserRank(selectedUser.id)
+                                        getUserRank(selectedUser.id),
                                     )}
                                 >
                                     <IonIcon
@@ -294,7 +292,7 @@ const PointsPage: React.FC = () => {
                                                     value={selectedUser.points}
                                                     maxValue={Math.max(
                                                         selectedUser.points,
-                                                        100
+                                                        100,
                                                     )}
                                                     text={`${selectedUser.points}`}
                                                     styles={buildStyles({
@@ -489,7 +487,7 @@ const PointsPage: React.FC = () => {
                                                 size="large"
                                                 onClick={() =>
                                                     setPointsToAdd(
-                                                        pointsToAdd - increment
+                                                        pointsToAdd - increment,
                                                     )
                                                 }
                                             >
@@ -505,8 +503,8 @@ const PointsPage: React.FC = () => {
                                                         pointsToAdd > 0
                                                             ? "success"
                                                             : pointsToAdd < 0
-                                                            ? "danger"
-                                                            : "medium"
+                                                              ? "danger"
+                                                              : "medium"
                                                     }
                                                 >
                                                     <h1
@@ -535,7 +533,7 @@ const PointsPage: React.FC = () => {
                                                 size="large"
                                                 onClick={() =>
                                                     setPointsToAdd(
-                                                        pointsToAdd + increment
+                                                        pointsToAdd + increment,
                                                     )
                                                 }
                                             >
@@ -549,7 +547,7 @@ const PointsPage: React.FC = () => {
                                             value={increment.toString()}
                                             onIonChange={(e) =>
                                                 setIncrement(
-                                                    Number(e.detail.value)
+                                                    Number(e.detail.value),
                                                 )
                                             }
                                         >
@@ -683,7 +681,7 @@ const PointsPage: React.FC = () => {
                                 {sortedLogs.map((log) => {
                                     const isPositive = log.change > 0;
                                     const reasonData = POINT_REASONS.find(
-                                        (r) => r.value === log.reason
+                                        (r) => r.value === log.reason,
                                     );
 
                                     return (
@@ -737,7 +735,7 @@ const PointsPage: React.FC = () => {
                                                     <IonText color="medium">
                                                         <small>
                                                             {formatDate(
-                                                                log.logged_at
+                                                                log.logged_at,
                                                             )}
                                                         </small>
                                                     </IonText>

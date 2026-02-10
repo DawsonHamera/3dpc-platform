@@ -1,29 +1,29 @@
-import { useState } from "react";
 import {
-    IonPage,
+    IonAccordionGroup,
+    IonBadge,
+    IonButton,
     IonContent,
+    IonIcon,
+    IonPage,
     IonRefresher,
     IonRefresherContent,
-    IonAccordionGroup,
-    IonIcon,
-    IonButton,
-    IonBadge,
     IonSpinner,
 } from "@ionic/react";
 import {
     addOutline,
-    listOutline,
     checkmarkDoneOutline,
+    listOutline,
     shieldCheckmarkOutline,
 } from "ionicons/icons";
+import { useState } from "react";
 import Header from "../../../shared/components/Header/Header";
 import {
     useGetAllByUsersQuery,
     useGetOpenTasksQuery,
     useGetUserTasksQuery,
-} from "../../../member-app/features/tasks/tasksApi";
-import PrintTaskCard from "./PrintTaskCard";
+} from "../../../shared/features";
 import CreateTaskModal from "./CreateTaskModal";
+import PrintTaskCard from "./PrintTaskCard";
 import "./TasksPage.css";
 
 const TasksPage: React.FC = () => {
@@ -53,7 +53,7 @@ const TasksPage: React.FC = () => {
     const renderTaskCard = (
         task: any,
         type: string,
-        userShown: boolean = false
+        userShown: boolean = false,
     ) => {
         if (task.status === "completed") {
             return null;
@@ -134,13 +134,13 @@ const TasksPage: React.FC = () => {
                     ) : openTasks && openTasks.length > 0 ? (
                         <IonAccordionGroup className="tasks-accordion-group">
                             {openTasks.map((task: any) =>
-                                renderTaskCard(task, "open")
+                                renderTaskCard(task, "open"),
                             )}
                         </IonAccordionGroup>
                     ) : (
                         renderEmptyState(
                             "No open tasks available to claim",
-                            listOutline
+                            listOutline,
                         )
                     )}
                 </div>
@@ -175,13 +175,13 @@ const TasksPage: React.FC = () => {
                     ) : tasks && tasks.length > 0 ? (
                         <IonAccordionGroup className="tasks-accordion-group">
                             {tasks.map((task: any) =>
-                                renderTaskCard(task, "editable")
+                                renderTaskCard(task, "editable"),
                             )}
                         </IonAccordionGroup>
                     ) : (
                         renderEmptyState(
                             "You don't have any tasks assigned yet",
-                            checkmarkDoneOutline
+                            checkmarkDoneOutline,
                         )
                     )}
                 </div>
@@ -218,13 +218,13 @@ const TasksPage: React.FC = () => {
                     ) : allTasks && allTasks.length > 0 ? (
                         <IonAccordionGroup className="tasks-accordion-group">
                             {allTasks.map((task: any) =>
-                                renderTaskCard(task, "editable", true)
+                                renderTaskCard(task, "editable", true),
                             )}
                         </IonAccordionGroup>
                     ) : (
                         renderEmptyState(
                             "No tasks in the system",
-                            shieldCheckmarkOutline
+                            shieldCheckmarkOutline,
                         )
                     )}
                 </div>

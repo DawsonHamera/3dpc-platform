@@ -89,26 +89,26 @@ src/
 
 ### Feature-Based Organization
 
--   Each major section (`member-app`, `shop`, `landing`, `workstation`) contains its own features, pages, and components
--   Section-specific code stays within its section
--   Only truly shared code lives in `shared/`
+- Each major section (`member-app`, `shop`, `landing`, `workstation`) contains its own features, pages, and components
+- Section-specific code stays within its section
+- Only truly shared code lives in `shared/`
 
 ### Import Conventions
 
--   **Within same section**: Use relative imports `./` or `../`
--   **From shared**: Import from `../shared/...`
--   **Cross-section** (avoid if possible): Import from `../[section]/...`
+- **Within same section**: Use relative imports `./` or `../`
+- **From shared**: Import from `../shared/...`
+- **Cross-section** (avoid if possible): Import from `../[section]/...`
 
 ### Examples
 
 ```typescript
 // In member-app pages
-import { useGetEventsQuery } from "../features/events/eventsApi";
+import { useGetEventsQuery } from "../features";
 import Header from "../../shared/components/Header/Header";
 import { useAuth } from "../../shared/hooks/useAuth";
 
 // In shop pages
-import { Product } from "../features/products/productsApi";
+import { Product } from "../features";
 import Card from "../../shared/components/Card/Card";
 
 // In shared components

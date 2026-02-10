@@ -1,9 +1,9 @@
-import { useState, useRef } from "react";
+import { useRef, useState } from "react";
 import {
-    useGetFilesQuery,
     useAddFileMutation,
+    useGetFilesQuery,
     type File,
-} from "../../../../member-app/features/files/filesApi";
+} from "../../../../shared/features";
 import "./WorkstationFileSelector.css";
 
 export interface WorkstationFileSelectorProps {
@@ -33,7 +33,7 @@ const WorkstationFileSelector: React.FC<WorkstationFileSelectorProps> = ({
     });
 
     const handleFileUpload = async (
-        event: React.ChangeEvent<HTMLInputElement>
+        event: React.ChangeEvent<HTMLInputElement>,
     ) => {
         const file = event.target.files?.[0];
         if (!file) return;
@@ -105,8 +105,8 @@ const WorkstationFileSelector: React.FC<WorkstationFileSelectorProps> = ({
                                         fileType === "image"
                                             ? "image/*"
                                             : fileType === "model"
-                                            ? ".stl,.obj,.gcode,.3mf,.glb"
-                                            : "*"
+                                              ? ".stl,.obj,.gcode,.3mf,.glb"
+                                              : "*"
                                     }
                                 />
                                 <div
@@ -168,7 +168,7 @@ const WorkstationFileSelector: React.FC<WorkstationFileSelectorProps> = ({
                                                 {file.original_name.length > 15
                                                     ? `${file.original_name.substring(
                                                           0,
-                                                          12
+                                                          12,
                                                       )}...`
                                                     : file.original_name}
                                             </span>

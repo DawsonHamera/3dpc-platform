@@ -17,7 +17,7 @@ import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
 import QRCodeScanner from "../../../../shared/components/QRCode/QRCodeScanner";
-import { Event, useAttendEventMutation } from "../../../features/events/eventsApi";
+import { Event, useAttendEventMutation } from "../../../../shared/features";
 
 const EventHero: React.FC<{ event: Event }> = ({ event }) => {
     const [scannerOpen, setScannerOpen] = useState(false);
@@ -120,11 +120,14 @@ const EventHero: React.FC<{ event: Event }> = ({ event }) => {
                     >
                         {new Date() >= new Date(event.start_time)
                             ? "Event in progress"
-                            : new Date(event.start_time).toLocaleTimeString([], {
-                                  hour: "numeric",
-                                  minute: "2-digit",
-                                  hour12: true,
-                              })}
+                            : new Date(event.start_time).toLocaleTimeString(
+                                  [],
+                                  {
+                                      hour: "numeric",
+                                      minute: "2-digit",
+                                      hour12: true,
+                                  },
+                              )}
                     </h1>
                     <h2
                         style={{

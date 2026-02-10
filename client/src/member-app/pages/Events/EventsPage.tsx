@@ -7,14 +7,10 @@ import {
 } from "@ionic/react";
 import { add } from "ionicons/icons";
 import { useState } from "react";
-import {
-    Event,
-    useGetEventsQuery,
-} from "../../../member-app/features/events/eventsApi";
 import EventCard from "../../../shared/components/EventSlider/EventCard/EventCard";
 import Header from "../../../shared/components/Header/Header";
+import { Event, useGetEventsQuery } from "../../../shared/features";
 import { useAuth } from "../../../shared/hooks/useAuth";
-import EventCardSmall from "./EventCardSmall";
 import EventSettingsModal from "./EventSettingsModel";
 import EventsCreateModal from "./EventsCreateModal";
 import "./EventsPage.css";

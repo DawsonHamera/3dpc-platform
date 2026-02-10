@@ -1,8 +1,8 @@
 import gsap from "gsap";
 import { useEffect, useRef, useState } from "react";
+import { useGetEventsQuery } from "../../../shared/features";
 import { isPWAInstalled } from "../../../shared/hooks/useUtils";
 import { useOneSignal } from "../../../shared/services/OneSignalProvider";
-import { useGetEventsQuery } from "../../features/events/eventsApi";
 import DefaultHero from "./heroes/DefaultHero";
 import EventHero from "./heroes/EventHero";
 import InstallHero from "./heroes/InstallHero";

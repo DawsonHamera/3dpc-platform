@@ -1,25 +1,20 @@
+import {
+    IonButton,
+    IonInput,
+    IonItem,
+    IonLabel,
+    IonNote,
+    IonSelect,
+    IonSelectOption,
+    IonText,
+} from "@ionic/react";
 import { useState } from "react";
-import { LoginRequest } from "../../../member-app/features/auth/authTypes";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import {
-    useRegisterMutation,
     useLoginMutation,
-} from "../../../member-app/features/auth/authApi";
-import {
-    IonPage,
-    IonContent,
-    IonItem,
-    IonLabel,
-    IonInput,
-    IonText,
-    IonSelect,
-    IonSelectOption,
-    IonButton,
-    IonFooter,
-    IonAlert,
-    IonNote,
-} from "@ionic/react";
+    useRegisterMutation,
+} from "../../../shared/features";
 import { isPWAInstalled } from "../../../shared/hooks/useUtils";
 
 type SignUpFormProps = {

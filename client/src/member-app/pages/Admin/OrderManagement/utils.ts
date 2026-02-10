@@ -1,25 +1,25 @@
-import { Order } from "../../../features/orders/ordersApi";
+import { Order } from "../../../../shared/features";
 import { OrderStatistics } from "./types";
 
 export const calculateStatistics = (orders: Order[]): OrderStatistics => {
     const totalOrders = orders.length;
     const pendingOrders = orders.filter(
-        (order) => order.status.toLowerCase() === "pending"
+        (order) => order.status.toLowerCase() === "pending",
     ).length;
     const completedOrders = orders.filter(
         (order) =>
             order.status.toLowerCase() === "completed" ||
-            order.status.toLowerCase() === "delivered"
+            order.status.toLowerCase() === "delivered",
     ).length;
     const cancelledOrders = orders.filter(
-        (order) => order.status.toLowerCase() === "cancelled"
+        (order) => order.status.toLowerCase() === "cancelled",
     ).length;
 
     const totalRevenue = orders
         .filter(
             (order) =>
                 order.status.toLowerCase() === "completed" ||
-                order.status.toLowerCase() === "delivered"
+                order.status.toLowerCase() === "delivered",
         )
         .reduce((sum, order) => sum + Number(order.total_price), 0);
 
@@ -38,18 +38,10 @@ export const calculateStatistics = (orders: Order[]): OrderStatistics => {
 export const filterOrders = (
     orders: Order[],
     searchQuery: string,
-    statusFilter?: string
 ): Order[] => {
     let filtered = [...orders];
 
-    // Filter by status
-    if (statusFilter && statusFilter !== "all") {
-        filtered = filtered.filter(
-            (order) => order.status.toLowerCase() === statusFilter.toLowerCase()
-        );
-    }
-
-    // Filter by search query
+    // Filter by search query (backend handles status filtering)
     if (searchQuery) {
         const query = searchQuery.toLowerCase();
         filtered = filtered.filter(
@@ -58,7 +50,7 @@ export const filterOrders = (
                 order.first_name.toLowerCase().includes(query) ||
                 order.last_name.toLowerCase().includes(query) ||
                 order.key.toLowerCase().includes(query) ||
-                order.id.toString().includes(query)
+                order.id.toString().includes(query),
         );
     }
 
@@ -68,15 +60,14 @@ export const filterOrders = (
 export const sortOrders = (
     orders: Order[],
     sortBy: "created_at" | "total_price" | "status",
-    sortOrder: "asc" | "desc"
+    sortOrder: "asc" | "desc",
 ): Order[] => {
     return [...orders].sort((a, b) => {
         let comparison = 0;
 
         switch (sortBy) {
             case "created_at":
-                comparison =
-                    a.created_at!.getTime() - b.created_at!.getTime();
+                comparison = new Date(a.created_at!).getTime() - new Date(b.created_at!).getTime();
                 break;
             case "total_price":
                 comparison = Number(a.total_price) - Number(b.total_price);
@@ -97,14 +88,14 @@ export const formatCurrency = (amount: number): string => {
     }).format(amount);
 };
 
-export const formatDate = (date: Date): string => {
+export const formatDate = (date: string): string => {
     return new Intl.DateTimeFormat("en-US", {
         year: "numeric",
         month: "short",
         day: "numeric",
         hour: "2-digit",
         minute: "2-digit",
-    }).format(date);
+    }).format(new Date(date));
 };
 
 export const getStatusColor = (status: string): string => {

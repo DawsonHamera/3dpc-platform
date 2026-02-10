@@ -8,9 +8,16 @@ import {
     IonToolbar,
     useIonRouter,
 } from "@ionic/react";
-import { calendar, construct, hammer, location, pricetag, trophy } from "ionicons/icons";
+import {
+    calendar,
+    construct,
+    hammer,
+    location,
+    pricetag,
+    trophy,
+} from "ionicons/icons";
 import AvatarStack from "../../../shared/components/AvatarStack/AvatarStack";
-import { Event } from "../../features/events/eventsApi";
+import { Event } from "../../../shared/features";
 import styles from "./EventCardSmall.module.css";
 
 type EventCardProps = {
@@ -24,7 +31,7 @@ export const EventCardSmall: React.FC<EventCardProps> = ({ event }) => {
         competition: trophy,
         fundraiser: pricetag,
         work_day: hammer,
-        meeting: calendar
+        meeting: calendar,
     };
 
     if (!event) {
@@ -60,7 +67,8 @@ export const EventCardSmall: React.FC<EventCardProps> = ({ event }) => {
                         icon={iconMap[event?.event_type] || calendar}
                         style={{ marginRight: "8px" }}
                     /> */}
-                    {event.title}</h3>
+                    {event.title}
+                </h3>
                 <div className={styles.location}>
                     <IonIcon icon={location} color="primary" />
                     <IonText color="medium">{event.location}</IonText>
@@ -73,7 +81,7 @@ export const EventCardSmall: React.FC<EventCardProps> = ({ event }) => {
                             .filter(
                                 (attendance) =>
                                     attendance.status === "maybe" ||
-                                    attendance.status === "going"
+                                    attendance.status === "going",
                             )
                             .map((attendance: any) => ({
                                 id: attendance.user.id,
@@ -90,7 +98,7 @@ export const EventCardSmall: React.FC<EventCardProps> = ({ event }) => {
                         router.push(
                             `/dashboard/events/${event.id}`,
                             "forward",
-                            "push"
+                            "push",
                         )
                     }
                 >

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { useGetMaterialsQuery } from "../../../../member-app/features/materials/materialsApi";
 import {
     useCreatePrinterMutation,
     useDeletePrinterMutation,
+    useGetMaterialsQuery,
     useUpdatePrinterMutation,
-} from "../../../../member-app/features/printers/printersApi";
+} from "../../../../shared/features";
 import { PrinterStatus } from "../../../../shared/types";
 import WorkstationFileSelector from "../components/WorkstationFileSelector";
 import "./Modal.css";
@@ -50,7 +50,8 @@ const PrinterModal: React.FC<PrinterModalProps> = ({
                 location: printer.location || "",
                 loaded_material_id: printer.loaded_material_id || undefined,
                 image_file_id: printer.image_file_id || undefined,
-                control_interface_url: printer.control_interface_url || undefined,
+                control_interface_url:
+                    printer.control_interface_url || undefined,
             });
         } else {
             setFormData({
@@ -180,9 +181,7 @@ const PrinterModal: React.FC<PrinterModalProps> = ({
                     </div>
 
                     <div className="modal-field">
-                        <label>
-                            Control Interface URL
-                        </label>
+                        <label>Control Interface URL</label>
                         <input
                             type="text"
                             value={formData.control_interface_url}

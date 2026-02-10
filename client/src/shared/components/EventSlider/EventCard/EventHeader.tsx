@@ -7,7 +7,7 @@ import {
     pricetags,
     trophy,
 } from "ionicons/icons";
-import { useGetUserAttendanceQuery } from "../../../../member-app";
+import { useGetUserAttendanceQuery } from "../../../features";
 import "./EventHeader.css";
 
 type EventHeaderProps = {
@@ -70,7 +70,7 @@ const EventHeader: React.FC<EventHeaderProps> = ({ event, children }) => {
                             "en-US",
                             {
                                 month: "short",
-                            }
+                            },
                         )}
                     </p>
                     <h2>{new Date(event.start_time).getDate()}</h2>
@@ -119,7 +119,7 @@ const EventHeader: React.FC<EventHeaderProps> = ({ event, children }) => {
                             {
                                 hour: "2-digit",
                                 minute: "2-digit",
-                            }
+                            },
                         )}{" "}
                     </p>
                     <p>|</p>

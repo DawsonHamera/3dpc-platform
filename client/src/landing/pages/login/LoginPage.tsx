@@ -1,13 +1,11 @@
 import { IonAlert, IonPage, useIonRouter } from "@ionic/react";
 import { useState } from "react";
 import {
-    useLoginMutation,
-    useRegisterMutation,
-} from "../../../member-app/features/auth/authApi";
-import {
     LoginRequest,
     RegisterRequest,
-} from "../../../member-app/features/auth/authTypes";
+    useLoginMutation,
+    useRegisterMutation,
+} from "../../../shared/features";
 import SignInForm from "./SignInForm";
 import SignUpForm from "./SignUpForm";
 

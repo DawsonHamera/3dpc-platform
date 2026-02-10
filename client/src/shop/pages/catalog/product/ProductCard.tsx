@@ -1,14 +1,6 @@
-import {
-    IonButton,
-    IonIcon,
-    IonCard,
-    IonCardContent,
-    IonImg,
-    IonText,
-} from "@ionic/react";
-import { remove, removeCircle } from "ionicons/icons";
+import { IonCard, IonCardContent, IonImg, IonText } from "@ionic/react";
 import React, { useMemo } from "react";
-import { Product } from "../../../../member-app/features/products/productsApi";
+import { Product } from "../../../../shared/features";
 
 type ProductCardProps = {
     product: Product;
@@ -34,7 +26,6 @@ const ProductCard: React.FC<ProductCardProps> = ({
     }
 
     const variant = useMemo(() => {
-
         if (variantId) {
             return product.variants.find((v) => v.id === variantId);
         }
@@ -48,7 +39,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
                 width: `${size || 200}px`,
                 margin: "8px",
                 flexShrink: 0,
-                border: active ? "2px solid var(--ion-color-primary)" : undefined,
+                border: active
+                    ? "2px solid var(--ion-color-primary)"
+                    : undefined,
             }}
             button={!!onClick}
             onClick={onClick}
@@ -57,8 +50,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
                 style={{
                     width: "100%",
                     aspectRatio: "1",
-                    backgroundColor:
-                        variant?.background_color ?? "#00bf6380",
+                    backgroundColor: variant?.background_color ?? "#00bf6380",
                     borderRadius: "12px 12px 0 0",
                     overflow: "hidden",
                     display: "flex",

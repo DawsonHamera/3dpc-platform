@@ -1,11 +1,7 @@
 import { IonButton, IonModal, IonToolbar } from "@ionic/react";
-import {
-    Product,
-    useGetProductsQuery,
-} from "../../../../member-app/features/products/productsApi";
 import { useState } from "react";
+import { useGetProductsQuery } from "../../../../shared/features";
 import { ProductCard } from "../product";
-import { set } from "date-fns";
 
 const SelectProductModal: React.FC<{
     isOpen: boolean;
@@ -15,10 +11,10 @@ const SelectProductModal: React.FC<{
     const { data: products } = useGetProductsQuery();
 
     const [selectedProductId, setSelectedProductId] = useState<number | null>(
-        null
+        null,
     );
     const [selectedVariantId, setSelectedVariantId] = useState<number | null>(
-        null
+        null,
     );
 
     return (

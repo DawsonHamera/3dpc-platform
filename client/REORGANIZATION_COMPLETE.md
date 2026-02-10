@@ -70,31 +70,31 @@ src/
 
 ### Member App (`member-app/`)
 
--   11 feature modules (auth, events, files, materials, models, orders, printers, products, recycling, tasks, users)
--   7 page sections (Admin, Chat, Events, Home, Inventory, Recycle, Tasks)
--   Dashboard.tsx
+- 11 feature modules (auth, events, files, materials, models, orders, printers, products, recycling, tasks, users)
+- 7 page sections (Admin, Chat, Events, Home, Inventory, Recycle, Tasks)
+- Dashboard.tsx
 
 ### Shop (`shop/`)
 
--   4 page sections (cart, catalog, order-tracking, product-management)
--   Shared components
+- 4 page sections (cart, catalog, order-tracking, product-management)
+- Shared components
 
 ### Landing (`landing/`)
 
--   2 page sections (home, login)
+- 2 page sections (home, login)
 
 ### Workstation (`workstation/`)
 
--   2 page sections (auth, main)
+- 2 page sections (auth, main)
 
 ### Shared (`shared/`)
 
--   8 reusable components
--   5 custom hooks
--   5 global services
--   Redux store
--   ~1000+ Zod type schemas
--   Theme configuration
+- 8 reusable components
+- 5 custom hooks
+- 5 global services
+- Redux store
+- ~1000+ Zod type schemas
+- Theme configuration
 
 ## Benefits of New Structure
 
@@ -112,7 +112,7 @@ src/
 ```typescript
 import Header from "../../../components/Header/Header";
 import { useAuth } from "../../../hooks/useAuth";
-import { useGetEventsQuery } from "../../../features/events/eventsApi";
+import { useGetEventsQuery } from "../../../features";
 ```
 
 ### After
@@ -123,15 +123,15 @@ import Header from "../../shared/components/Header/Header";
 import { useAuth } from "../../shared/hooks/useAuth";
 
 // From member-app features
-import { useGetEventsQuery } from "../features/events/eventsApi";
+import { useGetEventsQuery } from "../features";
 ```
 
 ## Notes
 
--   All imports have been automatically updated
--   No manual import fixes should be needed
--   Type warnings in Zod schemas are pre-existing and not related to reorganization
--   The build process shows these existing type warnings but the app structure is sound
+- All imports have been automatically updated
+- No manual import fixes should be needed
+- Type warnings in Zod schemas are pre-existing and not related to reorganization
+- The build process shows these existing type warnings but the app structure is sound
 
 ## Next Steps (Optional)
 

@@ -1,9 +1,9 @@
 import { IonContent, IonPage } from "@ionic/react";
 import Header from "../../../shared/components/Header/Header";
 import styles from "./AdminPage.module.css";
-import ActivityWidget from "./widgets/ActivityWidget";
-import QuickActionsWidget from "./widgets/QuickActionsWidget";
-import UserWidget from "./widgets/UserWidget";
+import ActivityWidget from "./widgets/Activity/widget";
+import QuickActionsWidget from "./widgets/QuickActions/widget";
+import UserWidget from "./widgets/User/widget";
 
 const AdminPage: React.FC = () => {
     return (

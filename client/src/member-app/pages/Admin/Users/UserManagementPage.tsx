@@ -1,64 +1,57 @@
-import React, { useState, useMemo } from "react";
 import {
-    IonPage,
-    IonContent,
-    IonList,
-    IonItem,
-    IonLabel,
-    IonProgressBar,
-    IonButton,
-    IonInput,
-    IonToast,
-    IonModal,
-    IonSelect,
-    IonSelectOption,
-    IonChip,
-    IonIcon,
-    IonSearchbar,
-    IonCard,
-    IonCardHeader,
-    IonCardTitle,
-    IonCardContent,
-    IonButtons,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
-    IonText,
-    IonBadge,
-    IonItemSliding,
-    IonItemOptions,
-    IonItemOption,
     IonAlert,
-    IonGrid,
-    IonRow,
-    IonCol,
+    IonBadge,
+    IonButton,
+    IonButtons,
+    IonCard,
+    IonCardContent,
+    IonChip,
+    IonContent,
     IonFab,
     IonFabButton,
+    IonHeader,
+    IonIcon,
+    IonInput,
+    IonItem,
+    IonItemOption,
+    IonItemOptions,
+    IonItemSliding,
+    IonLabel,
+    IonList,
+    IonModal,
+    IonPage,
+    IonProgressBar,
+    IonSearchbar,
+    IonSelect,
+    IonSelectOption,
+    IonText,
+    IonTitle,
+    IonToast,
+    IonToolbar,
 } from "@ionic/react";
 import {
+    addOutline,
     checkmarkCircle,
     closeCircle,
-    personAddOutline,
-    mailOutline,
-    keyOutline,
-    shieldCheckmarkOutline,
-    trashOutline,
-    ellipsisVertical,
-    personOutline,
-    timeOutline,
-    searchOutline,
-    addOutline,
     closeOutline,
-    saveOutline,
+    keyOutline,
     lockClosedOutline,
+    mailOutline,
+    personOutline,
+    saveOutline,
+    searchOutline,
+    shieldCheckmarkOutline,
+    timeOutline,
+    trashOutline,
 } from "ionicons/icons";
+import React, { useMemo, useState } from "react";
 import Header from "../../../../shared/components/Header/Header";
 import {
+    useAddUserMutation,
     useGetUsersQuery,
     useRemoveUserMutation,
-    useAddUserMutation,
     useUpdateUserMutation,
-} from "../../../../member-app/features/users/usersApi";
+} from "../../../../shared/features";
 
 const ROLES = [
     { id: 1, name: "Viewer", color: "medium" },
@@ -82,11 +75,7 @@ interface User {
 }
 
 const UserManagementPage: React.FC = () => {
-    const {
-        data: users,
-        error,
-        isLoading,
-    } = useGetUsersQuery()
+    const { data: users, error, isLoading } = useGetUsersQuery();
     const [deleteUser, { isLoading: isDeleting }] = useRemoveUserMutation();
     const [addUser, { isLoading: isAdding }] = useAddUserMutation();
     const [updateUser, { isLoading: isUpdating }] = useUpdateUserMutation();
@@ -131,7 +120,7 @@ const UserManagementPage: React.FC = () => {
             (user: any) =>
                 user.name.toLowerCase().includes(searchLower) ||
                 user.email.toLowerCase().includes(searchLower) ||
-                user.role?.name.toLowerCase().includes(searchLower)
+                user.role?.name.toLowerCase().includes(searchLower),
         );
     }, [users, searchText]);
 
@@ -339,11 +328,11 @@ const UserManagementPage: React.FC = () => {
                             <IonList>
                                 {filteredUsers.map((user: any) => {
                                     const isActive = isUserActive(
-                                        user.last_active
+                                        user.last_active,
                                     );
                                     const roleColor =
                                         ROLES.find(
-                                            (r) => r.id === user.role?.id
+                                            (r) => r.id === user.role?.id,
                                         )?.color || "medium";
 
                                     return (
@@ -390,7 +379,7 @@ const UserManagementPage: React.FC = () => {
                                                             }}
                                                         />{" "}
                                                         {getLastActiveStatus(
-                                                            user.last_active
+                                                            user.last_active,
                                                         )}
                                                     </p>
                                                 </IonLabel>
@@ -709,7 +698,7 @@ const UserManagementPage: React.FC = () => {
                                             value={selectedRoleId}
                                             onIonChange={(e) =>
                                                 setSelectedRoleId(
-                                                    e.detail.value!
+                                                    e.detail.value!,
                                                 )
                                             }
                                         >

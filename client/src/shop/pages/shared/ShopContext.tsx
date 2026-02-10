@@ -40,8 +40,8 @@ type ShopContextType = {
         duration: number;
     }>>;
 
-    showUserView: boolean;
-    setShowUserView: Dispatch<SetStateAction<boolean>>;
+    viewMode: 'admin' | 'user';
+    setViewMode: Dispatch<SetStateAction<'admin' | 'user'>>;
 };
 
 const ShopContext = createContext<ShopContextType | undefined>(undefined);
@@ -65,7 +65,7 @@ export const ShopProvider = ({ children }: { children: ReactNode }) => {
         duration: 1000,
     });
 
-    const [showUserView, setShowUserView] = useState(false);
+    const [viewMode, setViewMode] = useState<'admin' | 'user'>('user');
 
     useEffect(() => {
         localStorage.setItem("cart", JSON.stringify(cart));
@@ -125,15 +125,25 @@ export const ShopProvider = ({ children }: { children: ReactNode }) => {
 
     return (
         <ShopContext.Provider
-            value={{ addItemToCart, updateCartItemQuantity, emptyCart, cart, setToast, setShowUserView, showUserView }}
+            value={{
+                addItemToCart,
+                updateCartItemQuantity,
+                emptyCart,
+                cart,
+                setToast,
+                setViewMode,
+                viewMode,
+            }}
         >
             {children}
-            <IonToast 
+            <IonToast
                 isOpen={toast.message !== ""}
                 message={toast.message}
                 duration={toast.duration}
                 color={toast.color}
-                onDidDismiss={() => setToast({ message: "", color: "", duration: 1000 })}
+                onDidDismiss={() =>
+                    setToast({ message: "", color: "", duration: 1000 })
+                }
             />
         </ShopContext.Provider>
     );

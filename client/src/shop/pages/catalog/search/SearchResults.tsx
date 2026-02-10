@@ -1,7 +1,7 @@
-import React from "react";
 import { IonText, IonToolbar, useIonRouter } from "@ionic/react";
+import React from "react";
+import { Product } from "../../../../shared/features";
 import { ProductCard } from "../product";
-import { Product } from "../../../../member-app/features/products/productsApi";
 import "./SearchResults.css";
 
 interface SearchResultsProps {
@@ -40,7 +40,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({ filteredProducts }) => {
                         onClick={() =>
                             router.push(
                                 `/shop/?productId=${product.id}`,
-                                "none"
+                                "none",
                             )
                         }
                     />

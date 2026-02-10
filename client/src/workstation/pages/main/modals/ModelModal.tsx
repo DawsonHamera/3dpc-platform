@@ -3,9 +3,9 @@ import {
     useCreateModelMutation,
     useDeleteModelMutation,
     useUpdateModelMutation,
-} from "../../../../member-app/features/models/modelsApi";
-import "./Modal.css";
+} from "../../../../shared/features";
 import WorkstationFileSelector from "../components/WorkstationFileSelector";
+import "./Modal.css";
 
 interface ModelModalProps {
     isOpen: boolean;
@@ -192,8 +192,8 @@ const ModelModal: React.FC<ModelModalProps> = ({ isOpen, onClose, model }) => {
                             {isAdding || isUpdating
                                 ? "Saving..."
                                 : model
-                                ? "Update"
-                                : "Add"}{" "}
+                                  ? "Update"
+                                  : "Add"}{" "}
                             Model
                         </button>
                         {model && (

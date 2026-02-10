@@ -16,25 +16,21 @@ import {
     layersOutline,
 } from "ionicons/icons";
 import React, { useState } from "react";
+import Header from "../../../shared/components/Header/Header";
 import {
     useCreateMaterialMutation,
-    useDeleteMaterialMutation,
-    useGetMaterialsQuery,
-    useUpdateMaterialMutation,
-} from "../../../member-app/features/materials/materialsApi";
-import {
     useCreateModelMutation,
-    useDeleteModelMutation,
-    useGetModelsQuery,
-    useUpdateModelMutation,
-} from "../../../member-app/features/models/modelsApi";
-import {
     useCreatePrinterMutation,
+    useDeleteMaterialMutation,
+    useDeleteModelMutation,
     useDeletePrinterMutation,
+    useGetMaterialsQuery,
+    useGetModelsQuery,
     useGetPrintersQuery,
+    useUpdateMaterialMutation,
+    useUpdateModelMutation,
     useUpdatePrinterMutation,
-} from "../../../member-app/features/printers/printersApi";
-import Header from "../../../shared/components/Header/Header";
+} from "../../../shared/features";
 import { Material, Model, Printer } from "../../../shared/types";
 import MaterialCard from "./components/MaterialCard";
 import ModelCard from "./components/ModelCard";
@@ -50,7 +46,7 @@ const InventoryPage: React.FC = () => {
         "model" | "material" | "printer" | null
     >(null);
     const [editItem, setEditItem] = useState<Model | Material | Printer | null>(
-        null
+        null,
     );
     const [toastMessage, setToastMessage] = useState<string>("");
     const [showToast, setShowToast] = useState(false);
@@ -91,7 +87,7 @@ const InventoryPage: React.FC = () => {
 
     const handleOpenModal = (
         type: "model" | "material" | "printer",
-        item: Model | Material | Printer | null = null
+        item: Model | Material | Printer | null = null,
     ) => {
         setModalType(type);
         setEditItem(item);
@@ -142,7 +138,7 @@ const InventoryPage: React.FC = () => {
     const handleDeleteClick = (
         type: "model" | "material" | "printer",
         id: number,
-        name: string
+        name: string,
     ) => {
         setDeleteTarget({ type, id, name });
         setShowDeleteAlert(true);
@@ -240,27 +236,27 @@ const InventoryPage: React.FC = () => {
                         {modelsLoading
                             ? renderSkeletonCards()
                             : modelsError
-                            ? renderEmptyState("Failed to load models")
-                            : models && models.length > 0
-                            ? models.map((model) => (
-                                  <ModelCard
-                                      key={model.id}
-                                      model={model}
-                                      onEdit={() =>
-                                          handleOpenModal("model", model)
-                                      }
-                                      onDelete={() =>
-                                          handleDeleteClick(
-                                              "model",
-                                              model.id,
-                                              model.name
-                                          )
-                                      }
-                                  />
-                              ))
-                            : renderEmptyState(
-                                  "No models yet. Add your first model!"
-                              )}
+                              ? renderEmptyState("Failed to load models")
+                              : models && models.length > 0
+                                ? models.map((model) => (
+                                      <ModelCard
+                                          key={model.id}
+                                          model={model}
+                                          onEdit={() =>
+                                              handleOpenModal("model", model)
+                                          }
+                                          onDelete={() =>
+                                              handleDeleteClick(
+                                                  "model",
+                                                  model.id,
+                                                  model.name,
+                                              )
+                                          }
+                                      />
+                                  ))
+                                : renderEmptyState(
+                                      "No models yet. Add your first model!",
+                                  )}
                     </div>
                 </div>
 
@@ -287,27 +283,30 @@ const InventoryPage: React.FC = () => {
                         {materialsLoading
                             ? renderSkeletonCards()
                             : materialsError
-                            ? renderEmptyState("Failed to load materials")
-                            : materials && materials.length > 0
-                            ? materials.map((material) => (
-                                  <MaterialCard
-                                      key={material.id}
-                                      material={material}
-                                      onEdit={() =>
-                                          handleOpenModal("material", material)
-                                      }
-                                      onDelete={() =>
-                                          handleDeleteClick(
-                                              "material",
-                                              material.id,
-                                              material.name
-                                          )
-                                      }
-                                  />
-                              ))
-                            : renderEmptyState(
-                                  "No materials yet. Add your first material!"
-                              )}
+                              ? renderEmptyState("Failed to load materials")
+                              : materials && materials.length > 0
+                                ? materials.map((material) => (
+                                      <MaterialCard
+                                          key={material.id}
+                                          material={material}
+                                          onEdit={() =>
+                                              handleOpenModal(
+                                                  "material",
+                                                  material,
+                                              )
+                                          }
+                                          onDelete={() =>
+                                              handleDeleteClick(
+                                                  "material",
+                                                  material.id,
+                                                  material.name,
+                                              )
+                                          }
+                                      />
+                                  ))
+                                : renderEmptyState(
+                                      "No materials yet. Add your first material!",
+                                  )}
                     </div>
                 </div>
 
@@ -334,27 +333,30 @@ const InventoryPage: React.FC = () => {
                         {printersLoading
                             ? renderSkeletonCards()
                             : printersError
-                            ? renderEmptyState("Failed to load printers")
-                            : printers && printers.length > 0
-                            ? printers.map((printer) => (
-                                  <PrinterCard
-                                      key={printer.id}
-                                      printer={printer}
-                                      onEdit={() =>
-                                          handleOpenModal("printer", printer)
-                                      }
-                                      onDelete={() =>
-                                          handleDeleteClick(
-                                              "printer",
-                                              printer.id,
-                                              printer.name
-                                          )
-                                      }
-                                  />
-                              ))
-                            : renderEmptyState(
-                                  "No printers yet. Add your first printer!"
-                              )}
+                              ? renderEmptyState("Failed to load printers")
+                              : printers && printers.length > 0
+                                ? printers.map((printer) => (
+                                      <PrinterCard
+                                          key={printer.id}
+                                          printer={printer}
+                                          onEdit={() =>
+                                              handleOpenModal(
+                                                  "printer",
+                                                  printer,
+                                              )
+                                          }
+                                          onDelete={() =>
+                                              handleDeleteClick(
+                                                  "printer",
+                                                  printer.id,
+                                                  printer.name,
+                                              )
+                                          }
+                                      />
+                                  ))
+                                : renderEmptyState(
+                                      "No printers yet. Add your first printer!",
+                                  )}
                     </div>
                 </div>
 

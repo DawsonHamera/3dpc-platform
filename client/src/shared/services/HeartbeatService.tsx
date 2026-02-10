@@ -1,6 +1,6 @@
 import { useIonRouter } from "@ionic/react";
 import { useEffect } from "react";
-import { useSendHeartbeatMutation } from "../../member-app";
+import { useSendHeartbeatMutation } from "../features";
 
 const useHeartbeat = (userId: any) => {
     const [sendHeartbeatApi] = useSendHeartbeatMutation();

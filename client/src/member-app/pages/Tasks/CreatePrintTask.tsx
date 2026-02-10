@@ -1,28 +1,28 @@
-import React, { useState } from "react";
 import {
-    IonPage,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
-    IonContent,
+    IonButton,
     IonCard,
+    IonCardContent,
     IonCardHeader,
     IonCardTitle,
-    IonCardContent,
+    IonCheckbox,
+    IonContent,
+    IonDatetime,
+    IonHeader,
+    IonInput,
     IonItem,
     IonLabel,
-    IonInput,
-    IonSelect,
-    IonSelectOption,
-    IonCheckbox,
-    IonButton,
-    IonDatetime,
+    IonPage,
+    IonTitle,
+    IonToolbar,
 } from "@ionic/react";
+import React, { useState } from "react";
+import {
+    useCreateTaskMutation,
+    useGetMaterialsQuery,
+    useGetModelsQuery,
+    useGetPrintersQuery,
+} from "../../../shared/features";
 import ItemSelectField from "./ItemSelectField";
-import { useGetPrintersQuery } from "../../../member-app/features/printers/printersApi";
-import { useGetMaterialsQuery } from "../../../member-app/features/materials/materialsApi";
-import { useGetModelsQuery } from "../../../member-app/features/models/modelsApi";
-import { useCreateTaskMutation } from "../../../member-app/features/tasks/tasksApi";
 
 const CreatePrintTask: React.FC = () => {
     const [formData, setFormData] = useState({
@@ -82,12 +82,11 @@ const CreatePrintTask: React.FC = () => {
         }));
     };
 
-       const convertLocalToUTC = (localString: string) => {
-           if (!localString) return "";
-           const date = new Date(localString);
-           return date.toISOString();
-       };
-
+    const convertLocalToUTC = (localString: string) => {
+        if (!localString) return "";
+        const date = new Date(localString);
+        return date.toISOString();
+    };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -184,7 +183,12 @@ const CreatePrintTask: React.FC = () => {
                                         if (value) {
                                             setFormData((prev) => ({
                                                 ...prev,
-                                                scheduled_date: Array.isArray(value) ? value[0] : value || prev.scheduled_date,
+                                                scheduled_date: Array.isArray(
+                                                    value,
+                                                )
+                                                    ? value[0]
+                                                    : value ||
+                                                      prev.scheduled_date,
                                             }));
                                         }
                                     }}

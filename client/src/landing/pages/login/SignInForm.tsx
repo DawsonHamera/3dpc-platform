@@ -1,13 +1,13 @@
 import {
+    IonButton,
+    IonInput,
     IonItem,
     IonLabel,
-    IonInput,
-    IonButton,
-    IonText,
     IonList,
+    IonText,
 } from "@ionic/react";
 import { useState } from "react";
-import { LoginRequest } from "../../../member-app/features/auth/authTypes";
+import { LoginRequest } from "../../../shared/features";
 import { isPWAInstalled } from "../../../shared/hooks/useUtils";
 
 type SignInFormProps = {
@@ -41,7 +41,6 @@ const SignInForm: React.FC<SignInFormProps> = ({
         if (!formState.email) {
             newErrors.email = "Email is required.";
             isValid = false;
-
         } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formState.email)) {
             newErrors.email = "Invalid email format.";
             isValid = false;
@@ -65,18 +64,22 @@ const SignInForm: React.FC<SignInFormProps> = ({
     return (
         <div>
             <h1>Sign In</h1>
-            <IonList lines='none'>
+            <IonList lines="none">
                 <IonItem>
                     <IonLabel position="stacked">Email</IonLabel>
                     <IonInput
                         className={`${
-                            errors.email ? "ion-invalid ion-touched" : "ion-valid"
+                            errors.email
+                                ? "ion-invalid ion-touched"
+                                : "ion-valid"
                         }`}
                         type="email"
                         placeholder="Enter your email"
                         value={formState.email}
                         errorText={errors.email}
-                        onIonInput={(e) => handleChange("email", e.detail.value!)}
+                        onIonInput={(e) =>
+                            handleChange("email", e.detail.value!)
+                        }
                         required
                     />
                 </IonItem>

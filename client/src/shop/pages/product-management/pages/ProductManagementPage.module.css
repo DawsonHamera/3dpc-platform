@@ -1,0 +1,25 @@
+.productManagementContainer {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.productManagementHeader {
+    margin-bottom: 24px;
+}
+
+.productManagementHeader h1 {
+    font-size: 2rem;
+    margin: 0 0 8px 0;
+}
+
+.productManagementHeader p {
+    margin: 0;
+    color: var(--ion-color-medium);
+}
+
+@media (max-width: 768px) {
+    .productManagementContainer {
+        padding: 12px;
+    }
+}

@@ -1,15 +1,33 @@
 .order-management-content {
     --background: var(--ion-color-light-tint);
+    padding: 16px;
 }
 
 .page-container {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 20px 16px;
 }
 
 .page-header {
     margin-bottom: 24px;
+    padding: 32px;
+}
+
+.page-header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.page-header-text {
+    flex: 1;
+}
+
+.shop-link-button {
+    white-space: nowrap;
 }
 
 .page-title {
