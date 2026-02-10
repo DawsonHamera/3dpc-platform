@@ -5,8 +5,14 @@ import { PrismaService } from '../../prisma/prisma.service';
 export class OrdersService {
   constructor(private readonly prisma: PrismaService) {}
 
-  findAllOrders() {
-    return this.prisma.order.findMany();
+  findAllOrders(status?: string, limit?: number, order?: string) {
+    return this.prisma.order.findMany({
+      orderBy: { created_at: order === 'asc' ? 'asc' : 'desc' },
+      where: {
+        status: status ? { equals: status } : undefined,
+      },
+      take: limit,
+    });
   }
 
   findOrderById(id: number) {

@@ -223,6 +223,7 @@ model product {
   id          Int               @id @default(autoincrement())
   name        String            @db.VarChar(255)
   description String?           @db.Text
+  type        String            @db.VarChar(100) @default("general")
   created_at  DateTime?         @default(now())
   updated_at  DateTime?         @updatedAt
   variants    product_variant[]
