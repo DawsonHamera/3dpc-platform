@@ -23,9 +23,14 @@
     padding: 48px 20px;
     background: transparent;
     width: 100%;
+    height: calc(100vh - 63.5px);
 }
 
 .hero-main-content {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
     position: relative;
     z-index: 1;
@@ -48,6 +53,16 @@
     margin: 0 0 24px;
     text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
     line-height: 1.2;
+}
+.hero-subtitle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+    margin: -12px 0 24px;
 }
 
 .hero-description p {

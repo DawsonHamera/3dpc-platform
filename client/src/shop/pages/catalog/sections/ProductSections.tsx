@@ -28,6 +28,7 @@ const ProductSections: React.FC<ProductSectionsProps> = ({
         removeSection,
         addProduct,
         removeProduct,
+        updateSectionType,
     } = useProductSections(sections);
 
     const [isSelectProductModalOpen, setIsSelectProductModalOpen] =
@@ -50,6 +51,7 @@ const ProductSections: React.FC<ProductSectionsProps> = ({
                         setActiveSectionId(sectionId);
                         setIsSelectProductModalOpen(true);
                     }}
+                    onUpdateSectionType={updateSectionType}
                     onRemoveProduct={removeProduct}
                     onRenameSection={renameSection}
                     onRemoveSection={removeSection}

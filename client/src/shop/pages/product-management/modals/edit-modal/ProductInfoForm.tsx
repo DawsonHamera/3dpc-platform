@@ -2,6 +2,8 @@ import {
     IonInput,
     IonItem,
     IonLabel,
+    IonSelect,
+    IonSelectOption,
     IonText,
     IonTextarea,
 } from "@ionic/react";
@@ -12,6 +14,8 @@ interface ProductInfoFormProps {
     description: string;
     onNameChange: (name: string) => void;
     onDescriptionChange: (description: string) => void;
+    type: string;
+    onTypeChange: (type: string) => void;
     disabled?: boolean;
 }
 
@@ -20,6 +24,8 @@ const ProductInfoForm: React.FC<ProductInfoFormProps> = ({
     description,
     onNameChange,
     onDescriptionChange,
+    type,
+    onTypeChange,
     disabled = false,
 }) => {
     return (
@@ -49,6 +55,18 @@ const ProductInfoForm: React.FC<ProductInfoFormProps> = ({
                     rows={3}
                     disabled={disabled}
                 />
+            </IonItem>
+            <IonItem>
+                <IonLabel position="stacked">Type</IonLabel>
+                <IonSelect
+                    value={type}
+                    onIonChange={(e) => onTypeChange(e.detail.value)}
+                    placeholder="Select type"
+                    disabled={disabled}
+                >
+                    <IonSelectOption value="general">General</IonSelectOption>
+                    <IonSelectOption value="teachers">Teachers</IonSelectOption>
+                </IonSelect>
             </IonItem>
         </div>
     );

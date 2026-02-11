@@ -4,16 +4,20 @@ import {
     IonIcon,
     IonInput,
     IonItem,
+    IonLabel,
+    IonSelect,
+    IonSelectOption,
     IonText,
     IonToolbar,
     useIonRouter,
 } from "@ionic/react";
 import {
     addCircleOutline,
-    close,
     create,
+    peopleOutline,
     removeCircle,
     saveOutline,
+    schoolOutline,
 } from "ionicons/icons";
 import { useState } from "react";
 import { Product, Section } from "../../../../shared/features";
@@ -26,6 +30,7 @@ const ProductSection = ({
     onAddProduct,
     onRemoveProduct,
     onRenameSection,
+    onUpdateSectionType,
     onRemoveSection,
 }: {
     section: Section;
@@ -38,6 +43,7 @@ const ProductSection = ({
         variantId: number,
     ) => void;
     onRenameSection: (sectionId: number, newName: string) => void;
+    onUpdateSectionType: (sectionId: number, newType: string) => void;
     onRemoveSection: (sectionId: number) => void;
 }) => {
     const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -85,9 +91,9 @@ const ProductSection = ({
                             >
                                 <IonIcon slot="icon-only" icon={removeCircle} />
                             </IonButton>
-                            <IonButton onClick={() => setIsEditing(false)}>
+                            {/* <IonButton onClick={() => setIsEditing(false)}>
                                 <IonIcon slot="icon-only" icon={close} />
-                            </IonButton>
+                            </IonButton> */}
                         </IonButtons>
                     </IonItem>
                 ) : (
@@ -96,6 +102,24 @@ const ProductSection = ({
                     </IonText>
                 )}
             </IonToolbar>
+            {isEditing && (
+                <IonSelect
+                    slot="end"
+                    value={section.type}
+                    toggleIcon={
+                        section.type === "teachers"
+                            ? schoolOutline
+                            : peopleOutline
+                    }
+                    onIonChange={(e) =>
+                        onUpdateSectionType(section.id, e.detail.value)
+                    }
+                >
+                    <IonLabel>Section Type</IonLabel>
+                    <IonSelectOption value="general">General</IonSelectOption>
+                    <IonSelectOption value="teachers">Teachers</IonSelectOption>
+                </IonSelect>
+            )}
 
             <div className="product-list">
                 {section.items.map((item) => {

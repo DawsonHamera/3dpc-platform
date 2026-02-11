@@ -79,6 +79,13 @@ export function useProductSections(sections: Section[]) {
         deleteSection(sectionId);
     };
 
+    const updateSectionType = (sectionId: number, newType: string) => {
+        updateSection({
+            id: sectionId,
+            data: { type: newType },
+        });
+    }
+
     const renameSection = (sectionId: number, name: string) => {
         updateSection({
             id: sectionId,
@@ -92,5 +99,6 @@ export function useProductSections(sections: Section[]) {
         addSection,
         removeSection,
         renameSection,
+        updateSectionType,
     };
 }

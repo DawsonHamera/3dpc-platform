@@ -1,4 +1,10 @@
-import { IonContent, IonPage, useIonRouter } from "@ionic/react";
+import {
+    IonContent,
+    IonPage,
+    IonSegment,
+    IonSegmentButton,
+    useIonRouter,
+} from "@ionic/react";
 import { gsap } from "gsap";
 import React, { useRef, useState } from "react";
 import { useLocation } from "react-router";
@@ -20,15 +26,19 @@ const CatalogPage: React.FC = () => {
 
     const contentRef = useRef<HTMLIonContentElement>(null);
     const productsRef = useRef<HTMLDivElement>(null);
-
-    const { data: products } = useGetProductsQuery();
-    const { data: sections } = useGetSectionsQuery();
-
-    const { user } = useAuth();
-    const { showUserView, setToast } = useShop();
-
     const location = useLocation();
     const params = new URLSearchParams(location.search);
+    const { viewMode, setToast } = useShop();
+
+    const [type, setType] = useState<string | null | undefined>(
+        viewMode === "admin" ? undefined : params.get("type"),
+    );
+
+    const { data: products } = useGetProductsQuery({ type: type || undefined });
+    const { data: sections } = useGetSectionsQuery({ type: type || undefined });
+
+    const { user } = useAuth();
+
     const router = useIonRouter();
 
     const productId = params.get("productId");
@@ -101,13 +111,36 @@ const CatalogPage: React.FC = () => {
                     ) : (
                         <>
                             <HeroSection
-                                onStartShopping={handleStartShopping}
+                                    onStartShopping={handleStartShopping}
+                                    isTeacher={type === "teachers"}
                             />
+                            {viewMode === "admin" && (
+                                <IonSegment>
+                                    <IonSegmentButton
+                                        value="all"
+                                        onClick={() => setType(undefined)}
+                                    >
+                                        All
+                                    </IonSegmentButton>
+                                    <IonSegmentButton
+                                        value="general"
+                                        onClick={() => setType("general")}
+                                    >
+                                        General
+                                    </IonSegmentButton>
+                                    <IonSegmentButton
+                                        value="teachers"
+                                        onClick={() => setType("teachers")}
+                                    >
+                                        Teachers
+                                    </IonSegmentButton>
+                                </IonSegment>
+                            )}
                             <div ref={productsRef} className="ion-padding">
                                 <ProductSections
                                     sections={sections}
                                     products={products}
-                                    isAdmin={isAdmin && !showUserView}
+                                    isAdmin={isAdmin && viewMode !== "user"}
                                 />
                             </div>
                         </>

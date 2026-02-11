@@ -32,8 +32,8 @@ export const productsApi = createApi({
     baseQuery: baseQuery,
     tagTypes: ["Products", "Sections"],
     endpoints: (builder) => ({
-        getProducts: builder.query<Product[], void>({
-            query: () => "/products",
+        getProducts: builder.query<Product[], { type?: string } | void>({
+            query: ({ type } = {}) => `/products${type ? `?type=${type}` : ""}`,
             providesTags: (result) =>
                 result
                     ? [
@@ -45,8 +45,8 @@ export const productsApi = createApi({
                       ]
                     : [{ type: "Products", id: "LIST" }],
         }),
-        getSections: builder.query<Section[], void>({
-            query: () => "/products/sections",
+        getSections: builder.query<Section[], { type?: string } | void>({
+            query: ({ type } = {}) => `/products/sections${type ? `?type=${type}` : ""}`,
             providesTags: (result) =>
                 result
                     ? [
