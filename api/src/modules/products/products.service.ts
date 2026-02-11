@@ -5,14 +5,17 @@ import { PrismaService } from '../../prisma/prisma.service';
 export class ProductsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  findAllProducts() {
+  findAllProducts(type?: string) {
     return this.prisma.product.findMany({
+      where: { type: type || undefined },
       include: { variants: { include: { image: true } } },
     });
   }
 
-  findAllSections() {
-    return this.prisma.section.findMany();
+  findAllSections(type?: string) {
+    return this.prisma.section.findMany({
+      where: { type: type || undefined },
+    });
   }
 
   findProductById(id: number) {

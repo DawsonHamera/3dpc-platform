@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { Public } from '../../common/decorators/public.decorator';
@@ -17,14 +18,14 @@ export class ProductsController {
 
   @Get()
   @Public()
-  findAll() {
-    return this.productsService.findAllProducts();
+  findAll(@Query('type') type: string) {
+    return this.productsService.findAllProducts(type);
   }
 
   @Get('/sections')
   @Public()
-  findAllSections() {
-    return this.productsService.findAllSections();
+  findAllSections(@Query('type') type: string) {
+    return this.productsService.findAllSections(type);
   }
 
   @Get(':id/variants/:variantId')
