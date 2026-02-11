@@ -141,16 +141,16 @@ model file {
 // Inventory
 
 model printer {
-  id                 Int            @id @default(autoincrement())
-  name               String         @db.VarChar(255)
-  model              String         @db.VarChar(255)
-  image_file_id      Int?
-  location           String?        @db.VarChar(255)
-  status             printer_status @default(available)
+  id                    Int            @id @default(autoincrement())
+  name                  String         @db.VarChar(255)
+  model                 String         @db.VarChar(255)
+  image_file_id         Int?
+  location              String?        @db.VarChar(255)
+  status                printer_status @default(available)
   control_interface_url String?        @db.VarChar(255)
-  loaded_material_id Int?
-  created_at         DateTime?      @default(now())
-  updated_at         DateTime?      @updatedAt
+  loaded_material_id    Int?
+  created_at            DateTime?      @default(now())
+  updated_at            DateTime?      @updatedAt
 
   loaded_material material? @relation(fields: [loaded_material_id], references: [id], onDelete: SetNull, onUpdate: NoAction)
   image_file      file?     @relation(fields: [image_file_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
@@ -214,6 +214,7 @@ model task {
 model section {
   id         Int       @id @default(autoincrement())
   name       String    @db.VarChar(100)
+  type       String    @default("general") @db.VarChar(100)
   items      Json      @db.Json
   created_at DateTime? @default(now())
   updated_at DateTime? @updatedAt
@@ -223,7 +224,7 @@ model product {
   id          Int               @id @default(autoincrement())
   name        String            @db.VarChar(255)
   description String?           @db.Text
-  type        String            @db.VarChar(100) @default("general")
+  type        String            @default("general") @db.VarChar(100)
   created_at  DateTime?         @default(now())
   updated_at  DateTime?         @updatedAt
   variants    product_variant[]
