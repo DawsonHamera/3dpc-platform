@@ -14,8 +14,8 @@ import { ProductModal } from "../catalog";
 import { ShopHeader } from "../shared";
 import { EmptyProductsState } from "./EmptyPage";
 import styles from "./Page.module.css";
-import { ProductsList } from "./ProductsList";
-import { useProductManagement } from "./useManagement";
+import { ProductsList } from "./components/ProductsList/ProductsList";
+import { useProductManagement } from "./hooks/useProductManagement";
 
 const ProductManagementPage: React.FC = () => {
     const {

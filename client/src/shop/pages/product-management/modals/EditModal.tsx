@@ -51,6 +51,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
 
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
+    const [type, setType] = useState("general");
     const [variants, setVariants] = useState<LocalVariant[]>([]);
     const [editingVariantIndex, setEditingVariantIndex] = useState<
         number | null
@@ -71,6 +72,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
             if (product) {
                 setName(product.name);
                 setDescription(product.description || "");
+                setType(product.type || "general");
                 setVariants(
                     product.variants.map((v) => ({
                         id: v.id,
@@ -87,6 +89,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
             } else {
                 setName("");
                 setDescription("");
+                setType("general");
                 setVariants([]);
             }
             setEditingVariantIndex(null);
@@ -153,13 +156,14 @@ const ProductModal: React.FC<ProductModalProps> = ({
             if (isEditMode) {
                 await updateProduct({
                     id: product.id.toString(),
-                    data: { name, description },
+                    data: { name, description, type },
                 }).unwrap();
                 productId = product.id;
             } else {
                 const newProduct = await createProduct({
                     name,
                     description,
+                    type,
                 }).unwrap();
                 productId = newProduct.id;
             }
@@ -239,6 +243,8 @@ const ProductModal: React.FC<ProductModalProps> = ({
                         name={name}
                         description={description}
                         onNameChange={setName}
+                        onTypeChange={setType}
+                        type={type}
                         onDescriptionChange={setDescription}
                         disabled={isSaving}
                     />
