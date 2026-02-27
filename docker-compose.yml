@@ -115,7 +115,6 @@ services:
       - ./database/.env
     volumes:
       - db_data:/var/lib/mysql
-      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
       - ./database/my.cnf:/etc/mysql/conf.d/custom.cnf:ro
     networks:
       - 3dpc-network

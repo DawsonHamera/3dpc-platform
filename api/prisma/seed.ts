@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import * as bcrypt from 'bcryptjs';
 const prisma = new PrismaClient();
 
 async function main() {
@@ -25,12 +26,16 @@ async function main() {
         },
       ],
     });
+    const adminPassword = process.env.SEED_ADMIN_PASSWORD;
+    if (!adminPassword) {
+      throw new Error('SEED_ADMIN_PASSWORD environment variable is required');
+    }
+    const password_hash = await bcrypt.hash(adminPassword, 12);
     await prisma.user.create({
       data: {
         name: 'Admin User',
         email: 'admin@example.com',
-        password_hash:
-          '$2y$10$gIyE5T./wbxFkadHiDyYnu7thjYuEdXUC0glRU5r2Hc327GYwdg5O',
+        password_hash,
         role: {
           connect: { id: 3 }, // assuming role with id 3 is admin
         },
