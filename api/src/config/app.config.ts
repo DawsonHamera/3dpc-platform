@@ -8,7 +8,10 @@ export default registerAs('app', () => ({
   maxFileSize: parseInt(process.env.MAX_FILE_SIZE || '50000000', 10),
   bcryptRounds: parseInt(process.env.BCRYPT_ROUNDS || '12', 10),
   rateLimitWindowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS || '900000', 10),
-  rateLimitMaxRequests: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS || '100', 10),
-  streamApiKey: process.env.STREAM_API_KEY || 'ad4nfgtav89e',
-  streamApiSecret: process.env.STREAM_API_SECRET || '8pecpv6tv7qmegeyjvyuja3fjce94a9t9urptama22r885acnc2yjh2qyzvsfpjh',
+  rateLimitMaxRequests: parseInt(
+    process.env.RATE_LIMIT_MAX_REQUESTS || '100',
+    10,
+  ),
+  streamApiKey: process.env.STREAM_API_KEY,
+  streamApiSecret: process.env.STREAM_API_SECRET,
 }));

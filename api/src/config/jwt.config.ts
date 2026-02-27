@@ -1,6 +1,6 @@
 import { registerAs } from '@nestjs/config';
 
 export default registerAs('jwt', () => ({
-  secret: process.env.JWT_SECRET || 'jrewn423432bvklgrer23faefew',
-  expiresIn: '30d',
+  secret: process.env.JWT_SECRET,
+  expiresIn: process.env.JWT_EXPIRES_IN || '1h',
 }));

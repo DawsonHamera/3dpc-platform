@@ -121,7 +121,7 @@ export class AuthService {
           details: {
             message: 'Failed login attempt - incorrect password',
             user: user,
-            ip_address: ipAddress
+            ip_address: ipAddress,
           },
         },
       });
