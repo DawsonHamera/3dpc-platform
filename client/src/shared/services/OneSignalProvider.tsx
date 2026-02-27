@@ -33,7 +33,6 @@ export const OneSignalProvider: React.FC<{ children: React.ReactNode }> = ({
     const [isSubscribed, setIsSubscribed] = useState(true);
     const [loading, setLoading] = useState(false);
     const [initialized, setInitialized] = useState(false);
-    const OneSignalAppId = "eac957b4-4bc6-4ee1-9ff1-bf1678ccea3a";
 
     // Initialize OneSignal on mount
     useEffect(() => {
@@ -54,7 +53,7 @@ export const OneSignalProvider: React.FC<{ children: React.ReactNode }> = ({
 
                     // Use any type to bypass TypeScript issues with OneSignal config
                     await (OneSignal as any).init({
-                        appId: OneSignalAppId,
+                        appId: process.env.ONESIGNAL_APP_ID,
                         allowLocalhostAsSecureOrigin: false,
 
                         // Use standard OneSignal service worker paths
