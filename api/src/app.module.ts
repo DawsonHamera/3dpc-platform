@@ -7,7 +7,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { RolesGuard } from './common/guards/roles.guards';
 import appConfig from './config/app.config';
-import databaseConfig from './config/database.config';
 import jwtConfig from './config/jwt.config';
 import { ActivityModule } from './modules/activity/activity.module';
 import { AuthModule } from './modules/auth/auth.module';
@@ -28,7 +27,7 @@ import { PrismaModule } from './prisma/prisma.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [appConfig, databaseConfig, jwtConfig],
+      load: [appConfig, jwtConfig],
     }),
     ServeStaticModule.forRoot({
       rootPath: join(process.cwd(), 'uploads'),
