@@ -111,25 +111,25 @@ const EventHeader: React.FC<EventHeaderProps> = ({ event, children }) => {
                         <IonIcon color="primary" icon={location} />
                         <p>{event.location}</p>
                     </div>
-                </div>
-                <div className="time-range">
-                    <p>
-                        {new Date(event.start_time).toLocaleTimeString(
-                            "en-US",
-                            {
-                                hour: "2-digit",
-                                minute: "2-digit",
-                            },
-                        )}{" "}
-                    </p>
-                    <p>|</p>
-                    <p>
-                        {" "}
-                        {new Date(event.end_time).toLocaleTimeString("en-US", {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                        })}
-                    </p>
+                    <div className="time-range">
+                        <p>
+                            {new Date(event.start_time).toLocaleTimeString(
+                                "en-US",
+                                {
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                },
+                            )}
+                            {" - "}
+                            {new Date(event.end_time).toLocaleTimeString(
+                                "en-US",
+                                {
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                },
+                            )}
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
