@@ -97,6 +97,7 @@ const EventSettingsModal: React.FC<EventSettingsModalProps> = ({
                     onClose();
                 }}
             />
+            
             <IonAlert
                 isOpen={deleteEventAlert}
                 onDidDismiss={() => setDeleteEventAlert(false)}

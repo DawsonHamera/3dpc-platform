@@ -139,6 +139,7 @@ export class EventsService {
   }
 
   update(id: number, data: any) {
+    console.log('Updating event with data:', data);
     if (data.image_file_id) {
       data.image_file = { connect: { id: data.image_file_id } };
       delete data.image_file_id;

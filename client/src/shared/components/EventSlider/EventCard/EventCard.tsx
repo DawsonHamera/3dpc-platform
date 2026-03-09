@@ -33,7 +33,7 @@ type ExtendedAttendanceStatus =
 type EventCardProps = {
     event: Event;
     editMode?: boolean;
-    editEvent?: (event: any) => void;
+    editEvent?: (id: any) => void;
 };
 
 const EventCard: React.FC<EventCardProps> = ({
@@ -92,7 +92,7 @@ const EventCard: React.FC<EventCardProps> = ({
                 {editMode && (
                     <div className="edit-badge">
                         <IonIcon
-                            onClick={() => editEvent?.(event)}
+                            onClick={() => editEvent?.(event.id)}
                             color="primary"
                             icon={settingsOutline}
                             size="large"

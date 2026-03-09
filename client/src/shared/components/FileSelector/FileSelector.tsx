@@ -9,14 +9,15 @@ import ModelFilePreview from "../ModelFilePreview/ModelFilePreview";
 const IMAGE_SIZE = 64;
 
 type Props = {
+    fileId?: number;
     filter?: (file: File) => boolean;
-    onChange: (file: File) => void;
+    onChange: (id: number) => void;
 };
 
-const FileSelector: React.FC<Props> = ({ filter = () => true, onChange }) => {
+const FileSelector: React.FC<Props> = ({ fileId, filter = () => true, onChange }) => {
     const { data: files, isLoading, refetch } = useGetFilesQuery();
     const [addFile] = useAddFileMutation();
-    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const [selectedFileId, setSelectedFileId] = useState<number | null>(fileId || null);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const filteredFiles = useMemo(
@@ -35,9 +36,8 @@ const FileSelector: React.FC<Props> = ({ filter = () => true, onChange }) => {
 
     const handleChange = (file: File) => {
         console.log("input!");
-
-        setSelectedFile(file);
-        onChange(file);
+        setSelectedFileId(file.id);
+        onChange(file.id);
     };
 
     const handleFileInputClick = () => {
@@ -65,7 +65,7 @@ const FileSelector: React.FC<Props> = ({ filter = () => true, onChange }) => {
     };
 
     const renderMedia = (file: File) => {
-        const isSelected = selectedFile?.id === file.id;
+        const isSelected = selectedFileId === file.id;
 
         if (file.mime_type?.startsWith("image/")) {
             return (

@@ -1,19 +1,27 @@
 import {
     IonContent,
-    IonIcon,
     IonPage,
     IonRefresher,
     IonRefresherContent,
 } from "@ionic/react";
-import { add } from "ionicons/icons";
 import { useState } from "react";
 import EventCard from "../../../shared/components/EventSlider/EventCard/EventCard";
 import Header from "../../../shared/components/Header/Header";
-import { Event, useGetEventsQuery } from "../../../shared/features";
+import ResourceManager from "../../../shared/components/ResourceManager/ResourceManager";
+import {
+    Event,
+    useCreateEventMutation,
+    useDeleteEventMutation,
+    useGetEventsQuery,
+    useUpdateEventMutation,
+} from "../../../shared/features";
 import { useAuth } from "../../../shared/hooks/useAuth";
+import EventForm from "./EventForm";
 import EventSettingsModal from "./EventSettingsModel";
 import EventsCreateModal from "./EventsCreateModal";
+import NotificationSettings from "./NotificationSettings";
 import "./EventsPage.css";
+import EventVerification from "./EventVerification";
 
 const EventsPage: React.FC = () => {
     const {
@@ -28,6 +36,10 @@ const EventsPage: React.FC = () => {
     const [showEventEditor, setShowEventEditor] = useState(false);
     const [showEventSettings, setShowEventSettings] = useState(false);
     const [showEventCreate, setShowEventCreate] = useState(false);
+
+    const [createEvent] = useCreateEventMutation();
+    const [updateEvent] = useUpdateEventMutation();
+    const [deleteEvent] = useDeleteEventMutation();
 
     const handleRefresh = (e: CustomEvent) => {
         refetch();
@@ -61,40 +73,82 @@ const EventsPage: React.FC = () => {
                 <IonRefresher slot="fixed" onIonRefresh={handleRefresh}>
                     <IonRefresherContent></IonRefresherContent>
                 </IonRefresher>
-                <div className="events-page-content">
-                    {user?.role.name === "admin" && (
-                        <div
-                            className="new-event-card"
-                            onClick={() => setShowEventCreate(true)}
-                        >
-                            <IonIcon icon={add} style={{ margin: "0 10px" }} />
-                            <h1 style={{ margin: 0 }}> New event</h1>
-                        </div>
+                <ResourceManager
+                    items={events?.upcoming || []}
+                    renderItem={(event, triggerEdit, triggerDelete, editAccess) => (
+                        <EventCard
+                            key={event.id}
+                            event={event}
+                            editMode={editAccess}
+                            editEvent={triggerEdit}
+                        />
                     )}
-                    {events?.upcoming?.map((event: Event) => (
-                        <div key={event.id}>
-                            <EventCard
-                                key={event.id}
-                                event={event}
-                                editMode={user?.role.name === "admin"}
-                                editEvent={handleEditEvent}
-                            />
-                        </div>
-                    ))}
-                    {events?.past && events.past.length > 0 && (
-                        <span className="section-divider">Past Events</span>
+                    Form={EventForm}
+                    editAccess={user?.role.name === "admin"}
+                    customSettings={[
+                        {
+                            label: "Notifications",
+                            View: (id: number) => (
+                                <NotificationSettings id={id} />
+                            ),
+                        },
+                        {
+                            label: "Verification",
+                            View: (id: number) => <EventVerification id={id} />,
+                        },
+                    ]}
+                    onCreate={(data) => {
+                        createEvent(data).then(() => refetch());
+                    }}
+                    onUpdate={(id, data) => {
+                        updateEvent({ id, data }).then(() => refetch());
+                    }}
+                    onDelete={(id) => {
+                        deleteEvent(id).then(() => refetch());
+                    }}
+                />
+                {events?.past && events.past.length > 0 && (
+                    <span className="section-divider">Past Events</span>
+                )}
+                <ResourceManager
+                    items={events.past || []}
+                    renderItem={(
+                        event,
+                        triggerEdit,
+                        triggerDelete,
+                        editAccess,
+                    ) => (
+                        <EventCard
+                            key={event.id}
+                            event={event}
+                            editMode={editAccess}
+                            editEvent={triggerEdit}
+                        />
                     )}
-                    {events?.past?.map((event: Event) => (
-                        <div key={event.id}>
-                            <EventCard
-                                key={event.id}
-                                event={event}
-                                editMode={user?.role.name === "admin"}
-                                editEvent={handleEditEvent}
-                            />
-                        </div>
-                    ))}
-                </div>
+                    Form={EventForm}
+                    editAccess={user?.role.name === "admin"}
+                    customSettings={[
+                        {
+                            label: "Notifications",
+                            View: (id: number) => (
+                                <NotificationSettings id={id} />
+                            ),
+                        },
+                        {
+                            label: "Verification",
+                            View: (id: number) => <EventVerification id={id} />,
+                        },
+                    ]}
+                    onCreate={(data) => {
+                        createEvent(data).then(() => refetch());
+                    }}
+                    onUpdate={(id, data) => {
+                        updateEvent({ id, data }).then(() => refetch());
+                    }}
+                    onDelete={(id) => {
+                        deleteEvent(id).then(() => refetch());
+                    }}
+                />
             </IonContent>
             <EventSettingsModal
                 activeEvent={activeEvent}
