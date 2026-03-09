@@ -154,27 +154,41 @@ const EventDetailsPage: React.FC = () => {
                             Mark as Attended
                         </IonButton>
                     )}
-                <IonList
-                    style={{
+               {event.attendances.length > 0 && (
+                    <IonList lines="none"
+                        style={{
+                            border: "1px solid var(--ion-color-light-shade)",
+                            borderRadius: "20px",
+                            margin: "20px",
+                        }}
+                    >
+                        {event.attendances.map((attendance: any) => (
+                            <IonItem key={attendance.id}>
+                                <IonLabel>
+                                    <b>{attendance.user.name}</b>
+                                </IonLabel>
+                                <IonLabel slot="end">
+                                    {renderAttendanceStatus(
+                                        attendance.status,
+                                        event.end_time,
+                                    )}
+                                </IonLabel>
+                            </IonItem>
+                        ))}
+                    </IonList>
+                )}
+                {event.attendances.length === 0 && (
+                    <div style={{
                         border: "1px solid var(--ion-color-light-shade)",
                         borderRadius: "20px",
                         margin: "20px",
-                    }}
-                >
-                    {event.attendances.map((attendance: any) => (
-                        <IonItem key={attendance.id}>
-                            <IonLabel>
-                                <b>{attendance.user.name}</b>
-                            </IonLabel>
-                            <IonLabel slot="end">
-                                {renderAttendanceStatus(
-                                    attendance.status,
-                                    event.end_time,
-                                )}
-                            </IonLabel>
-                        </IonItem>
-                    ))}
-                </IonList>
+                        display: "flex",
+                        justifyContent: "center",
+                        alignContent: "center"
+                    }}>
+                        <p>No one has registered for this event yet.</p>
+                    </div>
+                )}
             </IonContent>
             <IonModal
                 isOpen={scannerOpen}

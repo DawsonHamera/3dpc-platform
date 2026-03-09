@@ -23,10 +23,10 @@
 }
 
 .section-divider {
-    width: 100%;
+    width: 90%;
     font-weight: 600;
     color: var(--ion-color-primary);
-    margin: 4rem 0 1rem 0;
+    margin: 4rem auto 0 auto;
     border-bottom: 2px dashed var(--ion-color-primary);
     padding-bottom: 0.3rem;
 }

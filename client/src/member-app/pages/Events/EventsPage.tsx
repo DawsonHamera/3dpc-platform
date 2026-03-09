@@ -17,8 +17,8 @@ import {
 import { useAuth } from "../../../shared/hooks/useAuth";
 import EventCard from "./EventCard/EventCard";
 import EventForm from "./EventForm";
-import "./EventsPage.css";
 import EventVerification from "./EventVerification";
+import "./EventsPage.css";
 import NotificationSettings from "./NotificationSettings";
 
 const EventsPage: React.FC = () => {
@@ -111,7 +111,7 @@ const EventsPage: React.FC = () => {
                     }}
                 />
                 {events?.past && events.past.length > 0 && (
-                    <span className="section-divider">Past Events</span>
+                    <div className="section-divider">Past Events</div>
                 )}
                 <ResourceManager
                     items={events?.past || []}
