@@ -3,8 +3,8 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Autoplay, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import EventCard from "../../../member-app/pages/Events/EventCard/EventCard";
 import { Event, useGetEventsQuery } from "../../features";
-import EventCard from "./EventCard/EventCard";
 import "./EventSlider.css";
 
 type EventSliderProps = {

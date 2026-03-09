@@ -5,7 +5,6 @@ import {
     IonRefresherContent,
 } from "@ionic/react";
 import { useState } from "react";
-import EventCard from "../../../shared/components/EventSlider/EventCard/EventCard";
 import Header from "../../../shared/components/Header/Header";
 import ResourceManager from "../../../shared/components/ResourceManager/ResourceManager";
 import {
@@ -16,12 +15,11 @@ import {
     useUpdateEventMutation,
 } from "../../../shared/features";
 import { useAuth } from "../../../shared/hooks/useAuth";
+import EventCard from "./EventCard/EventCard";
 import EventForm from "./EventForm";
-import EventSettingsModal from "./EventSettingsModel";
-import EventsCreateModal from "./EventsCreateModal";
-import NotificationSettings from "./NotificationSettings";
 import "./EventsPage.css";
 import EventVerification from "./EventVerification";
+import NotificationSettings from "./NotificationSettings";
 
 const EventsPage: React.FC = () => {
     const {
@@ -29,7 +27,12 @@ const EventsPage: React.FC = () => {
         isLoading,
         isError,
         refetch,
-    } = useGetEventsQuery({ groupBy: "time-relative", sort: "start_time:asc" });
+    } = useGetEventsQuery({ groupBy: "time-relative", sort: "start_time:asc" }) as {
+        data: { upcoming: Event[]; past: Event[] } | undefined;
+        isLoading: boolean;
+        isError: boolean;
+        refetch: () => void;
+    };
 
     const user = useAuth().user;
     const [activeEvent, setActiveEvent] = useState<Event | null>(null);
@@ -111,7 +114,7 @@ const EventsPage: React.FC = () => {
                     <span className="section-divider">Past Events</span>
                 )}
                 <ResourceManager
-                    items={events.past || []}
+                    items={events?.past || []}
                     renderItem={(
                         event,
                         triggerEdit,
@@ -150,15 +153,6 @@ const EventsPage: React.FC = () => {
                     }}
                 />
             </IonContent>
-            <EventSettingsModal
-                activeEvent={activeEvent}
-                open={showEventSettings}
-                onClose={() => setShowEventSettings(false)}
-            />
-            <EventsCreateModal
-                isOpen={showEventCreate}
-                onClose={() => setShowEventCreate(false)}
-            />
         </IonPage>
     );
 };

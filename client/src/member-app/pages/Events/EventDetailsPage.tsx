@@ -18,7 +18,6 @@ import {
 } from "@ionic/react";
 import { useState } from "react";
 import { useParams } from "react-router";
-import EventHeader from "../../../shared/components/EventSlider/EventCard/EventHeader";
 import Header from "../../../shared/components/Header/Header";
 import QRCodeScanner from "../../../shared/components/QRCode/QRCodeScanner";
 import {
@@ -26,6 +25,7 @@ import {
     useGetEventQuery,
     useGetUserAttendanceQuery,
 } from "../../../shared/features";
+import EventHeader from "./EventCard/EventHeader";
 
 const EventDetailsPage: React.FC = () => {
     const { eventId } = useParams<{ eventId: string }>();

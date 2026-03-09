@@ -11,9 +11,10 @@ import {
     IonModal,
     IonSegment,
     IonSegmentButton,
+    IonTitle,
     IonToolbar,
 } from "@ionic/react";
-import { addOutline, closeOutline } from "ionicons/icons";
+import { addOutline, closeOutline, trash } from "ionicons/icons";
 import { useState } from "react";
 import styles from "./modal.module.css";
 
@@ -154,14 +155,20 @@ const ResourceManager: React.FC<props> = ({
             >
                 <IonHeader>
                     <IonToolbar color="primary">
-                        {/* <IonTitle>
-                           
-                        </IonTitle> */}
+                        <IonTitle>
+                           {currentItem?.title || currentItem?.name || "New Item"}
+                        </IonTitle>
                         <IonButtons slot="end">
+                             <IonButton onClick={() => remove(currentItem?.id)}>
+                            <IonIcon icon={trash} />
+                        </IonButton>
                             <IonButton onClick={() => close()}>
                                 <IonIcon icon={closeOutline} />
                             </IonButton>
                         </IonButtons>
+                    </IonToolbar>
+                </IonHeader>
+                <IonToolbar>
                         <IonSegment
                             value={currentSetting}
                             onIonChange={(e) =>
@@ -186,7 +193,6 @@ const ResourceManager: React.FC<props> = ({
                                 ))}
                         </IonSegment>
                     </IonToolbar>
-                </IonHeader>
                 <div className={styles.content}>
                     {currentSetting === "default" && (
                         <Form

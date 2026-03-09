@@ -12,14 +12,13 @@ import {
 } from "@ionic/react";
 import { settingsOutline } from "ionicons/icons";
 import { useState } from "react";
-import { useAttendEventMutation } from "../../../features";
-import { useAuth } from "../../../hooks/useAuth";
-import { Attendance } from "../../../types";
-import AvatarStack from "../../AvatarStack/AvatarStack";
-import QRCodeScanner from "../../QRCode/QRCodeScanner";
+import AvatarStack from "../../../../shared/components/AvatarStack/AvatarStack";
+import QRCodeScanner from "../../../../shared/components/QRCode/QRCodeScanner";
+import { Event, useAttendEventMutation } from "../../../../shared/features";
+import { useAuth } from "../../../../shared/hooks/useAuth";
+import { Attendance } from "../../../../shared/types";
 import "./EventCard.css";
 import EventHeader from "./EventHeader";
-import { Event } from "../../../features"
 
 // Extend the type to include "rsvp" if it's a valid status
 type ExtendedAttendanceStatus =

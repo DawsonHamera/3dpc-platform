@@ -7,7 +7,7 @@ import {
     pricetags,
     trophy,
 } from "ionicons/icons";
-import { useGetUserAttendanceQuery } from "../../../features";
+import { useGetUserAttendanceQuery } from "../../../../shared/features";
 import "./EventHeader.css";
 
 type EventHeaderProps = {
@@ -75,7 +75,7 @@ const EventHeader: React.FC<EventHeaderProps> = ({ event, children }) => {
                     </p>
                     <h2>{new Date(event.start_time).getDate()}</h2>
                 </div>
-                <img src={event.image_file?.path} />
+                <img src={event.image_file?.path} className="image" />
 
                 {/* Status chips */}
                 {new Date() >= new Date(event.start_time) &&
