@@ -1,5 +1,9 @@
 import { IonIcon, useIonRouter } from "@ionic/react";
-import { arrowForwardCircleOutline, calendarOutline, settingsOutline } from "ionicons/icons";
+import {
+    arrowForwardCircleOutline,
+    calendarOutline,
+    settingsOutline,
+} from "ionicons/icons";
 import AvatarStack from "../../../shared/components/AvatarStack/AvatarStack";
 import { Event } from "../../../shared/features";
 import "./EventCardSmall.css";
@@ -10,7 +14,11 @@ type EventCardProps = {
     editEvent?: (id: any) => void;
 };
 
-const EventCardSmall: React.FC<EventCardProps> = ({ event, editMode, editEvent }) => {
+const EventCardSmall: React.FC<EventCardProps> = ({
+    event,
+    editMode,
+    editEvent,
+}) => {
     const router = useIonRouter();
 
     const eventDate = new Date(event.start_time);
@@ -23,19 +31,30 @@ const EventCardSmall: React.FC<EventCardProps> = ({ event, editMode, editEvent }
 
     return (
         <div className="event-card-small">
-            <div className="event-card-image" style={{ backgroundImage: bgImage }} />
+            <div
+                className="event-card-image"
+                style={{ backgroundImage: bgImage }}
+            />
 
             <div className="event-card-small-content">
                 <div className="event-top">
                     <div className="date-badge-small">
-                        <IonIcon icon={calendarOutline} className="calendar-icon" />
-                        <span className="date-text">{month} {day}</span>
+                        <IonIcon
+                            icon={calendarOutline}
+                            className="calendar-icon"
+                        />
+                        <span className="date-text">
+                            {month} {day}
+                        </span>
                     </div>
 
                     {editMode && (
                         <div
                             className="edit-badge-small"
-                            onClick={(e) => { e.stopPropagation(); editEvent?.(event.id); }}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                editEvent?.(event.id);
+                            }}
                         >
                             <IonIcon icon={settingsOutline} />
                         </div>
@@ -47,10 +66,18 @@ const EventCardSmall: React.FC<EventCardProps> = ({ event, editMode, editEvent }
 
                     <div className="event-footer-small">
                         <AvatarStack
-                            avatars={event.attendances.map((a: any) => ({ id: a.user.id, name: a.user.name }))}
+                            avatars={event.attendances.map((a: any) => ({
+                                id: a.user.id,
+                                name: a.user.name,
+                            }))}
                             maxVisible={3}
                         />
-                        <div className="view-details-btn" onClick={() => router.push(`/dashboard/events/${event.id}`)}>
+                        <div
+                            className="view-details-btn"
+                            onClick={() =>
+                                router.push(`/dashboard/events/${event.id}`)
+                            }
+                        >
                             <IonIcon icon={arrowForwardCircleOutline} />
                         </div>
                     </div>
