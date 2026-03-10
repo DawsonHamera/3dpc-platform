@@ -1,0 +1,28 @@
+.description {
+    padding: 0 20px;
+}
+
+.checkInButton {
+    margin: 20px;
+}
+
+.attendanceList {
+    border: 1px solid var(--ion-color-light-shade);
+    border-radius: 20px;
+    margin: 20px;
+}
+
+.emptyState {
+    border: 1px solid var(--ion-color-light-shade);
+    border-radius: 20px;
+    margin: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    text-align: center;
+}
+
+.codeInput {
+    margin: 20px;
+}

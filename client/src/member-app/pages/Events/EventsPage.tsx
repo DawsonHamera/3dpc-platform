@@ -15,6 +15,7 @@ import {
     useUpdateEventMutation,
 } from "../../../shared/features";
 import { useAuth } from "../../../shared/hooks/useAuth";
+import { toUTC } from "../../../shared/utility/datetime";
 import EventCard from "./EventCard/EventCard";
 import EventForm from "./EventForm";
 import EventVerification from "./EventVerification";
@@ -27,8 +28,17 @@ const EventsPage: React.FC = () => {
         isLoading,
         isError,
         refetch,
-    } = useGetEventsQuery({ groupBy: "time-relative", sort: "start_time:asc" }) as {
-        data: { upcoming: Event[]; past: Event[] } | undefined;
+    } = useGetEventsQuery({
+        groupBy: "time-relative",
+        sort: "start_time:asc",
+    }) as {
+        data:
+            | {
+                  upcoming: Event[] | undefined;
+                  current: Event[] | undefined;
+                  past: Event[] | undefined;
+              }
+            | undefined;
         isLoading: boolean;
         isError: boolean;
         refetch: () => void;
@@ -43,6 +53,21 @@ const EventsPage: React.FC = () => {
     const [createEvent] = useCreateEventMutation();
     const [updateEvent] = useUpdateEventMutation();
     const [deleteEvent] = useDeleteEventMutation();
+
+    /**
+     * Convert local datetime fields to UTC before sending to API
+     * DATETIME STANDARD: Client sends UTC ISO strings to API
+     */
+    const convertEventDateTimesToUTC = (data: any) => {
+        const converted = { ...data };
+        if (converted.start_time) {
+            converted.start_time = toUTC(converted.start_time);
+        }
+        if (converted.end_time) {
+            converted.end_time = toUTC(converted.end_time);
+        }
+        return converted;
+    };
 
     const handleRefresh = (e: CustomEvent) => {
         refetch();
@@ -77,8 +102,13 @@ const EventsPage: React.FC = () => {
                     <IonRefresherContent></IonRefresherContent>
                 </IonRefresher>
                 <ResourceManager
-                    items={events?.upcoming || []}
-                    renderItem={(event, triggerEdit, triggerDelete, editAccess) => (
+                    items={events?.current || []}
+                    renderItem={(
+                        event,
+                        triggerEdit,
+                        triggerDelete,
+                        editAccess,
+                    ) => (
                         <EventCard
                             key={event.id}
                             event={event}
@@ -101,10 +131,62 @@ const EventsPage: React.FC = () => {
                         },
                     ]}
                     onCreate={(data) => {
-                        createEvent(data).then(() => refetch());
+                        const utcData = convertEventDateTimesToUTC(data);
+                        createEvent(utcData).then(() => refetch());
                     }}
                     onUpdate={(id, data) => {
-                        updateEvent({ id, data }).then(() => refetch());
+                        const utcData = convertEventDateTimesToUTC(data);
+                        updateEvent({ id, data: utcData }).then(() =>
+                            refetch(),
+                        );
+                    }}
+                    onDelete={(id) => {
+                        deleteEvent(id).then(() => refetch());
+                    }}
+                />
+                {events?.current &&
+                    events.upcoming &&
+                    events.upcoming.length > 0 && (
+                        <div className="section-divider">Upcoming Events</div>
+                    )}
+                <ResourceManager
+                    items={events?.upcoming || []}
+                    renderItem={(
+                        event,
+                        triggerEdit,
+                        triggerDelete,
+                        editAccess,
+                    ) => (
+                        <EventCard
+                            key={event.id}
+                            event={event}
+                            editMode={editAccess}
+                            editEvent={triggerEdit}
+                        />
+                    )}
+                    Form={EventForm}
+                    editAccess={user?.role.name === "admin"}
+                    customSettings={[
+                        {
+                            label: "Notifications",
+                            View: (id: number) => (
+                                <NotificationSettings id={id} />
+                            ),
+                        },
+                        {
+                            label: "Verification",
+                            View: (id: number) => <EventVerification id={id} />,
+                        },
+                    ]}
+                    onCreate={(data) => {
+                        const utcData = convertEventDateTimesToUTC(data);
+                        createEvent(utcData).then(() => refetch());
+                    }}
+                    onUpdate={(id, data) => {
+                        const utcData = convertEventDateTimesToUTC(data);
+                        updateEvent({ id, data: utcData }).then(() =>
+                            refetch(),
+                        );
                     }}
                     onDelete={(id) => {
                         deleteEvent(id).then(() => refetch());
@@ -143,10 +225,14 @@ const EventsPage: React.FC = () => {
                         },
                     ]}
                     onCreate={(data) => {
-                        createEvent(data).then(() => refetch());
+                        const utcData = convertEventDateTimesToUTC(data);
+                        createEvent(utcData).then(() => refetch());
                     }}
                     onUpdate={(id, data) => {
-                        updateEvent({ id, data }).then(() => refetch());
+                        const utcData = convertEventDateTimesToUTC(data);
+                        updateEvent({ id, data: utcData }).then(() =>
+                            refetch(),
+                        );
                     }}
                     onDelete={(id) => {
                         deleteEvent(id).then(() => refetch());

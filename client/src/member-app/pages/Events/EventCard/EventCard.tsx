@@ -1,33 +1,11 @@
-import {
-    IonButton,
-    IonButtons,
-    IonContent,
-    IonHeader,
-    IonIcon,
-    IonModal,
-    IonTitle,
-    IonToast,
-    IonToolbar,
-    useIonRouter,
-} from "@ionic/react";
+import { IonButton, IonIcon, useIonRouter } from "@ionic/react";
 import { settingsOutline } from "ionicons/icons";
-import { useState } from "react";
 import AvatarStack from "../../../../shared/components/AvatarStack/AvatarStack";
-import QRCodeScanner from "../../../../shared/components/QRCode/QRCodeScanner";
-import { Event, useAttendEventMutation } from "../../../../shared/features";
+import { Event } from "../../../../shared/features";
 import { useAuth } from "../../../../shared/hooks/useAuth";
 import { Attendance } from "../../../../shared/types";
 import "./EventCard.css";
 import EventHeader from "./EventHeader";
-
-// Extend the type to include "rsvp" if it's a valid status
-type ExtendedAttendanceStatus =
-    | "rsvp"
-    | "unknown"
-    | "going"
-    | "maybe"
-    | "not_going"
-    | "attended";
 
 type EventCardProps = {
     event: Event;
@@ -40,15 +18,6 @@ const EventCard: React.FC<EventCardProps> = ({
     editMode,
     editEvent,
 }) => {
-    const getInitials = (name: string) => {
-        const names = name.split(" ");
-        const initials = names.map((n) => n.charAt(0).toUpperCase());
-        return initials.join("");
-    };
-
-    const [scannerOpen, setScannerOpen] = useState(false);
-    const [toastMessage, setToastMessage] = useState<string>("");
-    const [isError, setIsError] = useState(false);
     const router = useIonRouter();
     const user = useAuth().user;
 
@@ -58,32 +27,6 @@ const EventCard: React.FC<EventCardProps> = ({
             return attendanceUser?.id === user?.id;
         },
     );
-    const [attendEvent] = useAttendEventMutation();
-
-    const handleRSVP = () => {
-        attendEvent({ eventId: event.id });
-    };
-
-    const handleAttend = () => {
-        setScannerOpen(true);
-    };
-
-    const handleScan = async (scannedCode: string) => {
-        try {
-            await attendEvent({
-                eventId: event.id,
-                code: scannedCode,
-            }).unwrap();
-            setIsError(false);
-            setToastMessage("Attendance recorded successfully!");
-            setScannerOpen(false);
-        } catch (error: any) {
-            setIsError(true);
-            setToastMessage(
-                error?.data?.message || "Failed to record attendance.",
-            );
-        }
-    };
 
     return (
         <div className="event-card">
@@ -117,31 +60,6 @@ const EventCard: React.FC<EventCardProps> = ({
                     </IonButton>
                 </div>
             </div>
-            <IonModal
-                isOpen={scannerOpen}
-                onDidDismiss={() => setScannerOpen(false)}
-            >
-                <IonHeader>
-                    <IonToolbar>
-                        <IonTitle>Check In</IonTitle>
-                        <IonButtons slot="end">
-                            <IonButton onClick={() => setScannerOpen(false)}>
-                                Close
-                            </IonButton>
-                        </IonButtons>
-                    </IonToolbar>
-                </IonHeader>
-                <IonContent>
-                    <QRCodeScanner onScan={handleScan} />
-                </IonContent>
-            </IonModal>
-            <IonToast
-                isOpen={!!toastMessage}
-                message={toastMessage}
-                duration={3000}
-                onDidDismiss={() => setToastMessage("")}
-                color={isError ? "danger" : "success"}
-            ></IonToast>
         </div>
     );
 };

@@ -1,0 +1,49 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 50vh;
+    background: black;
+    position: relative;
+}
+
+.video {
+    width: 100vw;
+    height: 50vh;
+    object-fit: cover;
+}
+
+.errorMessage,
+.promptMessage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 2rem;
+    border-radius: 12px;
+    text-align: center;
+    color: white;
+    max-width: 80%;
+}
+
+.errorMessage p:first-child {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #ff4444;
+}
+
+.errorHint {
+    font-size: 0.9rem;
+    color: #cccccc;
+    margin-top: 0.5rem;
+}
+
+.promptMessage p {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: white;
+}

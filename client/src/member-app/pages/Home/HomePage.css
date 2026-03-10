@@ -1,6 +1,19 @@
 .home-page-content {
-    padding: 1.7rem;
+    /* padding: 1.7rem; */
     display: flex;
     flex-direction: column;
     gap: 2rem;
+}
+
+.upcoming-event-section {
+    background-color: var(--ion-color-primary);
+    padding: 2rem 0;
+}
+
+.upcoming-event-section h1 {
+    color: var(--ion-color-light);
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-align: center;
+    margin: 0 0 1.5rem 0;
 }

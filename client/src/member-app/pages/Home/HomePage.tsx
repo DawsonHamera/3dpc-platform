@@ -23,11 +23,10 @@ const HomePage: React.FC = () => {
 
     return (
         <IonPage>
-            <Header title="3D Printing Club"/>
+            <Header title="3D Printing Club" />
             <IonContent>
                 <HeroDisplay />
                 <div className="home-page-content">
-                    
                     <LeaderboardWidget />
                     <Card title="Earn Points">
                         <IonList>
@@ -49,9 +48,12 @@ const HomePage: React.FC = () => {
                             </IonItem>
                             <IonItem>
                                 <IonLabel>Donate a bottle</IonLabel>
-                                <IonBadge color="primary">2 points</IonBadge>
+                                <IonBadge color="primary">2 points / bottle</IonBadge>
                             </IonItem>
-                           
+                            <IonItem>
+                                <IonLabel>Donate filament scraps</IonLabel>
+                                <IonBadge color="primary">1 point / gram</IonBadge>
+                            </IonItem>
                         </IonList>
                     </Card>
                     {/* <QuickLinksWidget /> */}

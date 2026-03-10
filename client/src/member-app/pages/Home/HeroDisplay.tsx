@@ -4,7 +4,7 @@ import { useGetEventsQuery } from "../../../shared/features";
 import { isPWAInstalled } from "../../../shared/hooks/useUtils";
 import { useOneSignal } from "../../../shared/services/OneSignalProvider";
 import DefaultHero from "./heroes/DefaultHero";
-import EventHero from "./heroes/EventHero";
+import EventHero from "./heroes/EventHero/EventHero";
 import InstallHero from "./heroes/InstallHero";
 import SubscribeHero from "./heroes/SubscribeHero";
 
@@ -19,6 +19,7 @@ const HeroDisplay: React.FC = () => {
     const { isSubscribed, loading: loadingOneSignal } = useOneSignal();
 
     const currentEvent = eventData?.[0];
+    console.log("Current Event:", eventData);
 
     const [displayedHeroType, setDisplayedHeroType] =
         useState<HeroType>("default");

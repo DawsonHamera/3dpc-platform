@@ -6,13 +6,13 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import EventCard from "../../../member-app/pages/Events/EventCard/EventCard";
 import { Event, useGetEventsQuery } from "../../features";
 import "./EventSlider.css";
+import EventCardSmall from "../../../member-app/pages/Events/EventCardSmall";
 
 type EventSliderProps = {
     filter?: "upcoming" | "ongoing" | "past";
-    title?: string;
 };
 
-const EventSlider: React.FC<EventSliderProps> = ({ filter, title }) => {
+const EventSlider: React.FC<EventSliderProps> = ({ filter }) => {
     const { data: events, isLoading, isError } = useGetEventsQuery();
 
     const filterEvents = (events: Event[], filter: string | undefined) => {
@@ -39,12 +39,6 @@ const EventSlider: React.FC<EventSliderProps> = ({ filter, title }) => {
         }
     };
 
-    const getInitials = (name: string) => {
-        const names = name.split(" ");
-        const initials = names.map((n) => n.charAt(0).toUpperCase());
-        return initials.join("");
-    };
-
     if (isLoading) {
         return <div>Loading events...</div>;
     }
@@ -52,12 +46,8 @@ const EventSlider: React.FC<EventSliderProps> = ({ filter, title }) => {
     if (isError || !events) {
         return <div>Error loading events.</div>;
     }
-
     return (
         <div className="event-slider">
-            {title && filterEvents(events, filter).length > 0 && (
-                <h2 className="slider-title">{title}</h2>
-            )}
             <div className="slider-container">
                 <Swiper
                     modules={[Pagination, Autoplay]}
@@ -75,7 +65,7 @@ const EventSlider: React.FC<EventSliderProps> = ({ filter, title }) => {
                     {filterEvents(events, filter).map((event) => (
                         <SwiperSlide key={event.id}>
                             <div className="slide-content">
-                                <EventCard event={event} />
+                                <EventCardSmall event={event} />
                             </div>
                         </SwiperSlide>
                     ))}

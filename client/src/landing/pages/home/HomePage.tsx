@@ -11,12 +11,13 @@ import { chevronDown, leaf } from "ionicons/icons";
 // import EventCarousel from "../app/Events/EventCarousel";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import { useGetEventsQuery } from "../../../shared/features";
 import {
     slideInLeft,
     slideInRight,
     useScrollAnimation,
 } from "../../../shared/hooks";
-import { useGetEventsQuery } from "../../../shared/features";
+import { compareDateTimes, isPast } from "../../../shared/utility/datetime";
 import styles from "./HomePage.module.css";
 
 const HomePage: React.FC = () => {
@@ -27,12 +28,8 @@ const HomePage: React.FC = () => {
 
     const { data: events, isLoading } = useGetEventsQuery();
     const upcomingEvents = events
-        ?.filter((event) => new Date(event.end_time) > new Date())
-        .sort(
-            (a, b) =>
-                new Date(a.start_time).getTime() -
-                new Date(b.start_time).getTime(),
-        );
+        ?.filter((event) => !isPast(event.end_time))
+        .sort((a, b) => compareDateTimes(a.start_time, b.start_time));
 
     const router = useIonRouter();
 

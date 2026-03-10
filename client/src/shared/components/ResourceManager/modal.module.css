@@ -16,7 +16,7 @@
 }
 
 .content {
-    height: calc(90vh - 56px);
+    height: calc(90vh - 120px);
     padding: 16px;
     overflow-y: auto;
     overflow-x: hidden;

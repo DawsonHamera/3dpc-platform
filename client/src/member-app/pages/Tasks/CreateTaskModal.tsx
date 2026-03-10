@@ -22,6 +22,7 @@ import {
     useGetModelsQuery,
     useGetPrintersQuery,
 } from "../../../shared/features";
+import { toUTC } from "../../../shared/utility/datetime";
 import "./CreateTaskModal.css";
 import ItemSelectField from "./ItemSelectField";
 
@@ -37,7 +38,7 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
     const [formData, setFormData] = useState({
         title: "New Print Job",
         type: "print_job",
-        scheduled_date: new Date().toISOString(),
+        scheduled_date: toUTC(new Date()),
         details: {
             printer_id: 0,
             model_id: 0,
@@ -103,12 +104,6 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
         setErrors((prev) => ({ ...prev, [name]: "" }));
     };
 
-    const convertLocalToUTC = (localString: string) => {
-        if (!localString) return "";
-        const date = new Date(localString);
-        return date.toISOString();
-    };
-
     const validateForm = () => {
         const newErrors = {
             title: "",
@@ -152,7 +147,9 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
 
         const dataToSubmit = {
             ...formData,
-            scheduled_date: convertLocalToUTC(formData.scheduled_date),
+            type: formData.type as "print_job",
+            status: formData.status as "pending",
+            scheduled_date: toUTC(formData.scheduled_date),
         };
 
         try {
@@ -170,7 +167,7 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
         setFormData({
             title: "New Print Job",
             type: "print_job",
-            scheduled_date: new Date().toISOString(),
+            scheduled_date: toUTC(new Date()),
             details: {
                 printer_id: 0,
                 model_id: 0,

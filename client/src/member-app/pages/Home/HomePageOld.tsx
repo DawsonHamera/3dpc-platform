@@ -29,7 +29,7 @@ import { useSimpleGSAP } from "../../../shared/hooks/useSimpleGSAP";
 import { useOneSignal } from "../../../shared/services/OneSignalProvider";
 import "./HomePage.css";
 import DefaultHero from "./heroes/DefaultHero";
-import EventHero from "./heroes/EventHero";
+import EventHero from "./heroes/EventHero/EventHero";
 import InstallHero from "./heroes/InstallHero";
 import { LeaderboardWidget, TipsWidget } from "./widgets/LeaderBoardWidget";
 

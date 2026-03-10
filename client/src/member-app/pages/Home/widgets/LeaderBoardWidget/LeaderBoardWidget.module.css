@@ -1,0 +1,39 @@
+.item {
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.itemDefault {
+    background: rgba(var(--ion-color-light-rgb), 1);
+}
+
+.itemCurrent {
+    background: rgba(var(--ion-color-primary-rgb), 0.13);
+    box-shadow: 0 2px 8px rgba(var(--ion-color-primary-rgb), 0.13);
+}
+
+.itemContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.labelDefault {
+    font-weight: 500;
+}
+
+.labelCurrent {
+    font-weight: 700;
+    color: var(--ion-color-primary);
+}
+
+.pointsLabel {
+    font-weight: 600;
+    color: var(--ion-color-primary);
+}
+
+.pointsLabelCurrent {
+    font-weight: 700;
+    color: var(--ion-color-primary);
+}

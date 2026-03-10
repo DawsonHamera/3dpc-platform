@@ -1,6 +1,15 @@
 import React from "react";
+import EventSlider from "../../../../shared/components/EventSlider/EventSlider";
+import { useGetEventsQuery } from "../../../../shared/features";
+import { IonNote } from "@ionic/react";
 
 const DefaultHero: React.FC = () => {
+    const { data: eventData } = useGetEventsQuery({
+        groupBy: "time-relative",
+        limit: 1,
+    });
+    console.log("e: ",eventData)
+
     return (
         <section
             style={{
@@ -11,7 +20,6 @@ const DefaultHero: React.FC = () => {
                 minHeight: "100vh",
                 background: "#f5f5f5",
                 textAlign: "center",
-                padding: "2rem",
                 position: "relative",
                 overflow: "hidden",
             }}
@@ -48,32 +56,51 @@ const DefaultHero: React.FC = () => {
                     />
                 </svg>
             </div>
-            <h1 style={{
-                position: 'absolute',
-                top: 24,
-                left: 0,
-                right: 0,
-                textAlign: 'center',
-                fontSize: '2.2rem',
-                fontWeight: 800,
-                letterSpacing: '0.04em',
-                fontFamily: "'Outfit', sans-serif",
-                zIndex: 10,
-                pointerEvents: 'none'
-            }}>
+            <h1
+                style={{
+                    position: "absolute",
+                    top: 24,
+                    left: 0,
+                    right: 0,
+                    textAlign: "center",
+                    fontSize: "2.2rem",
+                    fontWeight: 800,
+                    letterSpacing: "0.04em",
+                    fontFamily: "'Outfit', sans-serif",
+                    zIndex: 10,
+                    pointerEvents: "none",
+                }}
+            >
                 3D Printing Club
             </h1>
-            <img
-                src="/images/logo-transparent.png"
-                alt="3D Printing Club Logo"
-                style={{
-                    width: "400px",
-                    maxWidth: "90vw",
-                    height: "auto",
-                    marginTop: "1rem",
-                    zIndex: 2,
-                }}
-            />
+            {eventData?.upcoming && eventData?.upcoming.length > 0 && (
+                <div
+                    style={{
+                        width: "100%",
+                        marginTop: "100px",
+                    }}
+                >
+                    <EventSlider filter="upcoming" />
+                    <IonNote>
+                        <p>Upcoming 3DPC Events</p>
+                    </IonNote>
+                </div>
+            )}
+            {eventData?.upcoming.length === 0 &&
+                eventData?.past &&
+                eventData?.past.length > 0 && (
+                    <div
+                        style={{
+                            width: "100%",
+                            marginTop: "100px",
+                        }}
+                    >
+                        <EventSlider filter="past" />
+                        <IonNote>
+                            <p>Past 3DPC Events</p>
+                        </IonNote>
+                    </div>
+                )}
         </section>
     );
 };

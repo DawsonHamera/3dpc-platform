@@ -22,13 +22,14 @@ import {
     useGetModelsQuery,
     useGetPrintersQuery,
 } from "../../../shared/features";
+import { toUTC } from "../../../shared/utility/datetime";
 import ItemSelectField from "./ItemSelectField";
 
 const CreatePrintTask: React.FC = () => {
     const [formData, setFormData] = useState({
         title: "New Print Job",
         type: "print_job",
-        scheduled_date: new Date().toISOString(),
+        scheduled_date: toUTC(new Date()),
         details: {
             printer_id: 1,
             model_id: 3,
@@ -82,17 +83,11 @@ const CreatePrintTask: React.FC = () => {
         }));
     };
 
-    const convertLocalToUTC = (localString: string) => {
-        if (!localString) return "";
-        const date = new Date(localString);
-        return date.toISOString();
-    };
-
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         const dataToSubmit = {
             ...formData,
-            scheduled_date: convertLocalToUTC(formData.scheduled_date),
+            scheduled_date: toUTC(formData.scheduled_date),
         };
         console.log("Form submitted:", formData);
         createTask(dataToSubmit);

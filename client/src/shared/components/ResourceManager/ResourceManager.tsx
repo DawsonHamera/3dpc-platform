@@ -47,7 +47,7 @@ const ResourceManager: React.FC<props> = ({
     onUpdate,
     onDelete,
     customSettings,
-    editAccess=false,
+    editAccess = false,
 }) => {
     const [action, setAction] = useState<{
         type: "create" | "edit" | "remove";
@@ -156,12 +156,14 @@ const ResourceManager: React.FC<props> = ({
                 <IonHeader>
                     <IonToolbar color="primary">
                         <IonTitle>
-                           {currentItem?.title || currentItem?.name || "New Item"}
+                            {currentItem?.title ||
+                                currentItem?.name ||
+                                "New Item"}
                         </IonTitle>
                         <IonButtons slot="end">
-                             <IonButton onClick={() => remove(currentItem?.id)}>
-                            <IonIcon icon={trash} />
-                        </IonButton>
+                            <IonButton onClick={() => remove(currentItem?.id)}>
+                                <IonIcon icon={trash} />
+                            </IonButton>
                             <IonButton onClick={() => close()}>
                                 <IonIcon icon={closeOutline} />
                             </IonButton>
@@ -169,30 +171,28 @@ const ResourceManager: React.FC<props> = ({
                     </IonToolbar>
                 </IonHeader>
                 <IonToolbar>
-                        <IonSegment
-                            value={currentSetting}
-                            onIonChange={(e) =>
-                                setCurrentSetting(e.detail.value)
-                            }
-                        >
-                            <IonSegmentButton value="default">
-                                {action?.type === "create"
-                                    ? "Create Item"
-                                    : action?.type === "edit"
-                                      ? "Edit Item"
-                                      : ""}
-                            </IonSegmentButton>
-                            {customSettings &&
-                                customSettings.map((setting) => (
-                                    <IonSegmentButton
-                                        key={setting.label}
-                                        value={setting.label}
-                                    >
-                                        {setting.label}
-                                    </IonSegmentButton>
-                                ))}
-                        </IonSegment>
-                    </IonToolbar>
+                    <IonSegment
+                        value={currentSetting}
+                        onIonChange={(e) => setCurrentSetting(e.detail.value)}
+                    >
+                        <IonSegmentButton value="default">
+                            {action?.type === "create"
+                                ? "Create Item"
+                                : action?.type === "edit"
+                                  ? "Edit Item"
+                                  : ""}
+                        </IonSegmentButton>
+                        {customSettings &&
+                            customSettings.map((setting) => (
+                                <IonSegmentButton
+                                    key={setting.label}
+                                    value={setting.label}
+                                >
+                                    {setting.label}
+                                </IonSegmentButton>
+                            ))}
+                    </IonSegment>
+                </IonToolbar>
                 <div className={styles.content}>
                     {currentSetting === "default" && (
                         <Form

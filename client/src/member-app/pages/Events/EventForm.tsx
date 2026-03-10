@@ -1,29 +1,17 @@
 import {
+    IonButton,
+    IonDatetime,
+    IonInput,
     IonItem,
     IonLabel,
-    IonInput,
-    IonTextarea,
+    IonList,
     IonSelect,
     IonSelectOption,
-    IonDatetime,
-    IonList,
-    IonButton,
+    IonTextarea,
 } from "@ionic/react";
+import { useEffect, useState } from "react";
 import FileSelector from "../../../shared/components/FileSelector/FileSelector";
-
-const getLocalTimeForDatetime = (
-    datetime: Date | string | null | undefined,
-) => {
-    if (!datetime) return "";
-    const date = datetime instanceof Date ? datetime : new Date(datetime);
-    // Format as ISO string but treat as local time by removing the Z
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    const hours = String(date.getHours()).padStart(2, "0");
-    const minutes = String(date.getMinutes()).padStart(2, "0");
-    return `${year}-${month}-${day}T${hours}:${minutes}`;
-};
+import { toLocalISOString } from "../../../shared/utility/datetime";
 
 type props = {
     formData: any;
@@ -32,7 +20,43 @@ type props = {
     onCancel: () => void;
 };
 
+/**
+ * EventForm Component
+ *
+ * DATETIME STANDARD:
+ * - Displays datetime in user's local timezone using IonDatetime
+ * - Converts UTC datetimes from API to local ISO strings for display
+ * - Stores datetime values in formData as they are entered (local ISO strings)
+ * - Parent component must convert to UTC before sending to API
+ */
 const EventForm = ({ formData, setFormData, onSubmit, onCancel }: props) => {
+    // Local state to track if we've converted the initial UTC times to local
+    const [localStartTime, setLocalStartTime] = useState<string>("");
+    const [localEndTime, setLocalEndTime] = useState<string>("");
+
+    useEffect(() => {
+        // When formData changes (e.g., when editing an existing event),
+        // convert UTC times to local ISO strings for IonDatetime
+        if (formData?.start_time) {
+            try {
+                const localISO = toLocalISOString(formData.start_time);
+                setLocalStartTime(localISO);
+            } catch (e) {
+                // If conversion fails, use the value as-is
+                setLocalStartTime(formData.start_time);
+            }
+        }
+        if (formData?.end_time) {
+            try {
+                const localISO = toLocalISOString(formData.end_time);
+                setLocalEndTime(localISO);
+            } catch (e) {
+                // If conversion fails, use the value as-is
+                setLocalEndTime(formData.end_time);
+            }
+        }
+    }, [formData?.start_time, formData?.end_time]);
+
     return (
         <IonList>
             <IonItem>
@@ -78,35 +102,33 @@ const EventForm = ({ formData, setFormData, onSubmit, onCancel }: props) => {
                 />
             </IonItem>
             <IonItem>
-                <IonLabel position="stacked">Start Time</IonLabel>
+                <IonLabel position="stacked">Start Time (Local)</IonLabel>
                 <IonDatetime
                     showAdjacentDays
                     presentation="date-time"
-                    value={getLocalTimeForDatetime(formData?.start_time)}
-                    onIonChange={(e) =>
-                        setFormData?.(
-                            "start_time",
-                            Array.isArray(e.detail.value)
-                                ? (e.detail.value[0] ?? "")
-                                : (e.detail.value ?? ""),
-                        )
-                    }
+                    value={localStartTime || formData?.start_time}
+                    onIonChange={(e) => {
+                        const value = Array.isArray(e.detail.value)
+                            ? (e.detail.value[0] ?? "")
+                            : (e.detail.value ?? "");
+                        setLocalStartTime(value);
+                        setFormData?.("start_time", value);
+                    }}
                 />
             </IonItem>
             <IonItem>
-                <IonLabel position="stacked">End Time</IonLabel>
+                <IonLabel position="stacked">End Time (Local)</IonLabel>
                 <IonDatetime
                     showAdjacentDays
                     presentation="date-time"
-                    value={getLocalTimeForDatetime(formData?.end_time)}
-                    onIonChange={(e) =>
-                        setFormData?.(
-                            "end_time",
-                            Array.isArray(e.detail.value)
-                                ? (e.detail.value[0] ?? "")
-                                : (e.detail.value ?? ""),
-                        )
-                    }
+                    value={localEndTime || formData?.end_time}
+                    onIonChange={(e) => {
+                        const value = Array.isArray(e.detail.value)
+                            ? (e.detail.value[0] ?? "")
+                            : (e.detail.value ?? "");
+                        setLocalEndTime(value);
+                        setFormData?.("end_time", value);
+                    }}
                 />
             </IonItem>
             <IonItem>

@@ -8,6 +8,11 @@ import {
     trophy,
 } from "ionicons/icons";
 import { useGetUserAttendanceQuery } from "../../../../shared/features";
+import {
+    formatLocalDate,
+    formatLocalTime,
+    isTimeBetween,
+} from "../../../../shared/utility/datetime";
 import "./EventHeader.css";
 
 type EventHeaderProps = {
@@ -66,20 +71,16 @@ const EventHeader: React.FC<EventHeaderProps> = ({ event, children }) => {
                 {children}
                 <div className="date-badge">
                     <p>
-                        {new Date(event.start_time).toLocaleDateString(
-                            "en-US",
-                            {
-                                month: "short",
-                            },
-                        )}
+                        {formatLocalDate(event.start_time, {
+                            month: "short",
+                        })}
                     </p>
                     <h2>{new Date(event.start_time).getDate()}</h2>
                 </div>
                 <img src={event.image_file?.path} className="image" />
 
                 {/* Status chips */}
-                {new Date() >= new Date(event.start_time) &&
-                    new Date() <= new Date(event.end_time) &&
+                {isTimeBetween(event.start_time, event.end_time) &&
                     attendance?.status === "attended" && (
                         <IonChip
                             color="success"
@@ -113,24 +114,19 @@ const EventHeader: React.FC<EventHeaderProps> = ({ event, children }) => {
                     </div>
                     <div className="time-range">
                         <p>
-                            {new Date(event.start_time).toLocaleTimeString(
-                                "en-US",
-                                {
-                                    hour: "2-digit",
-                                    minute: "2-digit",
-                                },
-                            )}
+                            {formatLocalTime(event.start_time, {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                            })}
                             {" - "}
-                            {new Date(event.end_time).toLocaleTimeString(
-                                "en-US",
-                                {
-                                    hour: "2-digit",
-                                    minute: "2-digit",
-                                },
-                            )}
+                            {formatLocalTime(event.end_time, {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                            })}
                         </p>
                     </div>
                 </div>
+                {children}
             </div>
         </div>
     );

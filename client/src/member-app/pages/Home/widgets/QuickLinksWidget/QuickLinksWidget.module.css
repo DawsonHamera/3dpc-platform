@@ -1,0 +1,10 @@
+.orderButton {
+    margin-bottom: 12px;
+}
+
+.description {
+    text-align: center;
+    color: var(--ion-text-color-secondary, #666);
+    font-size: 14px;
+    margin: 0;
+}
