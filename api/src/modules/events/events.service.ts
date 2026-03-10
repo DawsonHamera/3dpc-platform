@@ -1,8 +1,8 @@
-import { Injectable, ConflictException } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { attendance_status, events_event_type, Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { UsersService } from '../users/users.service';
 import { success } from 'src/utils/response';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class EventsService {
@@ -11,6 +11,11 @@ export class EventsService {
     private readonly usersService: UsersService,
   ) {}
 
+  /**
+   * Find all events with optional filtering, sorting, and grouping
+   * DATETIME STANDARD: Returns datetime fields as Date objects which are serialized
+   * to UTC ISO strings by NestJS when sent to client.
+   */
   async findAll(
     filter?: string,
     sort?: string,
@@ -27,6 +32,28 @@ export class EventsService {
 
     let mutatedEvents = [...events];
 
+    // Step 1: Apply filtering first
+    switch (filter) {
+      case 'upcoming':
+        mutatedEvents = mutatedEvents.filter(
+          (event) => event.start_time > new Date(),
+        );
+        break;
+      case 'past':
+        mutatedEvents = mutatedEvents.filter(
+          (event) => event.end_time < new Date(),
+        );
+        break;
+      case 'current':
+        mutatedEvents = mutatedEvents.filter(
+          (event) =>
+            event.start_time <= new Date() && event.end_time >= new Date(),
+        );
+        break;
+      // Add more filtering options as needed
+    }
+
+    // Step 2: Apply sorting
     switch (sort) {
       case 'start_time_asc':
         mutatedEvents.sort(
@@ -41,26 +68,10 @@ export class EventsService {
       // Add more sorting options as needed
     }
 
-    if (limit && limit > 0) {
-      mutatedEvents = mutatedEvents.slice(0, limit);
-    }
-
-    switch (filter) {
-      case 'upcoming':
-        return mutatedEvents.filter((event) => event.start_time > new Date());
-      case 'past':
-        return mutatedEvents.filter((event) => event.end_time < new Date());
-      case 'current':
-        return mutatedEvents.filter(
-          (event) =>
-            event.start_time <= new Date() && event.end_time >= new Date(),
-        );
-      // Add more filtering options as needed
-    }
-
+    // Step 3: Handle groupBy (returns early with grouped data)
     switch (groupBy) {
-      case 'time-relative':
-        return {
+      case 'time-relative': {
+        const grouped = {
           upcoming: mutatedEvents.filter(
             (event) => event.start_time > new Date(),
           ),
@@ -70,9 +81,24 @@ export class EventsService {
           ),
           past: mutatedEvents.filter((event) => event.end_time < new Date()),
         };
+
+        // Apply limit to each group if specified
+        if (limit && limit > 0) {
+          grouped.upcoming = grouped.upcoming.slice(0, limit);
+          grouped.current = grouped.current.slice(0, limit);
+          grouped.past = grouped.past.slice(0, limit);
+        }
+
+        return grouped;
+      }
     }
 
-    return events;
+    // Step 4: Apply limit last
+    if (limit && limit > 0) {
+      mutatedEvents = mutatedEvents.slice(0, limit);
+    }
+
+    return mutatedEvents;
   }
 
   findOne(id: number) {
@@ -116,6 +142,11 @@ export class EventsService {
     });
   }
 
+  /**
+   * Create a new event
+   * DATETIME STANDARD: Expects start_time and end_time as UTC ISO strings from client.
+   * Stores as UTC in database.
+   */
   create(data: any, created_by?: number) {
     const verification_code = Math.random()
       .toString(36)
@@ -129,6 +160,7 @@ export class EventsService {
       image_file: {
         connect: { id: data.image_file_id },
       },
+      // Parse UTC ISO strings to Date objects for database storage
       start_time: new Date(data.start_time),
       end_time: new Date(data.end_time),
       verification_code,
@@ -138,8 +170,22 @@ export class EventsService {
     return this.prisma.event.create({ data: eventData });
   }
 
+  /**
+   * Update an existing event
+   * DATETIME STANDARD: Expects start_time and end_time as UTC ISO strings from client.
+   * Converts to Date objects before database update.
+   */
   update(id: number, data: any) {
     console.log('Updating event with data:', data);
+
+    // Handle datetime fields - convert UTC ISO strings to Date objects
+    if (data.start_time) {
+      data.start_time = new Date(data.start_time);
+    }
+    if (data.end_time) {
+      data.end_time = new Date(data.end_time);
+    }
+
     if (data.image_file_id) {
       data.image_file = { connect: { id: data.image_file_id } };
       delete data.image_file_id;
@@ -177,6 +223,11 @@ export class EventsService {
     return success(`${points} points gained for attending!`);
   }
 
+  /**
+   * Mark attendance for an event
+   * DATETIME STANDARD: Sets arrival_time to current UTC time using new Date().
+   * Compares event times with current UTC time.
+   */
   async attendEvent(
     eventId: number,
     userId: number,

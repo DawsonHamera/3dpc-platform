@@ -47,16 +47,36 @@ export class TasksService {
     });
   }
 
+  /**
+   * Create a new task
+   * DATETIME STANDARD: Expects scheduled_date as UTC ISO string from client.
+   * Stores as UTC in database.
+   */
   createTask(data: any) {
     if (data.assigned_to) {
       data.assigned_user = { connect: { id: data.assigned_to } };
       delete data.assigned_to;
     }
 
+    // Convert scheduled_date from UTC ISO string to Date object
+    if (data.scheduled_date) {
+      data.scheduled_date = new Date(data.scheduled_date);
+    }
+
     return this.prisma.task.create({ data });
   }
 
+  /**
+   * Update an existing task
+   * DATETIME STANDARD: Expects scheduled_date as UTC ISO string from client.
+   * Converts to Date object before database update.
+   */
   updateTask(id: number, data: any) {
+    // Convert scheduled_date from UTC ISO string to Date object
+    if (data.scheduled_date) {
+      data.scheduled_date = new Date(data.scheduled_date);
+    }
+
     return this.prisma.task.update({ where: { id }, data });
   }
 
