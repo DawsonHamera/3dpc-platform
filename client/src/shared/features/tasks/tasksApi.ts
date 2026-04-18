@@ -6,8 +6,21 @@ import { baseQuery } from "../../lib/baseApi";
 export type Task = Prisma.taskGetPayload<{
     include: {
         assigned_user: true;
+        order_item: {
+            include: {
+                order: true;
+                product: true;
+                product_variant: true;
+            };
+        };
     };
 }>;
+
+export type UserTaskGroup = {
+    id: number;
+    name: string;
+    tasks: Task[];
+};
 
 // Input types
 export type CreateTask = Prisma.taskCreateInput;
@@ -26,7 +39,7 @@ export const tasksApi = createApi({
             query: (id) => `tasks/${id}`,
             providesTags: (result, error, id) => [{ type: "Tasks", id }],
         }),
-        getAllByUsers: builder.query<Task[], void>({
+        getAllByUsers: builder.query<UserTaskGroup[], void>({
             query: () => `tasks/users`,
             providesTags: ["Tasks"],
         }),

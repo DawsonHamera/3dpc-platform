@@ -10,7 +10,9 @@ import {
 } from "@ionic/react";
 import { addOutline } from "ionicons/icons";
 import React from "react";
+import { useAuth } from "../../../../shared/hooks/useAuth";
 import { ShopHeader } from "../../shared";
+import AdminAccessDenied from "./AdminAccessDenied";
 import { EmptyState } from "../components/EmptyState/EmptyState";
 import { ProductsList } from "../components/ProductsList/ProductsList";
 import { useProductManagement } from "../hooks/useProductManagement";
@@ -18,6 +20,9 @@ import ProductModal from "../modals/EditModal";
 import styles from "./ProductManagementPage.module.css";
 
 const ProductManagementPage: React.FC = () => {
+    const { user } = useAuth();
+    const isAdmin = user?.role?.name === "admin";
+
     const {
         products,
         isLoading,
@@ -32,10 +37,22 @@ const ProductManagementPage: React.FC = () => {
         closeModal,
     } = useProductManagement();
 
+    if (!isAdmin) {
+        return <AdminAccessDenied />;
+    }
+
     if (isLoading) {
         return (
             <IonPage>
-                <ShopHeader title="Product Management" backArrow />
+                <ShopHeader
+                    title="Product Management"
+                    backArrow
+                    breadcrumbs={[
+                        { label: "Shop", path: "/shop" },
+                        { label: "Manage Products" },
+                    ]}
+                    contextLabel="Admin"
+                />
                 <IonContent className="ion-padding ion-text-center">
                     <IonSpinner />
                 </IonContent>
@@ -45,7 +62,15 @@ const ProductManagementPage: React.FC = () => {
 
     return (
         <IonPage>
-            <ShopHeader title="Product Management" backArrow />
+            <ShopHeader
+                title="Product Management"
+                backArrow
+                breadcrumbs={[
+                    { label: "Shop", path: "/shop" },
+                    { label: "Manage Products" },
+                ]}
+                contextLabel="Admin"
+            />
             <IonContent>
                 <div className={styles.productManagementContainer}>
                     <div className={styles.productManagementHeader}>

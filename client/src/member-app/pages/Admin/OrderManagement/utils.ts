@@ -12,7 +12,9 @@ export const calculateStatistics = (orders: Order[]): OrderStatistics => {
             order.status.toLowerCase() === "delivered",
     ).length;
     const cancelledOrders = orders.filter(
-        (order) => order.status.toLowerCase() === "cancelled",
+        (order) =>
+            order.status.toLowerCase() === "cancelled" ||
+            order.status.toLowerCase() === "failed",
     ).length;
 
     const totalRevenue = orders
@@ -87,14 +89,23 @@ export const formatCurrency = (amount: number): string => {
     }).format(amount);
 };
 
-export const formatDate = (date: string): string => {
+export const formatDate = (date: string | Date | null | undefined): string => {
+    if (!date) {
+        return "N/A";
+    }
+
+    const normalized = date instanceof Date ? date : new Date(date);
+    if (Number.isNaN(normalized.getTime())) {
+        return "N/A";
+    }
+
     return new Intl.DateTimeFormat("en-US", {
         year: "numeric",
         month: "short",
         day: "numeric",
         hour: "2-digit",
         minute: "2-digit",
-    }).format(new Date(date));
+    }).format(normalized);
 };
 
 export const getStatusColor = (status: string): string => {
@@ -104,11 +115,13 @@ export const getStatusColor = (status: string): string => {
         case "pending":
             return "warning";
         case "processing":
+        case "in_progress":
             return "primary";
         case "completed":
         case "delivered":
             return "success";
         case "cancelled":
+        case "failed":
             return "danger";
         default:
             return "medium";

@@ -1,13 +1,18 @@
 import React from "react";
 import { IonPage, IonRouterOutlet } from "@ionic/react";
 import { ShopProvider } from "./shared";
-import { Route } from "react-router";
+import { Redirect, Route } from "react-router";
+import { useSelector } from "react-redux";
 import { CatalogPage } from "./catalog";
 import { CartPage, CheckoutPage } from "./cart";
 import { OrderStatusPage } from "./order-tracking";
 import { ProductManagementPage } from "./product-management";
+import { selectCurrentUser } from "../../shared/features";
 
 const Shop: React.FC = () => {
+    const currentUser = useSelector(selectCurrentUser);
+    const isAdmin = currentUser?.role?.name === "admin";
+
     return (
         <IonPage>
             <ShopProvider>
@@ -17,7 +22,13 @@ const Shop: React.FC = () => {
                     <Route
                         exact
                         path="/shop/manage"
-                        component={ProductManagementPage}
+                        render={() =>
+                            isAdmin ? (
+                                <ProductManagementPage />
+                            ) : (
+                                <Redirect to="/shop" />
+                            )
+                        }
                     />
                     {/* <Route path="/shop/product/:id" component={ProductPage} /> */}
                     {/* <Route path="/shop/customize" component={CustomizePage} /> */}

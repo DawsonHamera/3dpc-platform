@@ -1,14 +1,14 @@
+import { IonNote } from "@ionic/react";
 import React from "react";
 import EventSlider from "../../../../shared/components/EventSlider/EventSlider";
 import { useGetEventsQuery } from "../../../../shared/features";
-import { IonNote } from "@ionic/react";
 
 const DefaultHero: React.FC = () => {
     const { data: eventData } = useGetEventsQuery({
         groupBy: "time-relative",
         limit: 1,
     });
-    console.log("e: ",eventData)
+    const hasEvents = (eventData?.length ?? 0) > 0;
 
     return (
         <section
@@ -73,7 +73,7 @@ const DefaultHero: React.FC = () => {
             >
                 3D Printing Club
             </h1>
-            {eventData?.upcoming && eventData?.upcoming.length > 0 && (
+            {hasEvents && (
                 <div
                     style={{
                         width: "100%",
@@ -86,21 +86,19 @@ const DefaultHero: React.FC = () => {
                     </IonNote>
                 </div>
             )}
-            {eventData?.upcoming.length === 0 &&
-                eventData?.past &&
-                eventData?.past.length > 0 && (
-                    <div
-                        style={{
-                            width: "100%",
-                            marginTop: "100px",
-                        }}
-                    >
-                        <EventSlider filter="past" />
-                        <IonNote>
-                            <p>Past 3DPC Events</p>
-                        </IonNote>
-                    </div>
-                )}
+            {!hasEvents && (
+                <div
+                    style={{
+                        width: "100%",
+                        marginTop: "100px",
+                    }}
+                >
+                    <EventSlider filter="past" />
+                    <IonNote>
+                        <p>Past 3DPC Events</p>
+                    </IonNote>
+                </div>
+            )}
         </section>
     );
 };

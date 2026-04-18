@@ -1,0 +1,40 @@
+.skeletonSection {
+    margin-bottom: 1rem;
+}
+
+.skeletonTitle {
+    padding-left: 16px;
+}
+
+.skeletonTitleText {
+    width: 40%;
+}
+
+.skeletonProductList {
+    display: flex;
+    padding: 16px;
+    gap: 16px;
+    overflow-x: auto;
+}
+
+.skeletonProductCard {
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.skeletonImage {
+    width: 100%;
+    height: 200px;
+    border-radius: 16px;
+}
+
+.skeletonLineWide {
+    width: 60%;
+}
+
+.skeletonLineNarrow {
+    width: 40%;
+}

@@ -56,21 +56,49 @@ const App: React.FC = () => {
             <IonRouterOutlet>
                 <Route exact path="/dashboard" component={HomePage} />
                 <Route exact path="/dashboard/events" component={EventsPage} />
-                <Route exact path="/dashboard/admin" component={AdminPage} />
                 <Route
                     exact
-                    path="/dashboard/admin/points"
-                    component={PointsPage}
+                    path="/dashboard/admin"
+                    render={() =>
+                        roleName === "admin" ? (
+                            <AdminPage />
+                        ) : (
+                            <Redirect to="/dashboard" />
+                        )
+                    }
                 />
                 <Route
                     exact
                     path="/dashboard/admin/users"
-                    component={UserManagementPage}
+                    render={() =>
+                        roleName === "admin" ? (
+                            <UserManagementPage />
+                        ) : (
+                            <Redirect to="/dashboard" />
+                        )
+                    }
+                />
+                <Route
+                    exact
+                    path="/dashboard/admin/points"
+                    render={() =>
+                        roleName === "admin" ? (
+                            <PointsPage />
+                        ) : (
+                            <Redirect to="/dashboard" />
+                        )
+                    }
                 />
                 <Route
                     exact
                     path="/dashboard/admin/shop"
-                    component={OrderManagementPage}
+                    render={() =>
+                        roleName === "admin" ? (
+                            <OrderManagementPage />
+                        ) : (
+                            <Redirect to="/dashboard" />
+                        )
+                    }
                 />
                 <Route
                     exact
@@ -87,7 +115,13 @@ const App: React.FC = () => {
                 <Route
                     exact
                     path="/dashboard/tasks/create"
-                    component={CreateTaskPage}
+                    render={() =>
+                        roleName === "admin" ? (
+                            <CreateTaskPage />
+                        ) : (
+                            <Redirect to="/dashboard" />
+                        )
+                    }
                 />
                 <Route
                     exact

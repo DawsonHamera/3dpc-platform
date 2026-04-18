@@ -114,13 +114,9 @@ const VariantEditor: React.FC<VariantEditorProps> = ({
                     filter={(file) =>
                         file.mime_type?.startsWith("image/") || false
                     }
-                    onChange={(file) =>
+                    onChange={(fileId) =>
                         onUpdate({
-                            image_file_id: file.id,
-                            image: {
-                                path: file.path,
-                                original_name: file.original_name,
-                            },
+                            image_file_id: fileId,
                         })
                     }
                 />

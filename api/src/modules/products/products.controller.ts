@@ -11,6 +11,7 @@ import {
 import { ProductsService } from './products.service';
 import { Public } from '../../common/decorators/public.decorator';
 import { Roles } from '../../common/decorators/roles.decorator';
+import { UpdateSectionOrderDto } from './dto/update-section-order.dto';
 
 @Controller('products')
 export class ProductsController {
@@ -56,6 +57,16 @@ export class ProductsController {
   @Roles(['admin'])
   createSection(@Body() data: any) {
     return this.productsService.createSection(data);
+  }
+
+  @Patch('sections/order')
+  @Roles(['admin'])
+  /**
+   * Reorder contract: payload must include every section in the selected domain.
+   * Domain is global when `type` is omitted, or restricted to the provided `type`.
+   */
+  async reorderSections(@Body() updateDto: UpdateSectionOrderDto) {
+    return this.productsService.reorderSections(updateDto);
   }
 
   @Patch('/section/:id')

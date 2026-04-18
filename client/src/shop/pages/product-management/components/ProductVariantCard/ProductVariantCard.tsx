@@ -4,13 +4,13 @@ import React from "react";
 import styles from "./ProductVariantCard.module.css";
 
 interface ProductVariant {
-    id: string;
+    id: number | string;
     name: string;
     type: "DEFAULT" | string;
     price: number;
-    image?: { path: string };
-    background_color: string;
-    color: string;
+    image?: { path: string } | null;
+    background_color: string | null;
+    color: string | null;
 }
 
 interface ProductVariantCardProps {
@@ -24,7 +24,9 @@ export const ProductVariantCard: React.FC<ProductVariantCardProps> = ({
         <div className={styles.variantCard}>
             <div
                 className={styles.variantImage}
-                style={{ backgroundColor: variant.background_color }}
+                style={{
+                    backgroundColor: variant.background_color ?? undefined,
+                }}
             >
                 {variant.image?.path ? (
                     <img src={variant.image.path} alt={variant.name} />

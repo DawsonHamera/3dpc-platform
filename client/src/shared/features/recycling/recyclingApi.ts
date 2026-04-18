@@ -5,7 +5,10 @@ import { baseQuery } from "../../lib/baseApi";
 export type RecyclingLog = Prisma.recycling_logGetPayload<{
     include: { created_by: true };
 }>;
-export type CreateRecyclingLog = Prisma.recycling_logCreateInput;
+export type CreateRecyclingLog = {
+    amount: number;
+    type: "bottle" | "filament_created" | "filament_used";
+};
 
 export const recyclingLogsApi = createApi({
     reducerPath: "recyclingLogsApi",

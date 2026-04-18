@@ -15,6 +15,7 @@ import {
     IonTitle,
     IonToolbar,
 } from "@ionic/react";
+import { task_status, task_type } from "@prisma/client";
 import React, { useState } from "react";
 import {
     useCreateTaskMutation,
@@ -28,7 +29,7 @@ import ItemSelectField from "./ItemSelectField";
 const CreatePrintTask: React.FC = () => {
     const [formData, setFormData] = useState({
         title: "New Print Job",
-        type: "print_job",
+        type: task_type.print_job,
         scheduled_date: toUTC(new Date()),
         details: {
             printer_id: 1,
@@ -36,7 +37,7 @@ const CreatePrintTask: React.FC = () => {
             material_id: 1,
             estimated_hours: 5,
         },
-        status: "pending",
+        status: task_status.pending,
         is_required: true,
         is_open: true,
     });
@@ -90,7 +91,7 @@ const CreatePrintTask: React.FC = () => {
             scheduled_date: toUTC(formData.scheduled_date),
         };
         console.log("Form submitted:", formData);
-        createTask(dataToSubmit);
+        createTask(dataToSubmit as any);
     };
 
     return (

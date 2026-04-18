@@ -107,7 +107,16 @@ const CheckoutPage: React.FC = () => {
 
     return (
         <IonPage>
-            <ShopHeader title="Checkout" backArrow />
+            <ShopHeader
+                title="Checkout"
+                backArrow
+                breadcrumbs={[
+                    { label: "Shop", path: "/shop" },
+                    { label: "Cart", path: "/shop/cart" },
+                    { label: "Checkout" },
+                ]}
+                contextLabel="Checkout Journey"
+            />
             <IonContent className="ion-padding">
                 <h1>Checkout</h1>
                 <p>Complete your purchase.</p>

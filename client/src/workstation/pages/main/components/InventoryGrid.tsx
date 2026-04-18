@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Material, Model } from "../../../../member-app/App";
+import { Material, Model } from "../../../../shared/features";
 import "./InventoryGrid.css";
 
 interface InventoryGridProps {

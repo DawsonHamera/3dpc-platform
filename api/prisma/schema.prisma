@@ -197,6 +197,7 @@ model task {
   id             Int         @id @default(autoincrement())
   title          String      @default("New Task") @db.VarChar(255)
   assigned_to    Int?
+  order_item_id  Int?
   scheduled_date DateTime?   @default(now()) @db.DateTime(0)
   type           task_type   @default(other)
   details        Json        @db.Json
@@ -208,16 +209,20 @@ model task {
   created_at  DateTime? @default(now())
   updated_at  DateTime? @updatedAt
 
-  assigned_user user? @relation(fields: [assigned_to], references: [id], onDelete: SetNull, onUpdate: NoAction)
+  assigned_user user?       @relation(fields: [assigned_to], references: [id], onDelete: SetNull, onUpdate: NoAction)
+  order_item    order_item? @relation(fields: [order_item_id], references: [id], onDelete: SetNull, onUpdate: NoAction)
+
+  @@unique([order_item_id, type], map: "task_order_item_id_type_key")
 }
 
 model section {
-  id         Int       @id @default(autoincrement())
-  name       String    @db.VarChar(100)
-  type       String    @default("general") @db.VarChar(100)
-  items      Json      @db.Json
-  created_at DateTime? @default(now())
-  updated_at DateTime? @updatedAt
+  id            Int       @id @default(autoincrement())
+  name          String    @db.VarChar(100)
+  type          String    @default("general") @db.VarChar(100)
+  items         Json      @db.Json
+  display_order Int?
+  created_at    DateTime? @default(now())
+  updated_at    DateTime? @updatedAt
 }
 
 model product {
@@ -280,6 +285,7 @@ model order_item {
   order              order           @relation(fields: [order_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
   product            product         @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
   product_variant    product_variant @relation(fields: [product_variant_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  tasks              task[]
 }
 
 enum product_variant_type {

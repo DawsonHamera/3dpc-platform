@@ -1,0 +1,29 @@
+.errorReportContent {
+    --padding-start: 16px;
+    --padding-end: 16px;
+    --padding-top: 16px;
+    --padding-bottom: 20px;
+}
+
+.errorReportContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.errorReportHelpText {
+    margin: 0;
+}
+
+.errorReportContext {
+    display: block;
+    background: var(--ion-color-light-tint);
+    border: 1px solid var(--ion-color-light-shade);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 13px;
+}
+
+.errorReportSubmitButton {
+    margin-top: 8px;
+}

@@ -1,0 +1,180 @@
+.content {
+    --background: var(--ion-color-light);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px 16px;
+}
+
+.header {
+    margin-bottom: 32px;
+}
+
+.headerTitle {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--ion-color-dark);
+    margin: 0 0 8px 0;
+}
+
+.headerSubtitle {
+    font-size: 16px;
+    color: var(--ion-color-medium);
+    margin: 0;
+}
+
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding: 16px;
+    background: var(--ion-color-light-tint);
+    border-radius: 8px;
+}
+
+.toolbarText {
+    font-size: 14px;
+    color: var(--ion-color-medium);
+}
+
+.sectionList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.sectionItem {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    background: var(--ion-color-light-contrast);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.2s ease;
+}
+
+.sectionItem:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.sectionItemDragging {
+    opacity: 0.5;
+    cursor: grabbing;
+}
+
+.dragHandle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: grab;
+    color: var(--ion-color-medium);
+    font-size: 24px;
+    padding: 8px;
+    user-select: none;
+}
+
+.dragHandle:active {
+    cursor: grabbing;
+}
+
+.dragHandleDisabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.sectionInfo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.sectionName {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ion-color-dark);
+    margin: 0;
+}
+
+.sectionMeta {
+    font-size: 14px;
+    color: var(--ion-color-medium);
+    margin: 0;
+}
+
+.orderBadge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    height: 32px;
+    padding: 0 8px;
+    background: var(--ion-color-primary);
+    color: var(--ion-color-primary-contrast);
+    border-radius: 16px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.emptyState {
+    text-align: center;
+    padding: 48px 24px;
+    color: var(--ion-color-medium);
+}
+
+.emptyStateIcon {
+    font-size: 64px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+}
+
+.emptyStateText {
+    font-size: 18px;
+    margin: 0;
+}
+
+.loadingState {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 48px;
+}
+
+.errorState {
+    padding: 24px;
+    text-align: center;
+}
+
+.errorText {
+    color: var(--ion-color-danger);
+    font-size: 16px;
+    margin: 0 0 16px 0;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 16px 12px;
+    }
+
+    .headerTitle {
+        font-size: 24px;
+    }
+
+    .toolbar {
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+    }
+
+    .sectionItem {
+        padding: 12px;
+    }
+
+    .sectionName {
+        font-size: 16px;
+    }
+}

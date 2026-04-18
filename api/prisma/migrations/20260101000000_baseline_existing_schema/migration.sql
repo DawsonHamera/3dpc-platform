@@ -1,0 +1,2 @@
+-- Baseline migration for existing non-empty database state.
+-- Intentionally empty: historical schema pre-dates Prisma migration tracking.

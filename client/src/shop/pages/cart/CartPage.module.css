@@ -1,0 +1,63 @@
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.noImageState {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--ion-color-light);
+}
+
+.itemName {
+    font-weight: 700;
+}
+
+.itemMetaRow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+}
+
+.itemPrice {
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.swipeHint {
+    font-size: 0.9rem;
+}
+
+.totalSection {
+    border-top: 2px solid var(--ion-color-primary);
+    padding-top: 12px;
+    margin-top: 8px;
+}
+
+.totalLabel {
+    font-weight: 700;
+}
+
+.totalValue {
+    color: var(--ion-color-primary);
+    font-weight: 700;
+    margin: 0;
+}
+
+.emptyState {
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: center;
+    padding-top: 60px;
+}
+
+.emptyStateIcon {
+    font-size: 120px;
+    color: var(--ion-color-medium);
+    margin-bottom: 24px;
+}

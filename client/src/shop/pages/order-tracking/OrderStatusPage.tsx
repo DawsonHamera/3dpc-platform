@@ -31,6 +31,7 @@ import { useState } from "react";
 import { useParams } from "react-router";
 import { useGetOrderByKeyQuery } from "../../../shared/features";
 import { ShopHeader } from "../shared";
+import styles from "./OrderStatusPage.module.css";
 
 const OrderStatusPage: React.FC = () => {
     const { orderKey } = useParams<{ orderKey: string }>();
@@ -102,7 +103,14 @@ const OrderStatusPage: React.FC = () => {
 
     return (
         <IonPage>
-            <ShopHeader title="Order Status" />
+            <ShopHeader
+                title="Order Status"
+                breadcrumbs={[
+                    { label: "Shop", path: "/shop" },
+                    { label: "Order Status" },
+                ]}
+                contextLabel="Order Tracking"
+            />
 
             <IonContent className="ion-padding">
                 {isLoading && (
@@ -149,17 +157,12 @@ const OrderStatusPage: React.FC = () => {
                             <IonCardContent className="ion-text-center">
                                 <IonIcon
                                     icon={checkmarkCircle}
-                                    style={{ fontSize: "64px", color: "white" }}
+                                    className={styles.successIcon}
                                 />
-                                <h1
-                                    style={{
-                                        color: "white",
-                                        margin: "16px 0 8px",
-                                    }}
-                                >
+                                <h1 className={styles.successHeading}>
                                     Thank You!
                                 </h1>
-                                <p style={{ color: "white", margin: 0 }}>
+                                <p className={styles.successDescription}>
                                     Your order has been received and is being
                                     processed.
                                 </p>
@@ -191,12 +194,7 @@ const OrderStatusPage: React.FC = () => {
                                             <IonText color="medium">
                                                 <small>Order ID</small>
                                             </IonText>
-                                            <p
-                                                style={{
-                                                    margin: "4px 0 16px",
-                                                    fontWeight: "bold",
-                                                }}
-                                            >
+                                            <p className={styles.summaryValue}>
                                                 #{order.id}
                                             </p>
                                         </IonCol>
@@ -204,7 +202,11 @@ const OrderStatusPage: React.FC = () => {
                                             <IonText color="medium">
                                                 <small>Status</small>
                                             </IonText>
-                                            <div style={{ marginTop: "4px" }}>
+                                            <div
+                                                className={
+                                                    styles.statusBadgeWrap
+                                                }
+                                            >
                                                 <IonBadge
                                                     color={getStatusColor(
                                                         order.status,
@@ -214,9 +216,9 @@ const OrderStatusPage: React.FC = () => {
                                                         icon={getStatusIcon(
                                                             order.status,
                                                         )}
-                                                        style={{
-                                                            marginRight: "4px",
-                                                        }}
+                                                        className={
+                                                            styles.statusIcon
+                                                        }
                                                     />
                                                     {order.status}
                                                 </IonBadge>
@@ -228,7 +230,7 @@ const OrderStatusPage: React.FC = () => {
                                             <IonText color="medium">
                                                 <small>Customer</small>
                                             </IonText>
-                                            <p style={{ margin: "4px 0 16px" }}>
+                                            <p className={styles.summaryValue}>
                                                 {order.first_name}{" "}
                                                 {order.last_name}
                                             </p>
@@ -239,7 +241,7 @@ const OrderStatusPage: React.FC = () => {
                                             <IonText color="medium">
                                                 <small>Email</small>
                                             </IonText>
-                                            <p style={{ margin: "4px 0 16px" }}>
+                                            <p className={styles.summaryValue}>
                                                 {order.email}
                                             </p>
                                         </IonCol>
@@ -249,14 +251,9 @@ const OrderStatusPage: React.FC = () => {
                                             <IonText color="medium">
                                                 <small>Total</small>
                                             </IonText>
-                                            <h2
-                                                style={{
-                                                    margin: "4px 0 0",
-                                                    color: "var(--ion-color-primary)",
-                                                }}
-                                            >
+                                            <h2 className={styles.orderTotal}>
                                                 $
-                                                {parseFloat(
+                                                {Number(
                                                     order.total_price,
                                                 ).toFixed(2)}
                                             </h2>
@@ -286,28 +283,12 @@ const OrderStatusPage: React.FC = () => {
                                             }
                                         >
                                             <div
-                                                style={{
-                                                    display: "flex",
-                                                    gap: "16px",
-                                                    width: "100%",
-                                                    alignItems: "center",
-                                                    padding: "12px 0",
-                                                }}
+                                                className={styles.orderItemRow}
                                             >
                                                 <div
-                                                    style={{
-                                                        width: "80px",
-                                                        height: "80px",
-                                                        minWidth: "80px",
-                                                        borderRadius: "8px",
-                                                        overflow: "hidden",
-                                                        backgroundColor:
-                                                            "#f5f5f5",
-                                                        display: "flex",
-                                                        alignItems: "center",
-                                                        justifyContent:
-                                                            "center",
-                                                    }}
+                                                    className={
+                                                        styles.orderItemImageWrap
+                                                    }
                                                 >
                                                     {item.product_variant?.image
                                                         .path ? (
@@ -321,12 +302,9 @@ const OrderStatusPage: React.FC = () => {
                                                                 item.product
                                                                     .name
                                                             }
-                                                            style={{
-                                                                width: "100%",
-                                                                height: "100%",
-                                                                objectFit:
-                                                                    "cover",
-                                                            }}
+                                                            className={
+                                                                styles.orderItemImage
+                                                            }
                                                         />
                                                     ) : (
                                                         <IonText color="medium">
@@ -337,25 +315,22 @@ const OrderStatusPage: React.FC = () => {
                                                     )}
                                                 </div>
                                                 <div
-                                                    style={{
-                                                        flex: 1,
-                                                        minWidth: 0,
-                                                    }}
+                                                    className={
+                                                        styles.orderItemContent
+                                                    }
                                                 >
                                                     <h3
-                                                        style={{
-                                                            margin: "0 0 4px",
-                                                            fontWeight: "bold",
-                                                        }}
+                                                        className={
+                                                            styles.orderItemTitle
+                                                        }
                                                     >
                                                         {item.product.name}
                                                     </h3>
                                                     <IonNote
                                                         color="medium"
-                                                        style={{
-                                                            display: "block",
-                                                            marginBottom: "8px",
-                                                        }}
+                                                        className={
+                                                            styles.orderItemVariant
+                                                        }
                                                     >
                                                         {
                                                             item.product_variant
@@ -363,14 +338,9 @@ const OrderStatusPage: React.FC = () => {
                                                         }
                                                     </IonNote>
                                                     <div
-                                                        style={{
-                                                            display: "flex",
-                                                            justifyContent:
-                                                                "space-between",
-                                                            alignItems:
-                                                                "center",
-                                                            marginBottom: "8px",
-                                                        }}
+                                                        className={
+                                                            styles.orderItemMetaRow
+                                                        }
                                                     >
                                                         <IonText color="medium">
                                                             <small>
@@ -399,21 +369,17 @@ const OrderStatusPage: React.FC = () => {
                                                             color={getStatusColor(
                                                                 item.status,
                                                             )}
-                                                            style={{
-                                                                fontSize:
-                                                                    "0.75rem",
-                                                            }}
+                                                            className={
+                                                                styles.statusItemBadge
+                                                            }
                                                         >
                                                             <IonIcon
                                                                 icon={getStatusIcon(
                                                                     item.status,
                                                                 )}
-                                                                style={{
-                                                                    marginRight:
-                                                                        "4px",
-                                                                    fontSize:
-                                                                        "12px",
-                                                                }}
+                                                                className={
+                                                                    styles.statusItemIcon
+                                                                }
                                                             />
                                                             {item.status}
                                                         </IonBadge>
@@ -433,20 +399,20 @@ const OrderStatusPage: React.FC = () => {
                             </IonCardHeader>
                             <IonCardContent>
                                 <IonText color="medium">
-                                    <p style={{ margin: "0 0 12px" }}>
+                                    <p className={styles.nextStepsParagraph}>
                                         We'll send you an email confirmation and
                                         updates as your order progresses. You
                                         can use this page to check your order
                                         status at any time.
                                     </p>
-                                    <p style={{ margin: 0 }}>
+                                    <p className={styles.nextStepsSecondary}>
                                         <strong>Save this link:</strong> You can
                                         bookmark this page to track your order.
                                     </p>
                                 </IonText>
                                 <IonButton
                                     fill="clear"
-                                    style={{ marginTop: "16px" }}
+                                    className={styles.copyButton}
                                     onClick={() => handleCopyLink()}
                                 >
                                     <IonIcon icon={copyOutline} slot="start" />

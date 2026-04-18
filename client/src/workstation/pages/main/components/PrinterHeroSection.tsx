@@ -1,6 +1,6 @@
 import { IonButton, IonIcon } from "@ionic/react";
 import { cloudOutline } from "ionicons/icons";
-import { Printer } from "../../../../member-app/App";
+import { Printer } from "../../../../shared/features";
 import "./PrinterHeroSection.css";
 
 interface PrinterHeroSectionProps {
@@ -150,7 +150,7 @@ const PrinterHeroSection: React.FC<PrinterHeroSectionProps> = ({
                                         style={{
                                             backgroundColor:
                                                 activePrinter.loaded_material
-                                                    .color,
+                                                    .color ?? undefined,
                                         }}
                                     />
                                     <span>

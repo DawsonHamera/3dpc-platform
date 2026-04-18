@@ -5,12 +5,30 @@ import { baseQuery } from "../../lib/baseApi";
 // Response types with relations
 export type Order = Prisma.orderGetPayload<{
     include: {
-        order_items: { include: { product: true; product_variant: true } };
+        order_items: {
+            include: {
+                product: true;
+                product_variant: { include: { image: true } };
+            };
+        };
     };
 }>;
 
 export type OrderItem = Prisma.order_itemGetPayload<{
-    include: { product: true; product_variant: true; order: true };
+    include: {
+        product: true;
+        product_variant: { include: { image: true } };
+        order: true;
+        tasks: {
+            select: {
+                id: true;
+                title: true;
+                status: true;
+                assigned_to: true;
+                scheduled_date: true;
+            };
+        };
+    };
 }>;
 
 // Input types
@@ -18,6 +36,25 @@ export type CreateOrder = Prisma.orderCreateInput;
 export type UpdateOrder = Prisma.orderUpdateInput;
 export type CreateOrderItem = Prisma.order_itemCreateInput;
 export type UpdateOrderItem = Prisma.order_itemUpdateInput;
+export type OrderTaskPrinterAssignment = {
+    order_item_id: number;
+    printer_id: number;
+};
+export type GenerateOrderTasksRequest = {
+    orderId: number;
+    force?: boolean;
+    printer_assignments?: OrderTaskPrinterAssignment[];
+};
+export type GenerateOrderTasksResponse = {
+    message?: string;
+    order_id?: number;
+    created_count?: number;
+    skipped_count?: number;
+    eligible_item_count?: number;
+    already_linked_item_count?: number;
+    tasks?: unknown[];
+    [key: string]: unknown;
+};
 
 export const ordersApi = createApi({
     reducerPath: "ordersApi",
@@ -125,6 +162,25 @@ export const ordersApi = createApi({
                 { type: "Orders", id: orderId },
             ],
         }),
+        generateOrderTasks: builder.mutation<
+            GenerateOrderTasksResponse,
+            GenerateOrderTasksRequest
+        >({
+            query: ({ orderId, force, printer_assignments }) => ({
+                url: `orders/${orderId}/generate-tasks`,
+                method: "POST",
+                body:
+                    force !== undefined || printer_assignments !== undefined
+                        ? { force, printer_assignments }
+                        : undefined,
+            }),
+            invalidatesTags: (result, error, { orderId }) => [
+                { type: "Orders", id: orderId },
+                { type: "OrderItems", id: orderId },
+                "Orders",
+                "OrderItems",
+            ],
+        }),
     }),
 });
 
@@ -139,4 +195,5 @@ export const {
     useAddOrderItemMutation,
     useUpdateOrderItemMutation,
     useDeleteOrderItemMutation,
+    useGenerateOrderTasksMutation,
 } = ordersApi;

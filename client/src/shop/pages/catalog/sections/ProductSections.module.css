@@ -1,0 +1,202 @@
+.adminActions {
+    padding: 8px 12px 16px;
+}
+
+.productSection {
+    margin-bottom: 1rem;
+    background: var(--ion-color-light);
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 6px 14px rgba(var(--ion-color-dark-rgb), 0.04);
+}
+
+.productSection h2 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin: 0;
+    padding: 0 10px;
+}
+
+.sectionHeaderTitleBlock {
+    display: grid;
+    gap: 2px;
+}
+
+.sectionMetaText p {
+    margin: 0;
+    font-size: 0.78rem;
+    padding: 0 10px;
+}
+
+.sectionToolbar {
+    --min-height: 58px;
+    --padding-start: 4px;
+    --padding-end: 4px;
+    --background: rgba(var(--ion-color-light-rgb), 1);
+}
+
+.sectionActionButton {
+    --color: var(--ion-color-medium-shade);
+}
+
+.deleteSectionButton {
+    --color: var(--ion-color-danger-shade);
+}
+
+.collapseToggleButton {
+    --color: var(--ion-color-medium-shade);
+}
+
+.editItem {
+    --inner-padding-end: 0;
+    --padding-start: 2px;
+}
+
+.sectionNameInput {
+    --padding-start: 8px;
+}
+
+.editButtons {
+    padding-right: 4px;
+}
+
+.sectionEditMeta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 14px 12px;
+}
+
+.collapsedSummaryRow {
+    padding: 0 14px 12px;
+}
+
+.collapsedSummaryRow p {
+    margin: 0;
+    font-size: 0.84rem;
+}
+
+.sectionTypeLabel {
+    color: var(--ion-color-medium);
+    font-size: 0.85rem;
+}
+
+.addCardPlaceholder {
+    width: 180px;
+    margin: 2px;
+    height: 252px;
+    border: 2px dashed rgba(var(--ion-color-primary-rgb), 0.42);
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    color: var(--ion-color-primary-shade);
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    background: rgba(var(--ion-color-primary-rgb), 0.05);
+}
+
+.addCardPlaceholder ion-icon {
+    font-size: 2.4rem;
+}
+
+.addCardPlaceholder p {
+    margin: 0;
+}
+
+.productList {
+    display: flex;
+    padding: 10px 12px 14px;
+    gap: 12px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    touch-action: pan-x;
+}
+
+.productList::-webkit-scrollbar {
+    display: none;
+}
+
+.sortableSectionContainer {
+    margin: 0 12px;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.sortableSectionDragging {
+    opacity: 0.86;
+    z-index: 12;
+}
+
+.sectionOrderHandleRow {
+    display: flex;
+    justify-content: flex-end;
+    margin: 0 0 6px;
+}
+
+.sectionOrderHandle {
+    border: 1px solid rgba(var(--ion-color-medium-rgb), 0.28);
+    background: rgba(var(--ion-color-light-rgb), 1);
+    border-radius: 999px;
+    color: var(--ion-color-medium);
+    font-size: 0.78rem;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 5px 10px;
+    touch-action: none;
+    cursor: grab;
+}
+
+.sectionOrderHandle:active {
+    cursor: grabbing;
+}
+
+.sectionOrderHandle:disabled {
+    opacity: 0.55;
+}
+
+.dragOverlayCard {
+    min-width: 220px;
+    max-width: 300px;
+    border-radius: 14px;
+    border: 1px solid rgba(var(--ion-color-primary-rgb), 0.24);
+    background: var(--ion-color-light);
+    box-shadow: 0 20px 30px rgba(var(--ion-color-dark-rgb), 0.2);
+    padding: 12px 14px;
+}
+
+.dragOverlayTitleRow {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--ion-color-dark);
+}
+
+.dragOverlayMeta {
+    display: block;
+    margin-top: 5px;
+    font-size: 0.75rem;
+    color: var(--ion-color-medium);
+}
+
+@media (min-width: 768px) {
+    .adminActions {
+        padding: 12px 20px 24px;
+    }
+
+    .sortableSectionContainer {
+        margin: 0 20px;
+    }
+
+    .productList {
+        padding: 12px 14px 16px;
+        gap: 14px;
+    }
+}

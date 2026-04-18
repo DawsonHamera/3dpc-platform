@@ -5,8 +5,20 @@ import { baseQuery } from "../../lib/baseApi";
 export type User = Prisma.userGetPayload<{
     include: { role: true };
 }>;
-export type CreateUser = Prisma.userCreateInput;
-export type UpdateUser = Prisma.userUpdateInput;
+export type CreateUser = {
+    name: string;
+    email: string;
+    password: string;
+    grade?: string;
+    role_id?: number;
+};
+export type UpdateUser = {
+    name?: string;
+    email?: string;
+    password?: string;
+    grade?: string;
+    role_id?: number;
+};
 
 export const usersApi = createApi({
     reducerPath: "users",

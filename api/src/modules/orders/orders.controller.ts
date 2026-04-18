@@ -12,6 +12,9 @@ import { OrdersService } from './orders.service';
 import { Public } from '../../common/decorators/public.decorator';
 import { Roles } from '../../common/decorators/roles.decorator';
 import { CreateOrderDto } from './dto/CreateOrderDto';
+import { CreateOrderItemDto } from './dto/create-order-item.dto';
+import { GenerateOrderTasksDto } from './dto/generate-order-tasks.dto';
+import { UpdateOrderItemDto } from './dto/update-order-item.dto';
 
 @Controller('orders')
 export class OrdersController {
@@ -46,9 +49,18 @@ export class OrdersController {
     return this.ordersService.createOrder(data);
   }
 
+  @Post(':id/generate-tasks')
+  @Roles(['admin'])
+  generateTasks(
+    @Param('id') id: string,
+    @Body() options?: GenerateOrderTasksDto,
+  ) {
+    return this.ordersService.generateTasksFromOrder(+id, options);
+  }
+
   @Patch(':id')
   @Roles(['admin'])
-  update(@Param('id') id: string, @Body() data: any) {
+  update(@Param('id') id: string, @Body() data: Record<string, unknown>) {
     return this.ordersService.updateOrder(+id, data);
   }
 
@@ -64,21 +76,23 @@ export class OrdersController {
   }
 
   @Post(':id/items')
-  @Public()
-  addItem(@Param('id') orderId: string, @Body() data: any) {
+  @Roles(['admin'])
+  addItem(@Param('id') orderId: string, @Body() data: CreateOrderItemDto) {
     return this.ordersService.addOrderItem(+orderId, data);
   }
 
   @Patch(':id/items/:itemId')
+  @Roles(['admin'])
   updateItem(
     @Param('id') orderId: string,
     @Param('itemId') itemId: string,
-    @Body() data: any,
+    @Body() data: UpdateOrderItemDto,
   ) {
     return this.ordersService.updateOrderItem(+orderId, +itemId, data);
   }
 
   @Delete(':id/items/:itemId')
+  @Roles(['admin'])
   removeItem(@Param('id') orderId: string, @Param('itemId') itemId: string) {
     return this.ordersService.deleteOrderItem(+orderId, +itemId);
   }

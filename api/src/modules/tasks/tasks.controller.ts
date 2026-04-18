@@ -8,9 +8,12 @@ import {
   Delete,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
-import { Public } from '../../common/decorators/public.decorator';
 import { Roles } from '../../common/decorators/roles.decorator';
-import { CurrentUser } from 'src/common/decorators/current-user.decorator';
+import { CurrentUser } from '../../common/decorators/current-user.decorator';
+import { CreateTaskDto } from './dto/create-task.dto';
+import { UpdateTaskDto } from './dto/update-task.dto';
+import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
+import type { JwtUser } from '../../common/types/jwt-user.type';
 
 @Controller('tasks')
 export class TasksController {
@@ -24,20 +27,14 @@ export class TasksController {
 
   @Get('user')
   @Roles(['member', 'admin'])
-  findByUser(@CurrentUser() user: any) {
+  findByUser(@CurrentUser() user: JwtUser) {
     return this.tasksService.findTasksByUserId(+user.id);
   }
 
   @Get('/open')
-  @Public()
+  @Roles(['member', 'admin'])
   findOpen() {
     return this.tasksService.findOpenTasks();
-  }
-
-  @Get(':id')
-  @Public()
-  findOne(@Param('id') id: string) {
-    return this.tasksService.findTaskById(+id);
   }
 
   @Get('/users')
@@ -46,22 +43,32 @@ export class TasksController {
     return this.tasksService.findAllByUsers();
   }
 
+  @Get(':id')
+  @Roles(['member', 'admin'])
+  findOne(@Param('id') id: string) {
+    return this.tasksService.findTaskById(+id);
+  }
+
   @Post()
   @Roles(['admin'])
-  create(@Body() data: any) {
+  create(@Body() data: CreateTaskDto) {
     return this.tasksService.createTask(data);
   }
 
   @Patch(':id')
   @Roles(['admin'])
-  update(@Param('id') id: string, @Body() data: any) {
+  update(@Param('id') id: string, @Body() data: UpdateTaskDto) {
     return this.tasksService.updateTask(+id, data);
   }
 
   @Patch(':id/status')
   @Roles(['admin', 'member'])
-  updateStatus(@Param('id') id: string, @Body() data: any) {
-    return this.tasksService.updateTask(+id, { status: data.status });
+  updateStatus(
+    @Param('id') id: string,
+    @Body() data: UpdateTaskStatusDto,
+    @CurrentUser() user: JwtUser,
+  ) {
+    return this.tasksService.updateTaskStatus(+id, data.status, user);
   }
 
   @Delete(':id')
@@ -71,13 +78,13 @@ export class TasksController {
   }
   @Patch(':id/claim')
   @Roles(['admin', 'member'])
-  claim(@Param('id') id: string, @CurrentUser() user: any) {
+  claim(@Param('id') id: string, @CurrentUser() user: JwtUser) {
     return this.tasksService.claimTask(+id, +user.id);
   }
 
   @Patch(':id/release')
   @Roles(['admin', 'member'])
-  release(@Param('id') id: string, @CurrentUser() user: any) {
+  release(@Param('id') id: string, @CurrentUser() user: JwtUser) {
     return this.tasksService.releaseTask(+id, user);
   }
 }

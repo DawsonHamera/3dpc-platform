@@ -59,13 +59,13 @@ const OrderFilters: React.FC<OrderFiltersProps> = ({
                                 <IonLabel>Pending</IonLabel>
                             </IonSegmentButton>
                             <IonSegmentButton value="processing">
-                                <IonLabel>Processing</IonLabel>
+                                <IonLabel>In Progress</IonLabel>
                             </IonSegmentButton>
                             <IonSegmentButton value="completed">
                                 <IonLabel>Completed</IonLabel>
                             </IonSegmentButton>
-                            <IonSegmentButton value="cancelled">
-                                <IonLabel>Cancelled</IonLabel>
+                            <IonSegmentButton value="failed">
+                                <IonLabel>Failed</IonLabel>
                             </IonSegmentButton>
                         </IonSegment>
                     </div>

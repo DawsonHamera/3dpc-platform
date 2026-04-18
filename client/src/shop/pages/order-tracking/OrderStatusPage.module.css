@@ -1,0 +1,101 @@
+.successIcon {
+    font-size: 64px;
+    color: var(--ion-color-light);
+}
+
+.successHeading {
+    color: var(--ion-color-light);
+    margin: 16px 0 8px;
+}
+
+.successDescription {
+    color: var(--ion-color-light);
+    margin: 0;
+}
+
+.summaryValue {
+    margin: 4px 0 16px;
+    font-weight: 700;
+}
+
+.statusBadgeWrap {
+    margin-top: 4px;
+}
+
+.statusIcon {
+    margin-right: 4px;
+}
+
+.orderTotal {
+    margin: 4px 0 0;
+    color: var(--ion-color-primary);
+}
+
+.orderItemRow {
+    display: flex;
+    gap: 16px;
+    width: 100%;
+    align-items: center;
+    padding: 12px 0;
+}
+
+.orderItemImageWrap {
+    width: 80px;
+    height: 80px;
+    min-width: 80px;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: var(--ion-color-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.orderItemImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.orderItemContent {
+    flex: 1;
+    min-width: 0;
+}
+
+.orderItemTitle {
+    margin: 0 0 4px;
+    font-weight: 700;
+}
+
+.orderItemVariant {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.orderItemMetaRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.statusItemBadge {
+    font-size: 0.75rem;
+}
+
+.statusItemIcon {
+    margin-right: 4px;
+    font-size: 12px;
+}
+
+.nextStepsParagraph {
+    margin: 0 0 12px;
+}
+
+.nextStepsSecondary {
+    margin: 0;
+}
+
+.copyButton {
+    margin-top: 16px;
+}

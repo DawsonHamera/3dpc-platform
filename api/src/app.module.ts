@@ -11,6 +11,7 @@ import jwtConfig from './config/jwt.config';
 import { ActivityModule } from './modules/activity/activity.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard';
+import { ErrorReportsModule } from './modules/error-reports/error-reports.module';
 import { EventsModule } from './modules/events/events.module';
 import { FilesModule } from './modules/files/files.module';
 import { MaterialsModule } from './modules/materials/materials.module';
@@ -37,6 +38,7 @@ import { PrismaModule } from './prisma/prisma.module';
     UsersModule,
     EventsModule,
     AuthModule,
+    ErrorReportsModule,
     FilesModule,
     RecyclingModule,
 

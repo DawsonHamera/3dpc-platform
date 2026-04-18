@@ -132,11 +132,10 @@ const HomePage: React.FC = () => {
                         Members
                     </IonButton>
                     <IonButton
-                        disabled
                         color="light"
                         fill="outline"
                         className={styles.heroButton}
-                        onClick={() => router.push("/shop")}
+                        onClick={() => router.push("/shop?type=teachers")}
                     >
                         Teachers
                     </IonButton>

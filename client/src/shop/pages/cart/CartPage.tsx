@@ -25,6 +25,7 @@ import React, { useMemo } from "react";
 import { useGetProductsQuery } from "../../../shared/features";
 import { ShopHeader, useShop } from "../shared";
 import Incrementer from "./Incrementer";
+import styles from "./CartPage.module.css";
 
 const CartPage: React.FC = () => {
     const { cart, updateCartItemQuantity } = useShop();
@@ -45,9 +46,17 @@ const CartPage: React.FC = () => {
     if (!products) {
         return (
             <IonPage>
-                <ShopHeader title="Shopping Cart" backArrow />
+                <ShopHeader
+                    title="Shopping Cart"
+                    backArrow
+                    breadcrumbs={[
+                        { label: "Shop", path: "/shop" },
+                        { label: "Cart" },
+                    ]}
+                    contextLabel="Checkout Journey"
+                />
                 <IonContent className="ion-padding">
-                    <div style={{ maxWidth: "800px", margin: "0 auto" }}>
+                    <div className={styles.container}>
                         <IonList>
                             {[1, 2, 3].map((i) => (
                                 <IonItem key={i}>
@@ -93,10 +102,18 @@ const CartPage: React.FC = () => {
 
     return (
         <IonPage>
-            <ShopHeader title="Shopping Cart" backArrow />
+                <ShopHeader
+                    title="Shopping Cart"
+                    backArrow
+                    breadcrumbs={[
+                        { label: "Shop", path: "/shop" },
+                        { label: "Cart" },
+                    ]}
+                    contextLabel="Checkout Journey"
+                />
             <IonContent className="ion-padding">
                 {cart && cart.length > 0 ? (
-                    <div style={{ maxWidth: "800px", margin: "0 auto" }}>
+                    <div className={styles.container}>
                         {/* Cart Items */}
                         <IonCard>
                             <IonList>
@@ -156,19 +173,7 @@ const CartPage: React.FC = () => {
                                                             alt={product.name}
                                                         />
                                                     ) : (
-                                                        <div
-                                                            style={{
-                                                                width: "100%",
-                                                                height: "100%",
-                                                                display: "flex",
-                                                                alignItems:
-                                                                    "center",
-                                                                justifyContent:
-                                                                    "center",
-                                                                backgroundColor:
-                                                                    "#f5f5f5",
-                                                            }}
-                                                        >
+                                                        <div className={styles.noImageState}>
                                                             <IonText color="medium">
                                                                 <small>
                                                                     No image
@@ -178,11 +183,7 @@ const CartPage: React.FC = () => {
                                                     )}
                                                 </IonThumbnail>
                                                 <IonLabel>
-                                                    <h2
-                                                        style={{
-                                                            fontWeight: "bold",
-                                                        }}
-                                                    >
+                                                    <h2 className={styles.itemName}>
                                                         {product.name}
                                                     </h2>
                                                     <IonNote color="medium">
@@ -191,24 +192,10 @@ const CartPage: React.FC = () => {
                                                             ? ""
                                                             : variant.name}
                                                     </IonNote>
-                                                    <div
-                                                        style={{
-                                                            display: "flex",
-                                                            alignItems:
-                                                                "center",
-                                                            gap: "12px",
-                                                            marginTop: "8px",
-                                                            flexWrap: "wrap",
-                                                        }}
-                                                    >
+                                                    <div className={styles.itemMetaRow}>
                                                         <IonText
                                                             color="primary"
-                                                            style={{
-                                                                fontWeight:
-                                                                    "bold",
-                                                                fontSize:
-                                                                    "1.1rem",
-                                                            }}
+                                                            className={styles.itemPrice}
                                                         >
                                                             $
                                                             {variant.price.toFixed(
@@ -262,7 +249,7 @@ const CartPage: React.FC = () => {
                             </IonList>
                         </IonCard>
                         <IonNote className="ion-text-center">
-                            <p style={{ fontSize: "0.9rem" }}>
+                            <p className={styles.swipeHint}>
                                 Swipe left on an item to remove it from your
                                 cart.
                             </p>
@@ -279,28 +266,15 @@ const CartPage: React.FC = () => {
                                         <strong>${cartTotal.toFixed(2)}</strong>
                                     </IonNote>
                                 </IonItem>
-                                <div
-                                    style={{
-                                        borderTop:
-                                            "2px solid var(--ion-color-primary)",
-                                        paddingTop: "12px",
-                                        marginTop: "8px",
-                                    }}
-                                >
+                                <div className={styles.totalSection}>
                                     <IonItem lines="none">
                                         <IonLabel>
-                                            <h2 style={{ fontWeight: "bold" }}>
+                                            <h2 className={styles.totalLabel}>
                                                 Total
                                             </h2>
                                         </IonLabel>
                                         <IonNote slot="end">
-                                            <h2
-                                                style={{
-                                                    color: "var(--ion-color-primary)",
-                                                    fontWeight: "bold",
-                                                    margin: 0,
-                                                }}
-                                            >
+                                            <h2 className={styles.totalValue}>
                                                 ${cartTotal.toFixed(2)}
                                             </h2>
                                         </IonNote>
@@ -320,22 +294,8 @@ const CartPage: React.FC = () => {
                         </IonCard>
                     </div>
                 ) : (
-                    <div
-                        style={{
-                            maxWidth: "400px",
-                            margin: "0 auto",
-                            textAlign: "center",
-                            paddingTop: "60px",
-                        }}
-                    >
-                        <IonIcon
-                            icon={cartOutline}
-                            style={{
-                                fontSize: "120px",
-                                color: "var(--ion-color-medium)",
-                                marginBottom: "24px",
-                            }}
-                        />
+                    <div className={styles.emptyState}>
+                        <IonIcon icon={cartOutline} className={styles.emptyStateIcon} />
                         <h2>Your cart is empty</h2>
                         <IonText color="medium">
                             <p>

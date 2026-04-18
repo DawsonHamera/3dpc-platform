@@ -1,4 +1,27 @@
-import { IsEmail, IsNotEmpty } from 'class-validator';
+import {
+  ArrayMinSize,
+  IsEmail,
+  IsInt,
+  IsNotEmpty,
+  IsNumber,
+  IsPositive,
+  ValidateNested,
+} from 'class-validator';
+import { Type } from 'class-transformer';
+
+class CreateOrderItemDto {
+  @IsInt()
+  @IsPositive()
+  productId: number;
+
+  @IsInt()
+  @IsPositive()
+  variantId: number;
+
+  @IsInt()
+  @IsPositive()
+  quantity: number;
+}
 
 export class CreateOrderDto {
   @IsEmail()
@@ -14,11 +37,11 @@ export class CreateOrderDto {
   delivery_method: string;
 
   @IsNotEmpty()
+  @IsNumber()
   total_price: number;
 
-  cart: {
-    productId: number;
-    variantId: number;
-    quantity: number;
-  }[];
+  @ArrayMinSize(1)
+  @ValidateNested({ each: true })
+  @Type(() => CreateOrderItemDto)
+  cart: CreateOrderItemDto[];
 }

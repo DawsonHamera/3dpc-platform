@@ -1,29 +1,32 @@
 import React from "react";
 import { IonSkeletonText } from "@ionic/react";
-import "./CatalogSkeletonLoader.css";
+import styles from "./CatalogSkeletonLoader.module.css";
 
 const CatalogSkeletonLoader: React.FC = () => {
     return (
         <>
             {[1, 2].map((sectionIndex) => (
-                <div key={sectionIndex} className="skeleton-section">
-                    <h2 className="section-title skeleton-title">
-                        <IonSkeletonText animated style={{ width: "40%" }} />
+                <div key={sectionIndex} className={styles.skeletonSection}>
+                    <h2 className={styles.skeletonTitle}>
+                        <IonSkeletonText
+                            animated
+                            className={styles.skeletonTitleText}
+                        />
                     </h2>
-                    <div className="product-list">
+                    <div className={styles.skeletonProductList}>
                         {[1, 2, 3, 4].map((i) => (
-                            <div key={i} className="skeleton-product-card">
+                            <div key={i} className={styles.skeletonProductCard}>
                                 <IonSkeletonText
                                     animated
-                                    className="skeleton-image"
+                                    className={styles.skeletonImage}
                                 />
                                 <IonSkeletonText
                                     animated
-                                    style={{ width: "60%" }}
+                                    className={styles.skeletonLineWide}
                                 />
                                 <IonSkeletonText
                                     animated
-                                    style={{ width: "40%" }}
+                                    className={styles.skeletonLineNarrow}
                                 />
                             </div>
                         ))}

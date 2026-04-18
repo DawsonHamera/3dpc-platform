@@ -1,106 +1,125 @@
+import { IonButton, IonIcon, IonImg, IonText } from "@ionic/react";
 import {
-    IonCard,
-    IonImg,
-    IonCardContent,
-    IonText,
-    IonButton,
-    IonIcon,
-    IonChip,
-    IonLabel,
-} from "@ionic/react";
-import {
+    arrowForwardOutline,
     cartOutline,
-    calendarOutline,
-    locationOutline,
-    timeOutline,
-    peopleOutline,
     schoolOutline,
 } from "ionicons/icons";
-import "./HeroSection.css";
+import styles from "./HeroSection.module.css";
 
 interface HeroSectionProps {
     onStartShopping?: () => void;
     isTeacher?: boolean;
+    onSwitchCatalog?: (nextType: "general" | "teachers") => void;
 }
 
-const HeroSection: React.FC<HeroSectionProps> = ({ onStartShopping, isTeacher }) => {
-    if (isTeacher) return (
-        <section className="hero-section">
-            <IonImg
-                src="/images/printerBackdrop.jpg"
-                className="hero-backdrop"
-            />
-            <div className="hero-section-content">
-                <div className="hero-main-content">
-                    <IonText className="hero-title">
-                        <h1>Welcome to the 3DPC Shop</h1>
-                    </IonText>
-                    <IonText className="hero-subtitle">
-                        <IonIcon icon={schoolOutline} />
-                        <p>Teachers</p>
-                    </IonText>
-                    <IonText className="hero-description">
-                        <p>
-                            Browse our collection of school supplies and order
-                            for pickup at Del Oro High School.
-                        </p>
-                    </IonText>
-                    <IonButton
-                        expand="block"
-                        color="primary"
-                        className="shop-now-btn"
-                        onClick={onStartShopping}
-                    >
-                        <IonIcon slot="start" icon={cartOutline} />
-                        Start Browsing
-                    </IonButton>{" "}
-                    <IonText className="hero-payment-note">
-                        <p>Completely free for DO teachers!</p>
-                    </IonText>
-                    <div style={{ flex: 1 }}></div>
-                    <IonText color='light'>
-                        <p>Looking for something else? Check out the <a href="/shop">main shop</a></p>
-                    </IonText>
+const HeroSection: React.FC<HeroSectionProps> = ({
+    onStartShopping,
+    isTeacher,
+    onSwitchCatalog,
+}) => {
+    if (isTeacher) {
+        return (
+            <section className={styles.heroSection}>
+                <IonImg
+                    src="/images/printerBackdrop.jpg"
+                    className={styles.heroBackdrop}
+                />
+                <div className={styles.heroSectionContent}>
+                    <div className={styles.heroMainContent}>
+                        <div className={styles.heroEyebrow}>
+                            Teacher catalog
+                        </div>
+                        <IonText className={styles.heroTitle}>
+                            <h1>
+                                Classroom-ready supplies, zero checkout cost
+                            </h1>
+                        </IonText>
+                        <IonText className={styles.heroSubtitle}>
+                            <IonIcon icon={schoolOutline} />
+                            <p>Teachers</p>
+                        </IonText>
+                        <IonText className={styles.heroDescription}>
+                            <p>
+                                Browse supplies built by students and schedule
+                                pickup at Del Oro High School.
+                            </p>
+                        </IonText>
+                        <div className={styles.heroActions}>
+                            <IonButton
+                                expand="block"
+                                color="light"
+                                className={styles.shopNowButton}
+                                onClick={onStartShopping}
+                            >
+                                <IonIcon slot="start" icon={cartOutline} />
+                                Start Browsing
+                            </IonButton>
+                            <IonButton
+                                expand="block"
+                                fill="clear"
+                                color="light"
+                                className={styles.shopSecondaryButton}
+                                onClick={() => onSwitchCatalog?.("general")}
+                            >
+                                View the main catalog
+                                <IonIcon
+                                    slot="end"
+                                    icon={arrowForwardOutline}
+                                />
+                            </IonButton>
+                        </div>
+                        <IonText className={styles.heroPaymentNote}>
+                            <p>Completely free for Del Oro teachers</p>
+                        </IonText>
+                    </div>
                 </div>
-            </div>
-        </section>
-    );
+            </section>
+        );
+    }
+
     return (
-        <section className="hero-section">
+        <section className={styles.heroSection}>
             <IonImg
                 src="/images/printerBackdrop.jpg"
-                className="hero-backdrop"
+                className={styles.heroBackdrop}
             />
-            <div className="hero-section-content">
-                <div className="hero-main-content">
-                    <IonText className="hero-title">
-                        <h1>Welcome to the 3DPC Shop</h1>
+            <div className={styles.heroSectionContent}>
+                <div className={styles.heroMainContent}>
+                    <div className={styles.heroEyebrow}>
+                        Student-made products
+                    </div>
+                    <IonText className={styles.heroTitle}>
+                        <h1>Discover custom 3D prints for pickup at school</h1>
                     </IonText>
-                    <IonText className="hero-description">
+                    <IonText className={styles.heroDescription}>
                         <p>
-                            Browse our collection of innovative 3D printed
-                            products and order for pickup at Del Oro High
-                            School.
+                            Explore practical and creative designs from the 3D
+                            Printing Club, then reserve your favorites.
                         </p>
                     </IonText>
-                    <IonButton
-                        expand="block"
-                        color="primary"
-                        className="shop-now-btn"
-                        onClick={onStartShopping}
-                    >
-                        <IonIcon slot="start" icon={cartOutline} />
-                        Start Shopping
-                    </IonButton>{" "}
-                    <IonText className="hero-payment-note">
+                    <div className={styles.heroActions}>
+                        <IonButton
+                            expand="block"
+                            color="light"
+                            className={styles.shopNowButton}
+                            onClick={onStartShopping}
+                        >
+                            <IonIcon slot="start" icon={cartOutline} />
+                            Start Shopping
+                        </IonButton>
+                        <IonButton
+                            expand="block"
+                            fill="clear"
+                            color="light"
+                            className={styles.shopSecondaryButton}
+                            onClick={() => onSwitchCatalog?.("teachers")}
+                        >
+                            Browse teacher catalog
+                            <IonIcon slot="end" icon={arrowForwardOutline} />
+                        </IonButton>
+                    </div>
+                    <IonText className={styles.heroPaymentNote}>
                         <p>Cash only • Pay upon pickup</p>
-                    </IonText>
-                    <div style={{ flex: 1 }}></div>
-                    <IonText color="light">
-                        <p>
-                            Are you a Del Oro teacher? Check out the{" "}
-                            <a href="/shop?type=teachers">free teacher shop</a>
-                        </p>
                     </IonText>
                 </div>
             </div>

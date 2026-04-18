@@ -7,6 +7,7 @@ import {
     IonLabel,
     IonSpinner,
 } from "@ionic/react";
+import { skipToken } from "@reduxjs/toolkit/query";
 import {
     addCircleOutline,
     checkmarkCircle,
@@ -28,13 +29,34 @@ import {
     useUpdateTaskStatusMutation,
 } from "../../../shared/features";
 import ErrorReportModal from "./ErrorReportModal";
-import "./PrintTaskCard.css";
+import styles from "./PrintTaskCard.module.css";
 
 const PrintTaskCard: React.FC<{
     task: any;
     type: string;
     userShown?: boolean;
 }> = ({ task, type, userShown = false }) => {
+    const details = (task?.details ?? {}) as Record<string, unknown>;
+
+    const toPositiveNumber = (value: unknown): number | null => {
+        if (typeof value === "number" && Number.isFinite(value) && value > 0) {
+            return value;
+        }
+
+        if (typeof value === "string") {
+            const parsed = Number(value);
+            if (Number.isFinite(parsed) && parsed > 0) {
+                return parsed;
+            }
+        }
+
+        return null;
+    };
+
+    const printerId = toPositiveNumber(details.printer_id);
+    const materialId = toPositiveNumber(details.material_id);
+    const modelId = toPositiveNumber(details.model_id);
+
     const getCustomTimeLabel = (dateTime: Date): string => {
         const timeRanges = [
             { start: "07:30", end: "08:30", label: "before school" },
@@ -79,22 +101,40 @@ const PrintTaskCard: React.FC<{
         data: printerData,
         isError: printerError,
         isLoading: printerLoading,
-    } = useGetPrinterByIdQuery(task.details.printer_id);
+    } = useGetPrinterByIdQuery(printerId ?? skipToken);
+
     const {
         data: materialData,
         isError: materialError,
         isLoading: materialLoading,
-    } = useGetMaterialByIdQuery(task.details.material_id);
+    } = useGetMaterialByIdQuery(materialId ?? skipToken);
+
     const {
         data: modelData,
         isError: modelError,
         isLoading: modelLoading,
-    } = useGetModelByIdQuery(task.details.model_id);
+    } = useGetModelByIdQuery(modelId ?? skipToken);
 
     const [claimTask] = useClaimTaskMutation();
     const [releaseTask] = useReleaseTaskMutation();
-
     const [updateTaskStatus] = useUpdateTaskStatusMutation();
+
+    const shouldResolvePrintResourceDetails =
+        printerId !== null || materialId !== null || modelId !== null;
+
+    const isLoading = shouldResolvePrintResourceDetails
+        ? printerLoading || materialLoading || modelLoading
+        : false;
+
+    const isError = shouldResolvePrintResourceDetails
+        ? printerError || materialError || modelError
+        : false;
+
+    const isDataMissing =
+        shouldResolvePrintResourceDetails &&
+        ((printerId !== null && !printerData) ||
+            (materialId !== null && !materialData) ||
+            (modelId !== null && !modelData));
 
     const handleComplete = () => {
         updateTaskStatus({ id: task.id, status: "completed" });
@@ -106,6 +146,9 @@ const PrintTaskCard: React.FC<{
 
     const handleError = () => {
         setIsErrorReportModalOpen(true);
+    };
+
+    const handleReportSubmitted = () => {
         updateTaskStatus({ id: task.id, status: "failed" });
     };
 
@@ -117,18 +160,14 @@ const PrintTaskCard: React.FC<{
         releaseTask({ id: task.id });
     };
 
-    const isLoading = printerLoading || materialLoading || modelLoading;
-    const isError = printerError || materialError || modelError;
-    const isDataMissing = !printerData || !materialData || !modelData;
-
     const isLocked =
         task.scheduled_date && new Date(task.scheduled_date) > new Date();
 
     if (isLoading) {
         return (
-            <IonAccordion className="print-task-card">
-                <IonItem slot="header" className="print-task-header">
-                    <div className="print-task-loading">
+            <IonAccordion className={styles.printTaskCard}>
+                <IonItem slot="header" className={styles.printTaskHeader}>
+                    <div className={styles.printTaskLoading}>
                         <IonSpinner />
                         <span>Loading task details...</span>
                     </div>
@@ -139,9 +178,9 @@ const PrintTaskCard: React.FC<{
 
     if (isError || isDataMissing) {
         return (
-            <IonAccordion className="print-task-card">
-                <IonItem slot="header" className="print-task-header">
-                    <div className="print-task-error">
+            <IonAccordion className={styles.printTaskCard}>
+                <IonItem slot="header" className={styles.printTaskHeader}>
+                    <div className={styles.printTaskError}>
                         Error loading task details
                     </div>
                 </IonItem>
@@ -150,23 +189,23 @@ const PrintTaskCard: React.FC<{
     }
 
     return (
-        <IonAccordion className="print-task-card">
-            <IonItem slot="header" className="print-task-header">
-                <div className="print-task-header-content">
+        <IonAccordion className={styles.printTaskCard}>
+            <IonItem slot="header" className={styles.printTaskHeader}>
+                <div className={styles.printTaskHeaderContent}>
                     <IonIcon
                         icon={typeIcon[task.type]}
-                        className="print-task-icon"
+                        className={styles.printTaskIcon}
                         color="primary"
                     />
-                    <div className="print-task-title-container">
-                        <h3 className="print-task-title">{task.title}</h3>
+                    <div className={styles.printTaskTitleContainer}>
+                        <h3 className={styles.printTaskTitle}>{task.title}</h3>
                         {printerData && (
-                            <p className="print-task-subtitle">
+                            <p className={styles.printTaskSubtitle}>
                                 {printerData.name}
                             </p>
                         )}
                     </div>
-                    <div className="print-task-badges">
+                    <div className={styles.printTaskBadges}>
                         {type !== "open" && (
                             <IonChip
                                 color={statusColorMap[task.status]}
@@ -184,18 +223,18 @@ const PrintTaskCard: React.FC<{
                     </div>
                 </div>
             </IonItem>
-            <div slot="content" className="print-task-content">
+            <div slot="content" className={styles.printTaskContent}>
                 {isLocked && !task.is_open && (
-                    <div className="print-task-schedule">
+                    <div className={styles.printTaskSchedule}>
                         <IonIcon
                             icon={lockClosed}
-                            className="print-task-schedule-icon"
+                            className={styles.printTaskScheduleIcon}
                         />
-                        <div className="print-task-schedule-text">
-                            <p className="print-task-schedule-title">
+                        <div className={styles.printTaskScheduleText}>
+                            <p className={styles.printTaskScheduleTitle}>
                                 Scheduled For
                             </p>
-                            <p className="print-task-schedule-date">
+                            <p className={styles.printTaskScheduleDate}>
                                 {new Date(task.scheduled_date).toLocaleString(
                                     "en-US",
                                     {
@@ -219,100 +258,123 @@ const PrintTaskCard: React.FC<{
                     </div>
                 )}
 
-                <div className="print-task-details">
-                    <div className="print-task-printer">
+                <div className={styles.printTaskDetails}>
+                    <div className={styles.printTaskPrinter}>
                         {printerData?.image_file?.path ? (
                             <img
                                 src={printerData.image_file.path}
                                 alt={printerData.name}
-                                className="print-task-printer-image"
+                                className={styles.printTaskPrinterImage}
                             />
                         ) : (
-                            <div className="print-task-printer-image">
+                            <div className={styles.printTaskPrinterImage}>
                                 <IonIcon icon={print} />
                             </div>
                         )}
-                        <p className="print-task-printer-name">
-                            {printerData?.name}
+                        <p className={styles.printTaskPrinterName}>
+                            {printerData?.name ?? "Printer not assigned"}
                         </p>
                     </div>
 
-                    <div className="print-task-info">
-                        <div className="print-task-info-item">
+                    <div className={styles.printTaskInfo}>
+                        <div className={styles.printTaskInfoItem}>
                             {modelData?.image_file?.path ? (
                                 <img
                                     src={modelData.image_file.path}
                                     alt={modelData.name}
-                                    className="print-task-info-image"
+                                    className={styles.printTaskInfoImage}
                                 />
                             ) : (
-                                <div className="print-task-info-image">
+                                <div className={styles.printTaskInfoImage}>
                                     <IonIcon icon={cube} />
                                 </div>
                             )}
-                            <div className="print-task-info-text">
-                                <p className="print-task-info-label">Model</p>
-                                <p className="print-task-info-value">
-                                    {modelData?.name}
+                            <div className={styles.printTaskInfoText}>
+                                <p className={styles.printTaskInfoLabel}>
+                                    Model
+                                </p>
+                                <p className={styles.printTaskInfoValue}>
+                                    {modelData?.name ?? "Model not assigned"}
                                 </p>
                             </div>
                         </div>
 
-                        <div className="print-task-info-item">
+                        <div className={styles.printTaskInfoItem}>
                             {materialData?.image_file?.path ? (
                                 <img
                                     src={materialData.image_file.path}
                                     alt={materialData.name}
-                                    className="print-task-info-image"
+                                    className={styles.printTaskInfoImage}
                                 />
                             ) : (
-                                <div className="print-task-info-image">
+                                <div className={styles.printTaskInfoImage}>
                                     <IonIcon icon={construct} />
                                 </div>
                             )}
-                            <div className="print-task-info-text">
-                                <p className="print-task-info-label">
+                            <div className={styles.printTaskInfoText}>
+                                <p className={styles.printTaskInfoLabel}>
                                     Material
                                 </p>
-                                <p className="print-task-info-value">
-                                    {materialData?.name}
+                                <p className={styles.printTaskInfoValue}>
+                                    {materialData?.name ??
+                                        "Material not assigned"}
                                 </p>
                             </div>
                         </div>
 
-                        <div className="print-task-info-item">
+                        <div className={styles.printTaskInfoItem}>
                             <div
-                                className="print-task-info-image"
-                                style={{
-                                    background:
-                                        "linear-gradient(135deg, var(--ion-color-primary), var(--ion-color-primary-shade))",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                }}
+                                className={`${styles.printTaskInfoImage} ${styles.printTaskInfoTimeIconContainer}`}
                             >
                                 <IonIcon
                                     icon={timeOutline}
-                                    style={{ color: "white" }}
+                                    className={styles.printTaskInfoTimeIcon}
                                 />
                             </div>
-                            <div className="print-task-info-text">
-                                <p className="print-task-info-label">
+                            <div className={styles.printTaskInfoText}>
+                                <p className={styles.printTaskInfoLabel}>
                                     Estimated Time
                                 </p>
-                                <p className="print-task-info-value">
-                                    {task.details.estimated_hours} hours
+                                <p className={styles.printTaskInfoValue}>
+                                    {typeof details.estimated_hours === "number"
+                                        ? `${details.estimated_hours} hours`
+                                        : "Not specified"}
                                 </p>
                             </div>
                         </div>
                     </div>
                 </div>
+                {task.order_item && (
+                    <div className={styles.printTaskLinkedOrder}>
+                        <p className={styles.printTaskLinkedOrderLabel}>
+                            Linked Order
+                        </p>
+                        <div className={styles.printTaskLinkedOrderRow}>
+                            <IonChip color="tertiary" outline>
+                                <IonLabel>
+                                    Order #{task.order_item.order?.key ?? "N/A"}
+                                </IonLabel>
+                            </IonChip>
+                            <IonChip color="medium" outline>
+                                <IonLabel>Item #{task.order_item.id}</IonLabel>
+                            </IonChip>
+                        </div>
+                        <p className={styles.printTaskLinkedOrderValue}>
+                            {task.order_item.product?.name ?? "Product"}{" "}
+                            {task.order_item.product_variant?.name
+                                ? `• ${task.order_item.product_variant.name}`
+                                : ""}
+                            {" • Qty "}
+                            {task.order_item.quantity}
+                        </p>
+                    </div>
+                )}
 
                 {task.is_open === true && (
                     <IonButton
                         expand="block"
                         onClick={handleClaimTask}
-                        style={{ marginTop: "16px" }}
+                        className={styles.printTaskClaimButton}
                     >
                         <IonIcon icon={addCircleOutline} slot="start" />
                         Add to My Tasks
@@ -320,16 +382,12 @@ const PrintTaskCard: React.FC<{
                 )}
 
                 {type === "editable" && !isLocked && (
-                    <div className="print-task-actions">
+                    <div className={styles.printTaskActions}>
                         <IonButton color="success" onClick={handleComplete}>
                             <IonIcon icon={checkmarkCircle} slot="start" />
                             Complete
                         </IonButton>
-                        <IonButton
-                            color="danger"
-                            disabled
-                            onClick={handleError}
-                        >
+                        <IonButton color="danger" onClick={handleError}>
                             <IonIcon icon={warning} slot="start" />
                             Report Issue
                         </IonButton>
@@ -346,6 +404,10 @@ const PrintTaskCard: React.FC<{
             <ErrorReportModal
                 isOpen={isErrorReportModalOpen}
                 onClose={() => setIsErrorReportModalOpen(false)}
+                onSubmitted={handleReportSubmitted}
+                taskId={task.id}
+                taskTitle={task.title}
+                orderKey={task.order_item?.order?.key}
             />
         </IonAccordion>
     );

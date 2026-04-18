@@ -1,6 +1,7 @@
 import { IonCard, IonCardContent, IonImg, IonText } from "@ionic/react";
 import React, { useMemo } from "react";
 import { Product } from "../../../../shared/features";
+import styles from "./ProductCard.module.css";
 
 type ProductCardProps = {
     product: Product;
@@ -33,69 +34,46 @@ const ProductCard: React.FC<ProductCardProps> = ({
             ? product.variants.find((v) => v.type === "DEFAULT")
             : undefined;
     }, [product.variants, variantId]);
+
+    const cardStyle = {
+        "--card-width": `${size || 200}px`,
+    } as React.CSSProperties;
+
+    const mediaStyle = {
+        "--variant-bg":
+            variant?.background_color ??
+            "rgba(var(--ion-color-success-rgb), 0.25)",
+    } as React.CSSProperties;
+
     return (
         <IonCard
-            style={{
-                width: `${size || 200}px`,
-                margin: "8px",
-                flexShrink: 0,
-                border: active
-                    ? "2px solid var(--ion-color-primary)"
-                    : undefined,
-            }}
+            style={cardStyle}
+            className={`${styles.card} ${onClick ? styles.clickable : ""} ${
+                active ? styles.cardActive : ""
+            }`}
             button={!!onClick}
             onClick={onClick}
         >
-            <div
-                style={{
-                    width: "100%",
-                    aspectRatio: "1",
-                    backgroundColor: variant?.background_color ?? "#00bf6380",
-                    borderRadius: "12px 12px 0 0",
-                    overflow: "hidden",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                }}
-            >
+            <div style={mediaStyle} className={styles.media}>
                 {variant?.image?.path ? (
                     <IonImg
                         src={variant.image.path}
                         alt={product.name || "Product Image"}
-                        style={{
-                            width: "100%",
-                            height: "100%",
-                            objectFit: "cover",
-                        }}
+                        className={styles.image}
                     />
                 ) : (
-                    <IonText color="medium">
+                    <IonText color="medium" className={styles.noImage}>
                         <small>No image</small>
                     </IonText>
                 )}
             </div>
-            <IonCardContent>
+            <IonCardContent className={styles.content}>
                 <IonText>
-                    <h3
-                        style={{
-                            margin: "0 0 8px",
-                            fontSize: "1rem",
-                            fontWeight: "600",
-                        }}
-                    >
-                        {product.name}
-                    </h3>
+                    <h3 className={styles.productTitle}>{product.name}</h3>
                 </IonText>
-                <div
-                    style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        gap: "8px",
-                    }}
-                >
+                <div className={styles.priceRow}>
                     <IonText color="primary">
-                        <strong style={{ fontSize: "1.25rem" }}>
+                        <strong className={styles.productPrice}>
                             ${variant?.price.toFixed(2)}
                         </strong>
                     </IonText>

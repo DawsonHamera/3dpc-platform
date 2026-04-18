@@ -8,8 +8,8 @@ export type Model = Prisma.modelGetPayload<{
 }>;
 
 // Input types
-export type CreateModel = Prisma.modelCreateInput;
-export type UpdateModel = Prisma.modelUpdateInput;
+export type CreateModel = Prisma.modelUncheckedCreateInput;
+export type UpdateModel = Prisma.modelUncheckedUpdateInput;
 
 export const modelsApi = createApi({
     reducerPath: "modelsApi",

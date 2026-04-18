@@ -1,34 +1,42 @@
-import React from "react";
 import {
-    IonHeader,
-    IonToolbar,
-    IonTitle,
-    IonButtons,
-    IonButton,
-    IonIcon,
-    IonSearchbar,
-    useIonRouter,
     IonBackButton,
     IonBadge,
+    IonButton,
+    IonButtons,
+    IonHeader,
+    IonIcon,
+    IonSearchbar,
+    IonText,
+    IonTitle,
+    IonToolbar,
+    useIonRouter,
 } from "@ionic/react";
 import {
-    chevronBack,
     cartOutline,
-    searchOutline,
+    chevronBack,
     home,
-    settingsOutline,
     person,
+    searchOutline,
+    settingsOutline,
     shield,
 } from "ionicons/icons";
-import { useShop } from "./ShopContext";
+import React from "react";
 import { useAuth } from "../../../shared/hooks/useAuth";
-import "./ShopHeader.css";
+import { useShop } from "./ShopContext";
+import styles from "./ShopHeader.module.css";
+
+export type ShopBreadcrumb = {
+    label: string;
+    path?: string;
+};
 
 interface ShopHeaderProps {
     title: string;
     searchbar?: boolean;
     backArrow?: boolean;
     homeButton?: boolean;
+    breadcrumbs?: ShopBreadcrumb[];
+    contextLabel?: string;
     onSearchChange?: (value: string) => void;
 }
 
@@ -38,6 +46,7 @@ const ShopHeader: React.FC<ShopHeaderProps> = ({
     onSearchChange,
     backArrow,
     homeButton,
+    contextLabel,
 }) => {
     const router = useIonRouter();
     const { user } = useAuth();
@@ -78,17 +87,20 @@ const ShopHeader: React.FC<ShopHeaderProps> = ({
                             <IonButton
                                 slot="start"
                                 onClick={() => {
-                                    setViewMode(viewMode === 'admin' ? 'user' : 'admin');
+                                    setViewMode(
+                                        viewMode === "admin" ? "user" : "admin",
+                                    );
                                     setToast({
-                                        message: viewMode === 'admin'
-                                            ? "Switched to User View"
-                                            : "Switched to Admin View",
+                                        message:
+                                            viewMode === "admin"
+                                                ? "Switched to User View"
+                                                : "Switched to Admin View",
                                         color: "primary",
                                         duration: 1500,
                                     });
                                 }}
                             >
-                                {viewMode === 'user' ? (
+                                {viewMode === "user" ? (
                                     <IonIcon icon={person} />
                                 ) : (
                                     <IonIcon icon={shield} />
@@ -96,18 +108,16 @@ const ShopHeader: React.FC<ShopHeaderProps> = ({
                             </IonButton>
                         )}
                         <IonTitle
-                            slot="start"
-                            className="shop-header-title"
+                            className={styles.titleBlock}
                             onClick={() => router.push("/shop")}
                         >
-                            3DPC Shop
+                            <span className={styles.brandTitle}>3DPC Shop</span>
                         </IonTitle>
-
-                        {isAdmin && viewMode == 'admin' ? (
+                        {isAdmin && viewMode === "admin" ? (
                             <IonButton
                                 slot="end"
                                 onClick={() => router.push("/shop/manage")}
-                                className="manage-button"
+                                className={styles.actionButton}
                             >
                                 <IonIcon icon={settingsOutline} />
                             </IonButton>
@@ -115,10 +125,13 @@ const ShopHeader: React.FC<ShopHeaderProps> = ({
                             <IonButton
                                 slot="end"
                                 onClick={() => router.push("/shop/cart")}
-                                className="cart-button"
+                                className={styles.actionButton}
                             >
                                 <IonIcon icon={cartOutline} />
-                                <IonBadge color="light" className="cart-badge">
+                                <IonBadge
+                                    color="light"
+                                    className={styles.cartBadge}
+                                >
                                     {cart.length}
                                 </IonBadge>
                             </IonButton>
@@ -127,10 +140,20 @@ const ShopHeader: React.FC<ShopHeaderProps> = ({
                             <IonButton
                                 slot="end"
                                 onClick={() => setSearchExpanded((s) => !s)}
-                                className="search-button"
+                                className={styles.actionButton}
                             >
                                 <IonIcon icon={searchOutline} />
                             </IonButton>
+                        )}
+                        {contextLabel && (
+                            <IonButtons
+                                slot="end"
+                                className={styles.contextWrap}
+                            >
+                                <IonText className={styles.contextLabel}>
+                                    {contextLabel}
+                                </IonText>
+                            </IonButtons>
                         )}
                     </>
                 ) : (
@@ -139,13 +162,13 @@ const ShopHeader: React.FC<ShopHeaderProps> = ({
                             value={searchQuery}
                             onIonInput={(e) =>
                                 handleSearchChange(
-                                    (e.detail.value ?? "").toString()
+                                    (e.detail.value ?? "").toString(),
                                 )
                             }
                             showCancelButton="never"
                             placeholder="Search..."
                             animated
-                            className="search-bar"
+                            className={styles.searchBar}
                             inputmode="search"
                             autoFocus
                             onBlur={() => setSearchExpanded(false)}

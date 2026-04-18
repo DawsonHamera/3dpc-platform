@@ -4,6 +4,7 @@ import {
     activityApi,
     authApi,
     authReducer,
+    errorReportsApi,
     eventsApi,
     filesApi,
     materialsApi,
@@ -29,6 +30,7 @@ const rootReducer = combineReducers({
     [printersApi.reducerPath]: printersApi.reducer,
     [productsApi.reducerPath]: productsApi.reducer,
     [activityApi.reducerPath]: activityApi.reducer,
+    [errorReportsApi.reducerPath]: errorReportsApi.reducer,
     auth: authReducer,
 });
 
@@ -50,6 +52,7 @@ export const store = configureStore({
             printersApi.middleware,
             productsApi.middleware,
             activityApi.middleware,
+            errorReportsApi.middleware,
         ),
 });
 

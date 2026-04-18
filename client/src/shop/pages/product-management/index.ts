@@ -5,3 +5,4 @@ export { ProductVariantCard } from "./components/ProductVariantCard/ProductVaria
 export { useProductManagement } from "./hooks/useProductManagement";
 export { default as ProductModal } from "./modals/EditModal";
 export { default as ProductManagementPage } from "./pages/ProductManagementPage";
+export { default as SectionManagementPage } from "./pages/SectionManagementPage";

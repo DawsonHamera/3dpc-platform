@@ -21,6 +21,8 @@ export type ProductVariantType = product_variant_type;
 export interface Section {
     id: number;
     name: string;
+    type?: string;
+    display_order?: number;
     items: {
         product_id: number;
         variant_id: number;
@@ -166,6 +168,20 @@ export const productsApi = createApi({
             }),
             invalidatesTags: [{ type: "Products", id: "LIST" }],
         }),
+        updateSectionOrder: builder.mutation<
+            void,
+            {
+                sections: Array<{ id: number; displayOrder: number }>;
+                type?: string;
+            }
+        >({
+            query: (data) => ({
+                url: "/products/sections/order",
+                method: "PATCH",
+                body: data,
+            }),
+            invalidatesTags: [{ type: "Sections", id: "LIST" }],
+        }),
     }),
 });
 
@@ -183,4 +199,5 @@ export const {
     useDeleteSectionMutation,
     useDeleteVariantMutation,
     useDeleteProductMutation,
+    useUpdateSectionOrderMutation,
 } = productsApi;

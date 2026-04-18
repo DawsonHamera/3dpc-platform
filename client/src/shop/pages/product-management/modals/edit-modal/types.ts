@@ -7,7 +7,7 @@ export interface LocalVariant {
     background_color: string;
     price: number;
     image_file_id: number | null;
-    image: File | undefined;
+    image?: File;
     type: "DEFAULT" | "STANDARD";
     isNew?: boolean;
     toDelete?: boolean;

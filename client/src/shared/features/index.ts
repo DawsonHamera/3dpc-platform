@@ -3,6 +3,7 @@ export * from "./auth/authApi";
 export * from "./auth/authTypes";
 export * from "./auth/authSlice";
 export * from "./events/eventsApi";
+export * from "./error-reports/errorReportsApi";
 export * from "./files/filesApi";
 export * from "./materials/materialsApi";
 export * from "./models/modelsApi";

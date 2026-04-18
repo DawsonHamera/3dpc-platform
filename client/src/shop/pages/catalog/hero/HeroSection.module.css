@@ -1,0 +1,148 @@
+.heroSection {
+    position: relative;
+    width: 100%;
+    margin: 0;
+    border-radius: 0;
+    min-height: calc(100dvh - 56px);
+    overflow: hidden;
+    background: linear-gradient(150deg,
+            var(--ion-color-primary) 0%,
+            var(--ion-color-primary-shade) 45%,
+            var(--ion-color-dark) 100%);
+    box-shadow: none;
+}
+
+.heroBackdrop {
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.24;
+    position: absolute;
+    width: 100%;
+    filter: saturate(0.8);
+}
+
+.heroSectionContent {
+    position: relative;
+    padding: 52px 22px 44px;
+    background: transparent;
+    width: 100%;
+    min-height: calc(100dvh - 56px);
+    display: flex;
+    align-items: flex-start;
+}
+
+.heroMainContent {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    gap: 18px;
+    position: relative;
+    z-index: 1;
+    max-width: 540px;
+    margin: 0 auto;
+}
+
+.heroEyebrow {
+    color: rgba(var(--ion-color-light-rgb), 0.88);
+    font-size: 0.76rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 2px;
+    padding: 6px 10px;
+    border: 1px solid rgba(var(--ion-color-light-rgb), 0.32);
+    border-radius: 999px;
+    background: rgba(var(--ion-color-dark-rgb), 0.2);
+}
+
+.heroTitle h1 {
+    font-size: clamp(1.85rem, 6.4vw, 2.55rem);
+    font-weight: 820;
+    color: var(--ion-color-light);
+    margin: 0;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+    line-height: 1.12;
+}
+
+.heroSubtitle {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: rgba(var(--ion-color-light-rgb), 0.9);
+    margin: 0;
+}
+
+.heroDescription p {
+    padding: 0;
+    font-size: 1.04rem;
+    color: rgba(var(--ion-color-light-rgb), 0.95);
+    margin: 0;
+    max-width: 500px;
+    line-height: 1.5;
+    font-weight: 400;
+}
+
+.heroActions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.heroPaymentNote {
+    margin-top: 8px;
+}
+
+.heroPaymentNote p {
+    font-size: 0.9rem;
+    color: rgba(var(--ion-color-light-rgb), 0.85);
+    margin: 0;
+    padding: 10px 14px;
+    background: rgba(var(--ion-color-dark-rgb), 0.2);
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    backdrop-filter: blur(10px);
+}
+
+.shopNowButton {
+    margin: 0;
+    font-weight: 700;
+    font-size: 1rem;
+    height: 50px;
+    --box-shadow: 0 10px 18px rgba(var(--ion-color-dark-rgb), 0.25);
+    --background: var(--ion-color-light);
+    --color: var(--ion-color-primary);
+    --border-radius: 12px;
+}
+
+.shopSecondaryButton {
+    margin: 0;
+    --color: var(--ion-color-light);
+    --border-radius: 12px;
+    --background-hover: rgba(var(--ion-color-light-rgb), 0.12);
+    border: 1px solid rgba(var(--ion-color-light-rgb), 0.3);
+}
+
+@media (min-width: 768px) {
+    .heroSectionContent {
+        padding: 72px 46px 56px;
+        min-height: calc(100dvh - 64px);
+    }
+
+    .heroActions {
+        grid-template-columns: auto auto;
+        justify-content: flex-start;
+    }
+
+    .shopNowButton,
+    .shopSecondaryButton {
+        min-width: 220px;
+    }
+}

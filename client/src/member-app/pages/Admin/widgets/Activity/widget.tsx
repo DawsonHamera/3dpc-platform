@@ -8,9 +8,12 @@ import {
 } from "@ionic/react";
 import { filter } from "ionicons/icons";
 import { useEffect, useState } from "react";
-import styles from "./widget.module.css";
-import { useGetActivityLogsQuery } from "../../../../../shared/features";
+import {
+    ActivityLog,
+    useGetActivityLogsQuery,
+} from "../../../../../shared/features";
 import { timeAgo } from "../../../../../shared/utility/timeago";
+import styles from "./widget.module.css";
 
 const ActivityWidget: React.FC = () => {
     const [filterText, setFilterText] = useState("");
@@ -21,7 +24,16 @@ const ActivityWidget: React.FC = () => {
         refetch,
     } = useGetActivityLogsQuery({ limit: 20, filter: filterText });
 
-    const [activeActivity, setActiveActivity] = useState(null);
+    const [activeActivity, setActiveActivity] = useState<ActivityLog | null>(
+        null,
+    );
+
+    const getDetailsObject = (details: unknown): Record<string, unknown> => {
+        if (!details || typeof details !== "object" || Array.isArray(details)) {
+            return {};
+        }
+        return details as Record<string, unknown>;
+    };
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -85,21 +97,30 @@ const ActivityWidget: React.FC = () => {
                 onDidDismiss={() => setActiveActivity(null)}
             >
                 <IonList>
-                    {activeActivity?.details && (
+                    {activeActivity && (
                         <>
                             <IonListHeader color="primary">
                                 {activeActivity.action_type}
                             </IonListHeader>
-                            <IonItem>{activeActivity.details.message}</IonItem>
+                            <IonItem>
+                                {String(
+                                    getDetailsObject(activeActivity.details)
+                                        .message ?? "No details",
+                                )}
+                            </IonItem>
                             <IonItem>
                                 <strong>Timestamp:</strong>{" "}
                                 <IonText slot="end">
-                                    {new Date(
-                                        activeActivity.created_at,
-                                    ).toLocaleString()}
+                                    {activeActivity.created_at
+                                        ? new Date(
+                                              activeActivity.created_at,
+                                          ).toLocaleString()
+                                        : "N/A"}
                                 </IonText>
                             </IonItem>
-                            {Object.entries(activeActivity.details)
+                            {Object.entries(
+                                getDetailsObject(activeActivity.details),
+                            )
                                 .filter(([key]) => key !== "message")
                                 .map(([key, value]) => (
                                     <IonItem key={key}>

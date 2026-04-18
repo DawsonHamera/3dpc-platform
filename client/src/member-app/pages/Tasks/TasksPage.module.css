@@ -1,0 +1,137 @@
+.tasksPageContent {
+    --padding-top: 20px;
+    --padding-bottom: 20px;
+    --padding-start: 16px;
+    --padding-end: 16px;
+}
+
+.tasksHeader {
+    padding: 24px 16px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.tasksHeaderLeft h1 {
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+    color: var(--ion-color-primary);
+}
+
+.tasksHeaderLeft p {
+    font-size: 14px;
+    color: var(--ion-text-color-step-600);
+    margin: 0;
+}
+
+.tasksControls {
+    margin: 0 16px 16px;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid var(--ion-color-light-shade);
+    background: var(--ion-color-light-tint);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.tasksSortControl {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--ion-color-medium-shade);
+}
+
+.tasksControlHint {
+    margin: 0;
+    color: var(--ion-text-color-step-600);
+    font-size: 12px;
+}
+
+.tasksSectionSegment {
+    margin: 0 16px 20px;
+}
+
+.tasksSection {
+    margin-bottom: 32px;
+}
+
+.tasksSectionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px;
+    margin-bottom: 16px;
+}
+
+.tasksSectionTitle {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+    color: var(--ion-text-color);
+    display: flex;
+    align-items: center;
+}
+
+.tasksSectionTitleIcon {
+    margin-right: 8px;
+}
+
+.tasksSectionBadge {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.tasksAccordionGroup {
+    padding: 0 16px;
+}
+
+.tasksEmptyState {
+    text-align: center;
+    padding: 48px 24px;
+    color: var(--ion-text-color-step-600);
+}
+
+.tasksEmptyIcon {
+    font-size: 64px;
+    color: var(--ion-color-medium);
+    margin-bottom: 16px;
+}
+
+.tasksEmptyTitle {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 8px 0;
+    color: var(--ion-text-color);
+}
+
+.tasksEmptyDescription {
+    font-size: 14px;
+    margin: 0 0 24px 0;
+}
+
+.tasksLoading,
+.tasksError {
+    text-align: center;
+    padding: 48px 24px;
+    color: var(--ion-text-color-step-600);
+}
+
+.tasksError {
+    color: var(--ion-color-danger);
+}
+
+@media (max-width: 768px) {
+    .tasksHeader {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .tasksSectionSegment {
+        margin-bottom: 12px;
+    }
+}
